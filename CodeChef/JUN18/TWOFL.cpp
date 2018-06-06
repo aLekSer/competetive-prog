@@ -1,5 +1,6 @@
 #include <iostream>
 #include <vector>
+#include <set>
 using namespace std;
 // A function to check if a given cell (row, col) can be included in DFS
 int isSafe(vector<vector<int>>  &M, int row, int col, vector<vector<bool>>& visited)
@@ -60,7 +61,8 @@ int main() {
     int n, m;
     cin >> n;
     cin >> m;
-    vector<vector<int>> cur(101, vector<int>(101, 0));
+    set<long long> s;
+    vector<vector<int>> cur(1001, vector<int>(1001, 0));
     vector<vector<int>> v(n, vector<int>(m));
     int a;
     for (int i = 0; i < n; i++) {
@@ -73,18 +75,24 @@ int main() {
     int maxRes = 0;
     //cout << countIslands(v);
     // Make submatrises with only 2 flowers
+    vector<vector<int>> d(n, vector<int>(m, 0));
     for (int i = 0; i < n; i++) {
         for (int j = 0; j < m-1; j++) {
-            if (v[i][j] <= 100 && v[i][j+1] <= 100 &&  cur[v[i][j]][v[i][j+1]] == 1) {
-                continue;
+            if (v[i][j] <= 1000000 && v[i][j+1] <= 1000000)
+            {
+                int pos = v[i][j] * 1000000 + v[i][j+1];
+                if (s.find(pos) != s.end())
+                    continue;
             }
-            if (v[i][j+1] <= 100 && v[i][j+1] <= 100) {
-                cur[v[i][j]][v[i][j+1]] = 1;
-                cur[v[i][j+1]][v[i][j]] = 1;
+            if (v[i][j+1] <= 1000000 && v[i][j+1] <= 1000000) {
+                int pos = v[i][j] * 1000000 + v[i][j+1];
+                s.insert(pos);
+                pos = v[i][j+1] * 1000000 + v[i][j];
+                s.insert(pos);
             }
-            vector<vector<int>> d(n, vector<int>(m, 0));
             for (int l = 0; l < n; l++) {
                 for (int g = 0; g < m; g++) {
+                    d[l][g] = 0;
                     if (v[l][g] == v[i][j]) 
                         d[l][g] = v[i][j];
                     if(v[l][g] == v[i][j+1] )
@@ -100,16 +108,29 @@ int main() {
     }
     for (int i = 0; i < n - 1; i++) {
         for (int j = 0; j < m; j++) {
-            if (v[i+1][j] <= 100 && v[i][j] <= 100 &&  cur[v[i+1][j]][v[i][j]] == 1) {
+            if (v[i][j] <= 1000000 && v[i+1][j] <= 1000000)
+            {
+                int pos = v[i+1][j] * 1000000 + v[i][j];
+                if (s.find(pos) != s.end())
+                    continue;
+            }
+            if (v[i][j+1] <= 1000000 && v[i][j+1] <= 1000000) {
+                int pos = v[i][j] * 1000000 +  v[i+1][j] ;
+                s.insert(pos);
+                 pos = v[i+1][j] * 1000000 + v[i][j];
+                s.insert(pos);
+            }
+            if (v[i+1][j] <= 1000 && v[i][j] <= 1000 &&  cur[v[i+1][j]][v[i][j]] == 1) {
                 continue;
             }
-            if (v[i+1][j] <= 100 && v[i][j] <= 100) {
+            if (v[i+1][j] <= 1000 && v[i][j] <= 1000) {
                 cur[v[i+1][j]][v[i][j]] = 1;
                 cur[v[i][j]][v[i+1][j]] = 1;
             }
-            vector<vector<int>> d(n, vector<int>(m, 0));
+            //vector<vector<int>> d(n, vector<int>(m, 0));
             for (int l = 0; l < n; l++) {
                 for (int g = 0; g < m; g++) {
+                    d[l][g] = 0;
                     if (v[l][g] == v[i+1][j]) 
                         d[l][g] = v[i+1][j];
                     if(v[l][g] == v[i][j] )

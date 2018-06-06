@@ -2,6 +2,8 @@
 #include <vector>
 using namespace std;
 
+// g++ -g -o ./a.out ./SHKSTR.cpp
+
 int main() {
 	// your code goes here
 	int T;

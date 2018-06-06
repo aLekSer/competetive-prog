@@ -13,7 +13,7 @@ int isSafe(vector<vector<int>>  M, int row, int col, vector<vector<bool>>& visit
  
 // A utility function to do DFS for a 2D boolean matrix. It only considers
 // the 8 neighbours as adjacent vertices
-int DFS(vector<vector<int>>  M, int row, int col, vector<vector<bool>>& visited)
+void DFS(vector<vector<int>>  M, int row, int col, vector<vector<bool>>& visited, int & count)
 {
     // These arrays are used to get row and column numbers of 8 neighbours 
     // of a given cell
@@ -24,13 +24,12 @@ int DFS(vector<vector<int>>  M, int row, int col, vector<vector<bool>>& visited)
     visited[row][col] = true;
  
     // Recur for all connected neighbours
-    int count = 0;
     for (int k = 0; k < 4; ++k)
-        if (isSafe(M, row + rowNbr[k], col + colNbr[k], visited) ) {
-           int t_count = DFS(M, row + rowNbr[k], col + colNbr[k], visited); 
-           count += t_count;
+        if (isSafe(M, row + rowNbr[k], col + colNbr[k], visited) ) { 
+           count ++;
+           DFS(M, row + rowNbr[k], col + colNbr[k], visited, count);
         }
-    return count;
+    return;
 }
  
 // The main function that returns count of maximal island in a given matrix
@@ -47,7 +46,8 @@ int countIslands(vector<vector<int>>  M)
         for (int j = 0; j < M[0].size(); ++j)
             if (M[i][j] && !visited[i][j]) // If a cell with value 1 is not
             {                         // visited yet, then new island found
-                int count = DFS(M, i, j, visited) + 1;
+                int count = 1;
+                DFS(M, i, j, visited, count);
                 if (count > max_count)
                 {
                     max_count = count;
@@ -71,6 +71,7 @@ int main() {
     }
     int res = 0;
     int maxRes = 0;
+    cout << countIslands(v);
     // Make submatrises with only 2 flowers
     for (int i = 0; i < n; i++) {
         for (int j = 0; j < m-1; j++) {
@@ -84,8 +85,10 @@ int main() {
             vector<vector<int>> d(n, vector<int>(m, 0));
             for (int l = 0; l < n; l++) {
                 for (int g = 0; g < m; g++) {
-                    if (v[l][g] == v[i][j] || v[l][g] == v[i][j+1] )
-                        d[l][g] = v[i][j]; 
+                    if (v[l][g] == v[i][j]) 
+                        d[l][g] = v[i][j];
+                    if(v[l][g] == v[i][j+1] )
+                        d[l][g] = v[i][j+1];
                 }
                 
             }
@@ -107,8 +110,10 @@ int main() {
             vector<vector<int>> d(n, vector<int>(m, 0));
             for (int l = 0; l < n; l++) {
                 for (int g = 0; g < m; g++) {
-                    if (v[l][g] == v[i+1][j] || v[l][g] == v[i][j] )
-                        d[l][g] = v[i][j]; 
+                    if (v[l][g] == v[i+1][j]) 
+                        d[l][g] = v[i+1][j];
+                    if(v[l][g] == v[i][j] )
+                        d[l][g] = v[i][j];
                 }
                 
             }

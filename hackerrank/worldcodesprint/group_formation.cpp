@@ -31,33 +31,33 @@ void membersInTheLargestGroups(int n, int m, int a, int b, int f, int s, int t) 
             set<string>::iterator it = my_sets[j].find(a1);
             if (it != my_sets[j].end())
             {
-            set<string>::iterator it3 = my_sets[j].find(b1);
-            if (it3 != my_sets[j].end())
-            {
-                if (v[j][1] <= f &&
-                    v[j][2] <= s &&
-                     v[j][3] <= t && 
-                         my_sets[j].size() < b)
-                {
-                my_sets[j].insert(b1);
-                placed = true;
-                
-                cerr << a1 << b1;
-            v[j][name[b1]] ++;
-                    v[j][0] += 1;
-                break;
-                } else {
-                    placed = true;
-                     set<string> s2;
-        s2.insert(b1);
-            v.push_back(vector<int>(4));
-            v[v.size()-1][name[b1]] ++;
-            my_sets.push_back(s2);
-                    v[v.size()-1][0] += 1;
-                    break;
-                    
-                }
-                }
+		    set<string>::iterator it3 = my_sets[j].find(b1);
+		    if (it3 != my_sets[j].end())
+		    {
+			if (v[j][1] <= f &&
+			    v[j][2] <= s &&
+			     v[j][3] <= t && 
+			         my_sets[j].size() < b)
+			{
+			    my_sets[j].insert(b1);
+			    placed = true;
+			
+			    cerr << a1 << b1;
+			    v[j][name[b1]] ++;
+			    v[j][0] += 1;
+			break;
+			} else {
+			    placed = true;
+			    set<string> s2;
+	       		    s2.insert(b1);
+			    v.push_back(vector<int>(4));
+			    v[v.size()-1][name[b1]] ++;
+			    my_sets.push_back(s2);
+			    v[v.size()-1][0] += 1;
+			    break;
+			    
+			}
+	        }
             }
             set<string>::iterator it2 = my_sets[j].find(b1);
             if (it2 != my_sets[j].end())
@@ -70,21 +70,20 @@ void membersInTheLargestGroups(int n, int m, int a, int b, int f, int s, int t) 
                      v[j][3] <= t && 
                          my_sets[j].size() < b)
                 {
-                     my_sets[j].insert(a1);
+                    my_sets[j].insert(a1);
                     placed = true;
-                v[j][name[a1]] ++;
+        	    v[j][name[a1]] ++;
                     v[j][0] += 1;
                     break;
-                    } else {
+                } else {
                     placed = true;
-                     set<string> s2;
-        s2.insert(a1);
-            v.push_back(vector<int>(4));
-            v[v.size()-1][name[a1]] ++;
-            my_sets.push_back(s2);
+                    set<string> s2;
+		    s2.insert(a1);
+		    v.push_back(vector<int>(4));
+		    v[v.size()-1][name[a1]] ++;
+		    my_sets.push_back(s2);
                     v[v.size()-1][0] += 1;
-                    break;
-                    
+                    break;                    
                 }
             }
             }

@@ -62,14 +62,47 @@ int main() {
     vector<vector<int>> v(n, vector<int>(m));
     int a;
     for (int i = 0; i < n; i++) {
-        
         for (int j = 0; j < m; j++) {
             cin >> a;
             v[i][j] = a;
         }
     }
-    int res = countIslands(v);
-    cout << res;
+    int res = 0;
+    int maxRes = 0;
+    // Make submatrises with only 2 flowers
+    for (int i = 0; i < n; i++) {
+        for (int j = 0; j < m-1; j++) {
+            vector<vector<int>> d(n, vector<int>(m, 0));
+            for (int l = 0; l < n; l++) {
+                for (int g = 0; g < m; g++) {
+                    if (v[l][g] == v[i][j] || v[l][g] == v[i][j+1] )
+                        d[l][g] = v[i][j]; 
+                }
+                
+            }
+            res = countIslands(d) + 1;
+            if (res > maxRes) {
+                maxRes = res;
+            }
+        }
+    }
+    for (int i = 0; i < n - 1; i++) {
+        for (int j = 0; j < m; j++) {
+            vector<vector<int>> d(n, vector<int>(m, 0));
+            for (int l = 0; l < n; l++) {
+                for (int g = 0; g < m; g++) {
+                    if (v[l][g] == v[i+1][j] || v[l][g] == v[i][j] )
+                        d[l][g] = v[i][j]; 
+                }
+                
+            }
+            res = countIslands(d) + 1;
+            if (res > maxRes) {
+                maxRes = res;
+            }
+        }
+    }
+    cout << maxRes;
 	// your code goes here
 	return 0;
 }

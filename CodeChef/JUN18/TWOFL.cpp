@@ -2,7 +2,7 @@
 #include <vector>
 using namespace std;
 // A function to check if a given cell (row, col) can be included in DFS
-int isSafe(vector<vector<int>>  M, int row, int col, vector<vector<bool>>& visited)
+int isSafe(vector<vector<int>>  &M, int row, int col, vector<vector<bool>>& visited)
 {
     // row number is in range, column number is in range and value is 1 
     // and not yet visited
@@ -13,7 +13,7 @@ int isSafe(vector<vector<int>>  M, int row, int col, vector<vector<bool>>& visit
  
 // A utility function to do DFS for a 2D boolean matrix. It only considers
 // the 8 neighbours as adjacent vertices
-void DFS(vector<vector<int>>  M, int row, int col, vector<vector<bool>>& visited, int & count)
+void DFS(vector<vector<int>>  &M, int row, int col, vector<vector<bool>>& visited, int & count)
 {
     // These arrays are used to get row and column numbers of 8 neighbours 
     // of a given cell
@@ -33,7 +33,7 @@ void DFS(vector<vector<int>>  M, int row, int col, vector<vector<bool>>& visited
 }
  
 // The main function that returns count of maximal island in a given matrix
-int countIslands(vector<vector<int>>  M)
+int countIslands(vector<vector<int>>  &M)
 {
     // Make a bool array to mark visited cells.
     // Initially all cells are unvisited
@@ -75,10 +75,10 @@ int main() {
     // Make submatrises with only 2 flowers
     for (int i = 0; i < n; i++) {
         for (int j = 0; j < m-1; j++) {
-            if (i <= 100 && j <= 100 &&  cur[v[i][j]][v[i][j+1]] == 1) {
+            if (v[i][j] <= 100 && v[i][j+1] <= 100 &&  cur[v[i][j]][v[i][j+1]] == 1) {
                 continue;
             }
-            if (i <= 100 && j <= 100) {
+            if (v[i][j+1] <= 100 && v[i][j+1] <= 100) {
                 cur[v[i][j]][v[i][j+1]] = 1;
                 cur[v[i][j+1]][v[i][j]] = 1;
             }
@@ -100,10 +100,10 @@ int main() {
     }
     for (int i = 0; i < n - 1; i++) {
         for (int j = 0; j < m; j++) {
-            if (i <= 100 && j <= 100 &&  cur[v[i+1][j]][v[i][j]] == 1) {
+            if (v[i+1][j] <= 100 && v[i][j] <= 100 &&  cur[v[i+1][j]][v[i][j]] == 1) {
                 continue;
             }
-            if (i <= 100 && j <= 100) {
+            if (v[i+1][j] <= 100 && v[i][j] <= 100) {
                 cur[v[i+1][j]][v[i][j]] = 1;
                 cur[v[i][j]][v[i+1][j]] = 1;
             }

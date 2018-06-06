@@ -7,7 +7,7 @@ int isSafe(vector<vector<int>>  M, int row, int col, vector<vector<bool>>& visit
     // row number is in range, column number is in range and value is 1 
     // and not yet visited
     return (row >= 0) && (row < M.size()) &&     
-           (col >= 0) && (col < M[0].size()) &&      
+           (col >= 0) && (col < M[0].size() ) &&      
            (M[row][col] && !visited[row][col]); 
 }
  
@@ -37,7 +37,7 @@ int countIslands(vector<vector<int>>  M)
 {
     // Make a bool array to mark visited cells.
     // Initially all cells are unvisited
-    vector<vector<bool>> visited(M.size(), vector<bool>(M[0].size()));
+    vector<vector<bool>> visited(M[0].size(), vector<bool>(M.size()));
  
     // Initialize count as 0 and travese through the all cells of
     // given matrix

@@ -71,7 +71,7 @@ int main() {
     }
     int res = 0;
     int maxRes = 0;
-    cout << countIslands(v);
+    //cout << countIslands(v);
     // Make submatrises with only 2 flowers
     for (int i = 0; i < n; i++) {
         for (int j = 0; j < m-1; j++) {

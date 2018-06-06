@@ -27,7 +27,8 @@ int DFS(vector<vector<int>>  M, int row, int col, vector<vector<bool>>& visited)
     int count = 0;
     for (int k = 0; k < 4; ++k)
         if (isSafe(M, row + rowNbr[k], col + colNbr[k], visited) ) {
-           count = 1 + DFS(M, row + rowNbr[k], col + colNbr[k], visited); 
+           int t_count = DFS(M, row + rowNbr[k], col + colNbr[k], visited); 
+           count += t_count;
         }
     return count;
 }
@@ -37,7 +38,7 @@ int countIslands(vector<vector<int>>  M)
 {
     // Make a bool array to mark visited cells.
     // Initially all cells are unvisited
-    vector<vector<bool>> visited(M[0].size(), vector<bool>(M.size()));
+    vector<vector<bool>> visited(M[0].size(), vector<bool>(M.size(), false));
  
     // Initialize count as 0 and travese through the all cells of
     // given matrix
@@ -59,6 +60,7 @@ int main() {
     int n, m;
     cin >> n;
     cin >> m;
+    vector<vector<int>> cur(101, vector<int>(101, 0));
     vector<vector<int>> v(n, vector<int>(m));
     int a;
     for (int i = 0; i < n; i++) {
@@ -72,6 +74,13 @@ int main() {
     // Make submatrises with only 2 flowers
     for (int i = 0; i < n; i++) {
         for (int j = 0; j < m-1; j++) {
+            if (i <= 100 && j <= 100 &&  cur[v[i][j]][v[i][j+1]] == 1) {
+                continue;
+            }
+            if (i <= 100 && j <= 100) {
+                cur[v[i][j]][v[i][j+1]] = 1;
+                cur[v[i][j+1]][v[i][j]] = 1;
+            }
             vector<vector<int>> d(n, vector<int>(m, 0));
             for (int l = 0; l < n; l++) {
                 for (int g = 0; g < m; g++) {
@@ -80,7 +89,7 @@ int main() {
                 }
                 
             }
-            res = countIslands(d) + 1;
+            res = countIslands(d);
             if (res > maxRes) {
                 maxRes = res;
             }
@@ -88,6 +97,13 @@ int main() {
     }
     for (int i = 0; i < n - 1; i++) {
         for (int j = 0; j < m; j++) {
+            if (i <= 100 && j <= 100 &&  cur[v[i+1][j]][v[i][j]] == 1) {
+                continue;
+            }
+            if (i <= 100 && j <= 100) {
+                cur[v[i+1][j]][v[i][j]] = 1;
+                cur[v[i][j]][v[i+1][j]] = 1;
+            }
             vector<vector<int>> d(n, vector<int>(m, 0));
             for (int l = 0; l < n; l++) {
                 for (int g = 0; g < m; g++) {
@@ -96,7 +112,7 @@ int main() {
                 }
                 
             }
-            res = countIslands(d) + 1;
+            res = countIslands(d);
             if (res > maxRes) {
                 maxRes = res;
             }

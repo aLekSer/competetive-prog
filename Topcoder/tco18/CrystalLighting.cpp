@@ -13,6 +13,7 @@ using namespace std;
 vector<vector<int>> res;
 vector<vector<int>> pos;
 vector<vector<int>> pos2;
+vector<vector<long long>> pos3;
 // We will use to close the points for new lanterns if ver = 0
 // or to calculate the colored diamonds if ver = color
 // if ver = -1 removing the light
@@ -29,6 +30,8 @@ bool update_res(int i, int j, int n, int m, int ver) {
         else if (ver > 0) { 
         if (pos[i+i2][j] & ver) {
             success = true;
+            pos2[i+i2][j] |= ver;
+            pos3[i+i2][j] = i*10000 + j;
             cerr << "ASFD";
             return true;
         } else if (ver < 10 && ver > 0 && pos[i][j+i2] == 16)  {
@@ -52,6 +55,8 @@ bool update_res(int i, int j, int n, int m, int ver) {
         else if (ver > 0) {
         if (pos[i-i2][j] & ver) {
             success = true;
+            pos2[i-i2][j] |= ver;
+            pos3[i-i2][j] = i*10000 + j;
         } else if (ver < 10 && ver > 0 && pos[i][j+i2] == 16)  {
                 break;
             }
@@ -71,7 +76,9 @@ bool update_res(int i, int j, int n, int m, int ver) {
                 } else break;
             } else if (ver > 0) {
             if (pos[i][j+i2] & ver) {
+            pos2[i][j+i2] |= ver;
                 success = true;
+            pos3[i][j + i2] = i*10000 + j;
             } else if (ver < 10 && ver > 0 && pos[i][j+i2] == 16)  {
                 break;
             }
@@ -90,6 +97,9 @@ bool update_res(int i, int j, int n, int m, int ver) {
              } else break;
         } else if (ver > 0) {
 	   if (pos[i][j-i2] & ver) {
+            pos2[i][j-i2] |= ver;
+            //Seting failed lamp
+            pos3[i][j - i2] = i*10000 + j;
 	    success = true;
 	} else if (ver < 10 && ver > 0 && pos[i][j+i2] == 16)  {
                 break;
@@ -119,6 +129,8 @@ public:
            const int m = tB[0].length();
 	  res = vector<vector<int>>(n, vector<int>(m, 0));
 	  pos = vector<vector<int>>(n, vector<int>(m, 0));
+	  pos2 = vector<vector<int>>(n, vector<int>(m, 0));
+	  pos3 = vector<vector<long long>>(n, vector<long long>(m, 0));
             vector<int> placedC(n, 0);
             vector<int> placedR(m, 0);
            for (int i = 0; i < n; i ++) {
@@ -264,6 +276,13 @@ public:
                     //break;
                 }
                     
+            }
+        }
+        for (int i = 0; i < n; i ++) {
+            for (int j = 0; j < m; j++) {
+                if(pos2[i][j]  != pos[i][j]) {
+                    fal.insert(pos3[i][j]);
+                }
             }
         }
                         cerr << "TUT2";

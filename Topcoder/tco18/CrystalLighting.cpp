@@ -278,10 +278,27 @@ public:
                     
             }
         }
+        int obstCount = 0;
         for (int i = 0; i < n; i ++) {
             for (int j = 0; j < m; j++) {
                 if(pos2[i][j]  != pos[i][j]) {
-                    fal.insert(pos3[i][j]);
+                   // fal.insert(pos3[i][j]);
+                   if (obstCount < maxObstacles)  {
+                        cerr << "OBst";
+                       int x = pos3[i][j]/10000;
+                       int y = pos3[i][j]%10000;
+                       int midX = (x + i) /2;
+                       int midY = (y + j) /2;
+                       if (!pos[midX][midY] && !res[midX][midY] && midX != i && midY != j && midX != x && midY != y ) {
+                        cerr << "bbOO";
+                            char buf[50];
+                            sprintf(buf, "%d %d X", midX, midY);
+                            res[midX][midY] = 16;
+                            st.push_back(buf);
+                            obstCount ++;
+                       }
+                   }
+
                 }
             }
         }
@@ -291,7 +308,7 @@ public:
                
                for (int j = 0; j < m; j++) {
                         cerr << "TUT";
-                        if (res[i][j]  < 100 && res[i][j] > 0) {
+                        if (res[i][j]  < 15 && res[i][j] > 0) {
                             char buf[50];
                             sprintf(buf, "%d %d %d", i, j, res[i][j]);
                             

@@ -16,8 +16,8 @@ int N;
     //cin >> T;
     in >> T;
     for (int i = 0; i < T; i++) {
-        unsigned int A;
-        unsigned int B;
+        unsigned long long A;
+        unsigned long long B;
 	in >> A >> B;
         //cin >> A >> B;
         // 3 op 
@@ -25,10 +25,11 @@ int N;
         // 2. reorder bits
         // 3. add + 1
         // calc 1 binary symbols
-        unsigned int r = 0x1;
+        unsigned long long r = 0x1;
         int countE = 0;
         int countZ = 0;
-        for (int i = 0 ; i < 64; i ++ ) {
+	const int bits = 129;
+        for (int i = 0 ; i < bits; i ++ ) {
             if (r & A ) {
                 countE ++;
             }  else {
@@ -42,7 +43,7 @@ int N;
         r = 0x1;
         int countEB = 0;
         int countZB = 0;
-        for (int i = 0 ; i < 64; i ++ ) {
+        for (int i = 0 ; i < bits; i ++ ) {
             if (r & (B - 1) ) {
                 countEB ++;
             }  else {

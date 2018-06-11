@@ -119,8 +119,8 @@ public:
            const int m = tB[0].length();
 	  res = vector<vector<int>>(n, vector<int>(m, 0));
 	  pos = vector<vector<int>>(n, vector<int>(m, 0));
-            vector<int> placedC(m, 0);
-            vector<int> placedR(n, 0);
+            vector<int> placedC(n, 0);
+            vector<int> placedR(m, 0);
            for (int i = 0; i < n; i ++) {
                    bool setL = false;
                    bool seenThisLine = false;
@@ -130,9 +130,6 @@ public:
                        c = tB[i][j] - '1' + 1;
                        seen.insert(c);
                        pos[i][j] = c;
-                   } else if (tB[i][j] == '.' && seenThisLine && !setL && !placedC[j] && !placedR[i]) {
-                       setL= true;
-                       
                    } else if (tB[i][j] == 'X') {
                        cerr << int('X') << endl;
                         pos[i][j] = 16;
@@ -340,18 +337,6 @@ public:
                 cerr << M << endl;
            }
            */
-                /*
-                        char buf [50];
-                        if (c & 0x1)
-                        sprintf(buf, "%d %d %d", i, j, c & 0x1);
-                        placedR[i] = true;
-                        placedC[j] = true;
-                        if (c & 0x2)
-                        sprintf(buf, "%d %d %d", i, j, c & 0x2);
-                        if (c & 0x4)
-                        sprintf(buf, "%d %d %d", i, j, c & 0x4);
-                       st.push_back(buf);
-                       */
                 for (int i = 0; i < n; i ++) {
                     bool br;
                     for (int j = 0; j < m; j++) {

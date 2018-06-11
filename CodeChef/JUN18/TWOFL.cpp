@@ -62,7 +62,9 @@ int main() {
     cin >> n;
     cin >> m;
     set<long long> s;
-    vector<vector<int>> cur(1001, vector<int>(1001, 0));
+    const int mx = 10000;
+    const int lmt = 1000000;
+    vector<vector<int>> cur(mx+1, vector<int>(mx+1, 0));
     vector<vector<int>> v(n, vector<int>(m));
     int a;
     for (int i = 0; i < n; i++) {
@@ -78,16 +80,16 @@ int main() {
     vector<vector<int>> d(n, vector<int>(m, 0));
     for (int i = 0; i < n; i++) {
         for (int j = 0; j < m-1; j++) {
-            if (v[i][j] <= 1000000 && v[i][j+1] <= 1000000)
+            if (v[i][j] <= lmt && v[i][j+1] <= lmt)
             {
-                int pos = v[i][j] * 1000000 + v[i][j+1];
+                int pos = v[i][j] * lmt + v[i][j+1];
                 if (s.find(pos) != s.end())
                     continue;
             }
-            if (v[i][j+1] <= 1000000 && v[i][j+1] <= 1000000) {
-                int pos = v[i][j] * 1000000 + v[i][j+1];
+            if (v[i][j+1] <= lmt && v[i][j+1] <= lmt) {
+                int pos = v[i][j] * lmt + v[i][j+1];
                 s.insert(pos);
-                pos = v[i][j+1] * 1000000 + v[i][j];
+                pos = v[i][j+1] * lmt + v[i][j];
                 s.insert(pos);
             }
             for (int l = 0; l < n; l++) {
@@ -108,22 +110,22 @@ int main() {
     }
     for (int i = 0; i < n - 1; i++) {
         for (int j = 0; j < m; j++) {
-            if (v[i][j] <= 1000000 && v[i+1][j] <= 1000000)
+            if (v[i][j] <= lmt && v[i+1][j] <= lmt)
             {
-                int pos = v[i+1][j] * 1000000 + v[i][j];
+                int pos = v[i+1][j] * lmt + v[i][j];
                 if (s.find(pos) != s.end())
                     continue;
             }
-            if (v[i][j+1] <= 1000000 && v[i][j+1] <= 1000000) {
-                int pos = v[i][j] * 1000000 +  v[i+1][j] ;
+            if (v[i][j+1] <= lmt && v[i][j+1] <= lmt) {
+                int pos = v[i][j] * lmt +  v[i+1][j] ;
                 s.insert(pos);
-                 pos = v[i+1][j] * 1000000 + v[i][j];
+                 pos = v[i+1][j] * lmt + v[i][j];
                 s.insert(pos);
             }
-            if (v[i+1][j] <= 1000 && v[i][j] <= 1000 &&  cur[v[i+1][j]][v[i][j]] == 1) {
+            if (v[i+1][j] <= mx && v[i][j] <= mx &&  cur[v[i+1][j]][v[i][j]] == 1) {
                 continue;
             }
-            if (v[i+1][j] <= 1000 && v[i][j] <= 1000) {
+            if (v[i+1][j] <= mx && v[i][j] <= mx) {
                 cur[v[i+1][j]][v[i][j]] = 1;
                 cur[v[i][j]][v[i+1][j]] = 1;
             }

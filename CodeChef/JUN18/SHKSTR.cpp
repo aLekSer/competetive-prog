@@ -2,6 +2,7 @@
 #include <vector>
 using namespace std;
 
+//Command to add debuging symbols for VS Code
 // g++ -g -o ./a.out ./SHKSTR.cpp
 
 int main() {
@@ -23,7 +24,7 @@ int main() {
 	    string P;
 	    cin >> R;
 	    vector<string> res;
-        cin >> P;
+            cin >> P;
 	    int longest = 0;
 	    for (int j = 0; j < R; j++){
 	        int m = max(P.length(), s[j].length());
@@ -41,13 +42,13 @@ int main() {
 	            res = vector<string>(0);
 	            res.push_back(s[j]);
 	            //cout << res[0];
-                total = longest;
-	        } else {
+            		longest = total;
+	        } else if (total == longest) {
 	            res.push_back(s[j]);
 
-            }
+                }
 	    }
-        string min = "}";
+       	    string min = "}";
 	    for (int j = 0; j < res.size(); j++){
 	        if (res[j] < min ||  res[j].length() < s[j].length()) {
 	            min = res[j];

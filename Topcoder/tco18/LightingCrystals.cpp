@@ -30,7 +30,7 @@ bool update_res(int i, int j, int n, int m, int ver) {
     for (int i2 = 1; i2 < n; i2 ++) {
         if (i + i2 < n )  { 
             if ( (ver==0) ){
-                if( !pos[i + i2][j]){ //&& (res[i +i2][j] == 0 )) {
+                if( !pos[i + i2][j] ) { //&& (res[i +i2][j] %100 == 0 )) {
                     res[i+i2][j] = 100; //lightning the area
                     cerr << "Light "<<endl;
                 } else break;
@@ -46,7 +46,7 @@ bool update_res(int i, int j, int n, int m, int ver) {
         } else if (ver < 10 && ver > 0 && (pos[x][j] + res[x][j]) > 0 )  {
                 break;
             }
-        if (ver == -1 && res[i+i2][j] == 100) {
+        if (ver == -1 && pos[i+i2][j] == 0 && res[i+i2][j] == 100) {
             res[i+i2][j] = 0;
             } else break;
        
@@ -57,7 +57,7 @@ bool update_res(int i, int j, int n, int m, int ver) {
     for (int i2 = 1; i2 < n; i2 ++) {
         if(i - i2 >=0 ) {
             if (ver==0) {
-                if (!pos[i - i2][j]) { //&& (res[i - i2][j] == 0 )) {
+                if (!pos[i - i2][j] ) { // && (res[i - i2][j]%100 == 0 )) {
                 res[i-i2][j] =100; //lightning the area
                 } else break;
             }
@@ -70,7 +70,7 @@ bool update_res(int i, int j, int n, int m, int ver) {
         } else if (ver < 10 && ver > 0 && ( pos[x][j] + res[x][j] > 0))  {
                 break;
             }
-            if (ver == -1 && res[i-i2][j] == 100) {
+            if (ver == -1 && pos[i-i2][j] == 0  &&  res[i-i2][j] == 100) {
                 res[i-i2][j] = 0; 
                 } else break;
             } else break;
@@ -80,7 +80,7 @@ bool update_res(int i, int j, int n, int m, int ver) {
     for (int i2 = 1; i2 < m; i2 ++) {
         if(j + i2 < m ) {
             if ((ver==0)) {
-            if( !pos[i][j + i2] ) { //&& (res[i][j +i2] == 0 )) {
+            if( !pos[i][j + i2]) { // && (res[i][j +i2]%100 == 0 )) {
                 res[i][j+i2] =100; //lightning the area
 
                 } else break;
@@ -93,7 +93,7 @@ bool update_res(int i, int j, int n, int m, int ver) {
             } else if (ver < 10 && ver > 0 && ( pos[i][x] + res[i][x] > 0))  {
                 break;
             }
-            if (ver == -1 && res[i][j+i2] == 100) {
+            if (ver == -1 && pos[i][j+i2] == 0 && res[i][j+i2]%100 == 100) {
                 res[i][j+i2] = 0;
             } else break;
            
@@ -103,7 +103,7 @@ bool update_res(int i, int j, int n, int m, int ver) {
 
     for (int i2 = 1; i2 < m; i2 ++) {
         if (j - i2 >= 0 ) { 
-            if((ver==0)) { if(!pos[i ][j-i2]  ){ // && (res[i][j - i2] == 0 )) {
+            if((ver==0)) { if(!pos[i ][j-i2] ) { // && (res[i][j - i2] == 0 )) {
             res[i][j-i2] =100; //lightning the area
              } else break;
         } else if (ver > 0) {
@@ -116,7 +116,7 @@ bool update_res(int i, int j, int n, int m, int ver) {
 	} else if (ver < 10 && ver > 0 && ( pos[i][x] + res[i][x] > 0))  {
                 break;
             }
-    if (ver == -1 && res[i][j-i2] == 100) {
+    if (ver == -1 && pos[i][j-i2] == 0 && res[i][j-i2] == 100) {
 		res[i][j-i2] = 0; 
             } else break;
 	 } else break;
@@ -249,8 +249,8 @@ public:
                         if (!suc ) {
                             cerr << "FOUND" << endl;
                             //fal.insert(i*10000 + j);
-                            res[i][j] = 0;
-                            update_res(i, j, n, m, -1);
+                            //res[i][j] = 0;
+                            //update_res(i, j, n, m, -1);
                         } else {
                             //res[i][j] = (res[i][j]<<1 )% 8;
 			                //update_res(i, j, n, m, 0);
@@ -328,8 +328,8 @@ public:
                         if (!suc ) {
                             cerr << "FOUND" << endl;
                             //fal.insert(i*10000 + j);
-                            res[i][j] = 0;
-                            update_res(i, j, n, m, -1);
+                            //res[i][j] = 0;
+                            //update_res(i, j, n, m, -1);
                         } else {
                             //res[i][j] = (res[i][j]<<1 )% 8;
 			                //update_res(i, j, n, m, 0);

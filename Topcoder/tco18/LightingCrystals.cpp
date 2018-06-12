@@ -268,15 +268,22 @@ public:
                     int r = rand() % 3;
                     if (!suc ) {
 
-                            res[i][j] = 1 << r;
-                            update_res(i, j, n, m, 0);
+                            //
                         //bool suc = update_res(i, j, n, m, ((res[i][j]<<1 )% 8));
                         if (!suc ) {
                             //cerr << "FOUND" << endl;
                             //fal.insert(i*10000 + j);
                             //TODO uncomment
-                            //res[i][j] = 0;
-                            //update_res(i, j, n, m, -1);
+                            res[i][j] = 0;
+                            update_res(i, j, n, m, -1);
+                            for (int k = 0; k < 3; k ++) {
+                                suc = update_res(i, j, n, m,  1 << k);
+                                if (suc) {
+                                    res[i][j] = 1 << k;
+                                    update_res(i, j, n, m, 0);
+                                }
+
+                            }
                         } else {
                             //res[i][j] = (res[i][j]<<1 )% 8;
 			                //update_res(i, j, n, m, 0);
@@ -374,7 +381,7 @@ public:
         // REcalc of pos2
         for (int i = 0; i < n; i ++) {
             for (int j = 0; j < m; j++) {
-                int r = rand()%10;
+                int r = rand()%50;
                 if (r < MAL && res[i][j] > 0 && res[i][j] < 6) {
                     res[i][j] = 0;
                     update_res(i,j,n,m,-1);

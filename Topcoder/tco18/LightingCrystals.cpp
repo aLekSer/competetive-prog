@@ -352,7 +352,7 @@ public:
         for (int i = 0; i < n; i ++) {
             for (int j = 0; j < m; j++) {
                 int r = rand()%10;
-                if (r < 1 && res[i][j] > 0 && res[i][j] < 6) {
+                if (r < 2 && res[i][j] > 0 && res[i][j] < 6) {
                     res[i][j] = 0;
                     update_res(i,j,n,m,-1);
                 }

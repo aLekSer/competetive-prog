@@ -7,13 +7,20 @@ int main() {
     int T;
     cin >> T;
     // R,L,C,Vin
-    long long R,L,C,Vin;
+    unsigned long long R,L,C,Vin;
     for (int i = 0; i < T; i++) {
         cin >> R >> L >> C >> Vin;
-        long long mid = (long long)100 - (C * (long long)100 /(long long) 4 / L )* R * R ;
-        printf("%lld",mid/(long long)100);
+        unsigned long long tmp =( C  /(unsigned long long) 4 / L) * R * R * (unsigned long long)100;
+        //long long mid = (long long)100 - tmp;
+        //long double dd = mid;
+        //cout << dd/(long double)100. << endl;
+        /**/
+        if (tmp > 100)
+         printf("-");
+        printf("%lld",(tmp - 100)/(long long)100);
         printf(".");
-        printf("%2d\n",(int)(llabs(mid)%(long long)100));
+        printf("%02d\n",(int)(llabs(tmp)%(long long)100));
+        
         
 	    //cout << B  << endl;
     }

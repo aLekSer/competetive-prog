@@ -67,6 +67,7 @@ bool update_res(int i, int j, int n, int m, int ver) {
             success = true;
             pos2[i-i2][j] |= ver;
             pos3[i-i2][j] = i*10000 + j;
+            return true;
         } else if (ver < 10 && ver > 0 && ( pos[x][j] + res[x][j] > 0))  {
                 break;
             }
@@ -90,6 +91,7 @@ bool update_res(int i, int j, int n, int m, int ver) {
             pos2[i][j+i2] |= ver;
                 success = true;
             pos3[i][j + i2] = i*10000 + j;
+            return true;
             } else if (ver < 10 && ver > 0 && ( pos[i][x] + res[i][x] > 0))  {
                 break;
             }
@@ -113,6 +115,7 @@ bool update_res(int i, int j, int n, int m, int ver) {
             //Seting failed lamp
             pos3[i][j - i2] = i*10000 + j;
 	    success = true;
+            return true;
 	} else if (ver < 10 && ver > 0 && ( pos[i][x] + res[i][x] > 0))  {
                 break;
             }
@@ -249,8 +252,8 @@ public:
                         if (!suc ) {
                             cerr << "FOUND" << endl;
                             //fal.insert(i*10000 + j);
-                            //res[i][j] = 0;
-                            //update_res(i, j, n, m, -1);
+                            res[i][j] = 0;
+                            update_res(i, j, n, m, -1);
                         } else {
                             //res[i][j] = (res[i][j]<<1 )% 8;
 			                //update_res(i, j, n, m, 0);
@@ -328,8 +331,8 @@ public:
                         if (!suc ) {
                             cerr << "FOUND" << endl;
                             //fal.insert(i*10000 + j);
-                            //res[i][j] = 0;
-                            //update_res(i, j, n, m, -1);
+                            res[i][j] = 0;
+                            update_res(i, j, n, m, -1);
                         } else {
                             //res[i][j] = (res[i][j]<<1 )% 8;
 			                //update_res(i, j, n, m, 0);

@@ -382,7 +382,7 @@ public:
                     else calc+= 20;
                     totalLit ++;
                 }
-                if((pos2[i][j] == 0) && (pos2[i][j]  != pos[i][j] ) && (pos[i][j] > 0) && (pos[i][j] < 16)) {
+                if((pos2[i][j] != 0) && (pos2[i][j]  != pos[i][j] ) && (pos[i][j] > 0) && (pos[i][j] < 16)) {
                     calc -= 10;
                     cerr << pos2[i][j] << endl;
                 }
@@ -468,7 +468,7 @@ public:
        }
         cerr << "MAx" << mx;
         remove_duplicates<string>(BestSt);
-        if (mx > -100)
+        if (mx > -10000)
             return BestSt;
         else
             return {};

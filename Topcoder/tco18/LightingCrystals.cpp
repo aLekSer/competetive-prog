@@ -133,12 +133,12 @@ public:
     //  '1', '2' and '4' for lanterns of primary colors, '\' and '/' for a mirror and 'X' for an obstacle. 
     vector<string> placeItems(vector<string> tB, int costLantern, int costMirror, int costObstacle, 
        int maxMirrors, int maxObstacles) {
-            vector<string> st;
             vector<string> BestSt;
             int mx = 0;
         for (int tot = 0 ; tot < 100; tot ++) {
            set<int> seen;
            int c;
+            vector<string> st;
            int calc = 0;
            cerr << costObstacle;
            const int n = tB.size();
@@ -280,18 +280,21 @@ public:
                         cerr << i << j << endl;
                         res[i][j]= 1;
                          update_res(i, j, n, m, 0);
+                         continue;
                     }
                     suc = update_res(i, j, n, m, 2);
                     if (suc ) {
                         cerr << i << j << endl;
                         res[i][j]= 2;
                          update_res(i, j, n, m, 0);
+                         continue;
                     }
                     suc = update_res(i, j, n, m, 4);
                     if (suc ) {
                         cerr << i << j << endl;
                         res[i][j]= 4;
                          update_res(i, j, n, m, 0);
+                         continue;
                     }
                     //break;
                 }
@@ -299,11 +302,58 @@ public:
             }
         } 
         }
+        if (tot > 20) {
+        for (int i = 0; i < n; i ++) {
+            for (int j = 0; j < m; j++) {
+                if((pos[i][j] == 0) && (res[i][j]==0) ) {
+                    int newc = rand() % 3;
+                    res[i][j] = 1 << newc;
+                    update_res(i,j,n,m, 0);
+                }
+                cerr << res[i][j] + pos[i][j] << " " ;
+            }
+
+            cerr << endl << "  Next   ";
+        }
+        }
+        for (int i = 0; i < n; i ++) {
+            bool br;
+            for (int j = 0; j < m; j++) {
+                if(((pos[i][j] == 0)  && (res[i][j]>0 && res[i][j] < 100))) {
+                    cerr << "Light231" << endl;
+                    bool suc =  update_res(i, j, n, m, res[i][j]);
+                    if (!suc ) {
+
+                        //bool suc = update_res(i, j, n, m, ((res[i][j]<<1 )% 8));
+                        if (!suc ) {
+                            cerr << "FOUND" << endl;
+                            //fal.insert(i*10000 + j);
+                            res[i][j] = 0;
+                            update_res(i, j, n, m, -1);
+                        } else {
+                            //res[i][j] = (res[i][j]<<1 )% 8;
+			                //update_res(i, j, n, m, 0);
+                        }
+                    }
+                    //break;
+                }
+                    
+            }
+        }
         int obstCount = 0;
         int mirCount = 0;
         const int Total = 2;
         int skip = Total;
         cerr << "Tutses";
+        // REcalc of pos2
+	  pos2 = vector<vector<int>>(n, vector<int>(m, 0));
+        for (int i = 0; i < n; i ++) {
+            for (int j = 0; j < m; j++) {
+                if (res[i][j] > 0 && res[i][j] < 6) {
+                    update_res(i,j,n,m,res[i][j]);
+                }
+            }
+        }
         for (int i = 0; i < n; i ++) {
             for (int j = 0; j < m; j++) {
                 if(pos2[i][j]  == pos[i][j] && pos[i][j] > 0 && pos[i][j] < 16) {
@@ -363,7 +413,7 @@ public:
         for (int i = 0; i < n; i ++) {
             
             for (int j = 0; j < m; j++) {
-                    cerr << "TUT3214";
+                   // cerr << "TUT3214";
                     if (res[i][j]  < 15 && res[i][j] > 0) {
                         char buf[50];
                         sprintf(buf, "%d %d %d", i, j, res[i][j]);
@@ -384,8 +434,8 @@ public:
             BestSt = st;
         }
        }
-            cerr << "MAx" << mx;
-            remove_duplicates<string>(BestSt);
+        cerr << "MAx" << mx;
+        remove_duplicates<string>(BestSt);
         return BestSt;
 
         //return {"0 7 2", "9 5 1"};

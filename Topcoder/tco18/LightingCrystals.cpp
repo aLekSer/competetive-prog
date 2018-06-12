@@ -31,7 +31,7 @@ bool update_res(int i, int j, int n, int m, int ver) {
         if (i + i2 < n )  { 
             if ( (ver==0) ){
                 if( !pos[i + i2][j] ) { //&& (res[i +i2][j] %100 == 0 )) {
-                    res[i+i2][j] = 100; //lightning the area
+                    res[i+i2][j] += 100; //lightning the area
                     //cerr << "Light "<<endl;
                 } else break;
             }
@@ -46,8 +46,8 @@ bool update_res(int i, int j, int n, int m, int ver) {
         } else if (ver < 10 && ver > 0 && (pos[x][j] + res[x][j]) > 0 )  {
                 break;
             }
-        if (ver == -1 && pos[i+i2][j] == 0 && res[i+i2][j] == 100) {
-            res[i+i2][j] = 0;
+        if (ver == -1 && pos[i+i2][j] == 0 ) {//&& res[i+i2][j] == 100) {
+            res[i+i2][j] -=100;
             } else break;
        
         } else break;
@@ -58,7 +58,7 @@ bool update_res(int i, int j, int n, int m, int ver) {
         if(i - i2 >=0 ) {
             if (ver==0) {
                 if (!pos[i - i2][j] ) { // && (res[i - i2][j]%100 == 0 )) {
-                res[i-i2][j] =100; //lightning the area
+                res[i-i2][j] +=100; //lightning the area
                 } else break;
             }
         else if (ver > 0) {
@@ -71,8 +71,8 @@ bool update_res(int i, int j, int n, int m, int ver) {
         } else if (ver < 10 && ver > 0 && ( pos[x][j] + res[x][j] > 0))  {
                 break;
             }
-            if (ver == -1 && pos[i-i2][j] == 0  &&  res[i-i2][j] == 100) {
-                res[i-i2][j] = 0; 
+            if (ver == -1 && pos[i-i2][j] == 0) {//  &&  res[i-i2][j] == 100) {
+                res[i-i2][j] -= 100; 
                 } else break;
             } else break;
         }
@@ -82,7 +82,7 @@ bool update_res(int i, int j, int n, int m, int ver) {
         if(j + i2 < m ) {
             if ((ver==0)) {
             if( !pos[i][j + i2]) { // && (res[i][j +i2]%100 == 0 )) {
-                res[i][j+i2] =100; //lightning the area
+                res[i][j+i2] +=100; //lightning the area
 
                 } else break;
             } else if (ver > 0) {
@@ -95,8 +95,8 @@ bool update_res(int i, int j, int n, int m, int ver) {
             } else if (ver < 10 && ver > 0 && ( pos[i][x] + res[i][x] > 0))  {
                 break;
             }
-            if (ver == -1 && pos[i][j+i2] == 0 && res[i][j+i2]%100 == 100) {
-                res[i][j+i2] = 0;
+            if (ver == -1 && pos[i][j+i2] == 0) {// && res[i][j+i2]%100 == 100) {
+                res[i][j+i2] -= 100;
             } else break;
            
          } else break;
@@ -106,7 +106,7 @@ bool update_res(int i, int j, int n, int m, int ver) {
     for (int i2 = 1; i2 < m; i2 ++) {
         if (j - i2 >= 0 ) { 
             if((ver==0)) { if(!pos[i ][j-i2] ) { // && (res[i][j - i2] == 0 )) {
-            res[i][j-i2] =100; //lightning the area
+            res[i][j-i2] += 100; //lightning the area
              } else break;
         } else if (ver > 0) {
                 int x = j - i2;
@@ -119,8 +119,8 @@ bool update_res(int i, int j, int n, int m, int ver) {
 	} else if (ver < 10 && ver > 0 && ( pos[i][x] + res[i][x] > 0))  {
                 break;
             }
-    if (ver == -1 && pos[i][j-i2] == 0 && res[i][j-i2] == 100) {
-		res[i][j-i2] = 0; 
+    if (ver == -1 && pos[i][j-i2] == 0 ) {//&& res[i][j-i2] == 100) {
+		res[i][j-i2] -=100; 
             } else break;
 	 } else break;
     }

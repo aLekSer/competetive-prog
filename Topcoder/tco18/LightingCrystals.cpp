@@ -45,6 +45,8 @@ bool update_res(int i, int j, int n, int m, int ver) {
         break;
             //return true;
         } else if (ver < 10 && ver > 0 && (pos[x][j] ) > 0 )  {
+                if (pos[x][j]< 16)
+                    pos2[x][j] |= ver;
                 break;
             }
        
@@ -71,6 +73,8 @@ bool update_res(int i, int j, int n, int m, int ver) {
         break;
             //return true;
         } else if (ver < 10 && ver > 0 && ( pos[x][j]  > 0))  {
+                if (pos[x][j]< 16)
+                    pos2[x][j] |= ver;
                 break;
             }
             }
@@ -96,6 +100,8 @@ bool update_res(int i, int j, int n, int m, int ver) {
         break;
             //return true;
             } else if (ver < 10 && ver > 0 && ( pos[i][x] > 0))  {
+                if (pos[i][x]< 16)
+                   pos2[i][x] |= ver;
                 break;
             }
             
@@ -123,6 +129,8 @@ bool update_res(int i, int j, int n, int m, int ver) {
         break;
            // return true;
 	} else if (ver < 10 && ver > 0 && ( pos[i][x]  > 0))  {
+                if (pos[i][x]< 16)
+                   pos2[i][x] |= ver;
                 break;
             }
 	 }
@@ -393,10 +401,12 @@ public:
                 }
                 if((pos2[i][j] != 0) && (pos2[i][j]  != pos[i][j] ) && (pos[i][j] > 0) && (pos[i][j] < 16)) {
                     calc -= 10;
-                    cerr << pos2[i][j] << endl;
+                    cerr << pos2[i][j] << pos[i][j] << endl;
                 }
-                if (res[i][j] > 0 && res[i][j] < 6 )
+                if (res[i][j] > 0 && res[i][j] < 6 ) {
                     calc -= costLantern;
+                    cerr << "Lantern";
+                    }
                 if (pos[i][j] > 0 && pos[i][j] < 16){
                     totalCr ++;
                 }

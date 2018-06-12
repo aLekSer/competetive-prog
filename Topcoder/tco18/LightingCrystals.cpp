@@ -155,7 +155,7 @@ public:
            const int n = tB.size();
            const int m = tB[0].length();
            const int MAL = 3;
-        for (int tot = 0 ; tot < 400; tot ++) {
+        for (int tot = 0 ; tot < 300; tot ++) {
            set<int> seen;
            int c;
             vector<string> st;
@@ -201,9 +201,10 @@ public:
                     bool br;
                     if (true ) { //placedC[i] & M) {
                         //cerr << " Here ";
+                        for (int j = 0; j < m; j++) {
                         int r = rand() %3;
                         int r2 = rand() %10;
-                        for (int j = 0; j < m; j++) {
+                                //bool suc = update_res(i, j, n, m,  1 << k);
                             if((r2 < MAL && !pos[i][j]  && (res[i][j] == 0) /*&&  (placedR[j] & M) && (placedC[i] & M)*/)) {
                                 res[i][j] = 1 << r;
                                 //cerr <<  placedR[j] << "bef" << endl;
@@ -211,7 +212,6 @@ public:
                                 //placedC[i] = placedC[i] ^ M;
                                 //cerr <<  placedR[j] << "after" << endl;
                                 update_res(i, j, n, m, 0);
-                                //break;
                             }
                                 
                         }
@@ -235,25 +235,30 @@ public:
             
            //for (int k = 0; k < 3; k ++) {
 
+        //if (tot > 70) {
                 for (int i = 0; i < n; i ++) {
                     bool br;
                         //cerr << " Here2324 " << k;
                     for (int j = 0; j < m; j++) {
                         int r = rand() %3;
                         int r2 = rand() %10;
-                        if(( r2 < MAL && (pos[i][j] == 0) && (res[i][j] == 0)/* && (placedR[j] & M) && ( placedC[i] & M)*/)) {
-                            res[i][j] = 1 << r;
+                            for (int k = 0; k < 3; k ++) {
+                                bool suc = update_res(i, j, n, m,  1 << k);
+                        if(( suc && r2 < MAL && (pos[i][j] == 0) && (res[i][j] == 0)/* && (placedR[j] & M) && ( placedC[i] & M)*/)) {
+                            res[i][j] = 1 << k;
                             //cerr <<  placedR[j] << "bef" << endl;
                             //placedR[j] = placedR[j] ^ M;
                             //placedC[i] = placedC[i] ^ M;
                             //cerr <<  placedR[j] << "aft" << endl;
                             /**/
 			                update_res(i, j, n, m, 0);
-                            //break;
+                            break;
                         }
+                            }
                             
                     }
                 }
+       // }
                 M = M << 1;
            //}
            //cerr << "step 2";
@@ -388,44 +393,20 @@ public:
                 }
             }
         }
-	  pos2 = vector<vector<int>>(n, vector<int>(m, 0));
-        for (int i = 0; i < n; i ++) {
-            for (int j = 0; j < m; j++) {
-                if (res[i][j] > 0 && res[i][j] < 6) {
-                    update_res(i,j,n,m,res[i][j]);
-                }
-            }
-        }
         int totalLit = 0;
         int totalCr = 0;
         for (int i = 0; i < n; i ++) {
             for (int j = 0; j < m; j++) {
-                if((pos2[i][j]  == pos[i][j]) && (pos[i][j] > 0) && (pos[i][j] < 16)) {
-                    if (pos[i][j] != 1 && pos[i][j] != 2 && pos[i][j] != 4)
-                        calc += 30;
-                    else calc+= 20;
-                    totalLit ++;
-                }
-                if((pos2[i][j] != 0) && (pos2[i][j]  != pos[i][j] ) && (pos[i][j] > 0) && (pos[i][j] < 16)) {
-                    calc -= 10;
-                    cerr << pos2[i][j] << pos[i][j] << endl;
-                }
-                if (res[i][j] > 0 && res[i][j] < 6 ) {
-                    calc -= costLantern;
-                    cerr << "Lantern";
-                    }
-                if (pos[i][j] > 0 && pos[i][j] < 16){
-                    totalCr ++;
-                }
                 if(pos2[i][j]  != pos[i][j]) {
                    // fal.insert(pos3[i][j]);
+                   /*
                    if (skip != 0) {
                        skip --;
                        continue;
                    } else {
                        skip = Total;
-                   }
-                   /*
+                   }*/
+                   if (tot > 70) {
                    if (obstCount < maxObstacles)  {
                         //cerr << "OBst";
                        int x = pos3[i][j]/10000;
@@ -433,15 +414,16 @@ public:
                        int midX = (x + i) /2;
                        int midY = (y + j) /2;
                        //cerr << midX << midY;
-                       if (!pos[midX][midY] && res[midX][midY] == 100 && midX != i && midY != j && midX != x && midY != y ) {
+                       if (!pos[midX][midY] && (res[midX][midY] % 100) == 0 && midX != i && midY != j && midX != x && midY != y ) {
                         //cerr << "bbOO";
                             char buf[50];
                             sprintf(buf, "%d %d X", midX, midY);
                             res[midX][midY] = 16;
-                            //st.push_back(buf);
+                            st.push_back(buf);
                             obstCount ++;
                        }
                    }
+                   } /*
                    if (mirCount < maxMirrors)  {
                         //cerr << "OBst";
                        int x = pos3[i][j]/10000;
@@ -461,6 +443,58 @@ public:
                 }
             }
         }
+                for (int i = 0; i < n; i ++) {
+                    bool br;
+                    if (true ) { //placedC[i] & M) {
+                        //cerr << " Here ";
+                        for (int j = 0; j < m; j++) {
+                        int r = rand() %3;
+                        int r2 = rand() %10;
+                                //bool suc = update_res(i, j, n, m,  1 << k);
+                            if((r2 < MAL && !pos[i][j]  && (res[i][j] == 0) /*&&  (placedR[j] & M) && (placedC[i] & M)*/)) {
+                                res[i][j] = 1 << r;
+                                //cerr <<  placedR[j] << "bef" << endl;
+                                //placedR[j] = placedR[j] ^ M;
+                                //placedC[i] = placedC[i] ^ M;
+                                //cerr <<  placedR[j] << "after" << endl;
+                                update_res(i, j, n, m, 0);
+                            }
+                                
+                        }
+                    }
+                }
+	  pos2 = vector<vector<int>>(n, vector<int>(m, 0));
+        for (int i = 0; i < n; i ++) {
+            for (int j = 0; j < m; j++) {
+                if (res[i][j] > 0 && res[i][j] < 6) {
+                    update_res(i,j,n,m,res[i][j]);
+                }
+            }
+        }
+        for (int i = 0; i < n; i ++) {
+            for (int j = 0; j < m; j++) {
+                if((pos2[i][j]  == pos[i][j]) && (pos[i][j] > 0) && (pos[i][j] < 16)) {
+                    if (pos[i][j] != 1 && pos[i][j] != 2 && pos[i][j] != 4)
+                        calc += 30;
+                    else calc+= 20;
+                    totalLit ++;
+                }
+                if((pos2[i][j] != 0) && (pos2[i][j]  != pos[i][j] ) && (pos[i][j] > 0) && (pos[i][j] < 16)) {
+                    calc -= 10;
+                   //cerr << pos2[i][j] << pos[i][j] << endl;
+                }
+                if (res[i][j] > 0 && res[i][j] < 6 ) {
+                    calc -= costLantern;
+                   //cerr << "Lantern";
+                    }
+                if (res[i][j] == 16 ) {
+                    calc -= costObstacle;
+                   //cerr << "Lantern";
+                    }
+                if (pos[i][j] > 0 && pos[i][j] < 16){
+                    totalCr ++;
+                }
+            }}
            M = 0x1;
            // We need to iterate through all cells, calculate the total score
            // and color that we should add at the certain row column
@@ -492,7 +526,7 @@ public:
             BestSt = st;
         }
        }
-        cerr << "MAx" << mx;
+       cerr << "MAx" << mx;
         remove_duplicates<string>(BestSt);
         if (mx > -10000)
             return BestSt;

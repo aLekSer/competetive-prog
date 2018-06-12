@@ -47,11 +47,11 @@ bool update_res(int i, int j, int n, int m, int ver) {
         } else if (ver < 10 && ver > 0 && (pos[x][j] ) > 0 )  {
                 break;
             }
-        if (ver == -1 && pos[i+i2][j] == 0 ) {//&& res[i+i2][j] == 100) {
-            res[i+i2][j] -=100;
-            } else break;
        
-        } else break;
+        }
+        if (ver == -1) { if ( pos[i+i2][j] == 0 ) {//&& res[i+i2][j] == 100) {
+            res[i+i2][j] -=100;
+            } else break; }
     }
     }
 
@@ -73,10 +73,10 @@ bool update_res(int i, int j, int n, int m, int ver) {
         } else if (ver < 10 && ver > 0 && ( pos[x][j]  > 0))  {
                 break;
             }
-            if (ver == -1 && pos[i-i2][j] == 0) {//  &&  res[i-i2][j] == 100) {
+            }
+            if (ver == -1 ) { if ( pos[i-i2][j] == 0) {//  &&  res[i-i2][j] == 100) {
                 res[i-i2][j] -= 100; 
-                } else break;
-            } else break;
+                } else break; }
         }
     }
        
@@ -98,11 +98,13 @@ bool update_res(int i, int j, int n, int m, int ver) {
             } else if (ver < 10 && ver > 0 && ( pos[i][x] > 0))  {
                 break;
             }
-            if (ver == -1 && pos[i][j+i2] == 0) {// && res[i][j+i2]%100 == 100) {
-                res[i][j+i2] -= 100;
-            } else break;
+            
            
-         } else break;
+         } 
+         if (ver == -1) { if ( pos[i][j+i2] == 0) {// && res[i][j+i2]%100 == 100) {
+                res[i][j+i2] -= 100;
+            } else break; }
+         
     }
     }
 
@@ -123,10 +125,10 @@ bool update_res(int i, int j, int n, int m, int ver) {
 	} else if (ver < 10 && ver > 0 && ( pos[i][x]  > 0))  {
                 break;
             }
-    if (ver == -1 && pos[i][j-i2] == 0 ) {//&& res[i][j-i2] == 100) {
+	 }
+    if (ver == -1 ) { if ( pos[i][j-i2] == 0 ) {//&& res[i][j-i2] == 100) {
 		res[i][j-i2] -=100; 
-            } else break;
-	 } else break;
+            } else break; }
     }
     }
 	return success;
@@ -144,7 +146,7 @@ public:
             int mx = -100000;
            const int n = tB.size();
            const int m = tB[0].length();
-           const int MAL = 2;
+           const int MAL = 3;
         for (int tot = 0 ; tot < 400; tot ++) {
            set<int> seen;
            int c;
@@ -255,15 +257,18 @@ public:
                 if(((pos[i][j] == 0)  && (res[i][j]>0 && res[i][j] < 100))) {
                     //cerr << "Light231" << endl;
                     bool suc =  update_res(i, j, n, m, res[i][j]);
+                    int r = rand() % 3;
                     if (!suc ) {
 
+                            res[i][j] = 1 << r;
+                            update_res(i, j, n, m, 0);
                         //bool suc = update_res(i, j, n, m, ((res[i][j]<<1 )% 8));
                         if (!suc ) {
                             //cerr << "FOUND" << endl;
                             //fal.insert(i*10000 + j);
                             //TODO uncomment
-                            res[i][j] = 0;
-                            update_res(i, j, n, m, -1);
+                            //res[i][j] = 0;
+                            //update_res(i, j, n, m, -1);
                         } else {
                             //res[i][j] = (res[i][j]<<1 )% 8;
 			                //update_res(i, j, n, m, 0);
@@ -341,8 +346,8 @@ public:
                         if (!suc ) {
                             //cerr << "FOUND" << endl;
                             //fal.insert(i*10000 + j);
-                            //res[i][j] = 0;
-                            //update_res(i, j, n, m, -1);
+                            res[i][j] = 0;
+                            update_res(i, j, n, m, -1);
                         } else {
                             //res[i][j] = (res[i][j]<<1 )% 8;
 			                //update_res(i, j, n, m, 0);

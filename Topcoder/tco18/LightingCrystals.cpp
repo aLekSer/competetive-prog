@@ -7,6 +7,14 @@
 #include <vector>
 #include <set>
 #include <string>
+#include <algorithm>
+
+template <typename T>
+void remove_duplicates(std::vector<T>& vec)
+{
+  std::sort(vec.begin(), vec.end());
+  vec.erase(std::unique(vec.begin(), vec.end()), vec.end());
+}
 
 using namespace std;
 
@@ -126,8 +134,12 @@ public:
     vector<string> placeItems(vector<string> tB, int costLantern, int costMirror, int costObstacle, 
        int maxMirrors, int maxObstacles) {
             vector<string> st;
+            vector<string> BestSt;
+            int mx = 0;
+        for (int tot = 0 ; tot < 100; tot ++) {
            set<int> seen;
            int c;
+           int calc = 0;
            cerr << costObstacle;
            const int n = tB.size();
            const int m = tB[0].length();
@@ -238,7 +250,7 @@ public:
                             cerr << "FOUND" << endl;
                             //fal.insert(i*10000 + j);
                             res[i][j] = 0;
-                            //update_res(i, j, n, m, -1);
+                            update_res(i, j, n, m, -1);
                         } else {
                             //res[i][j] = (res[i][j]<<1 )% 8;
 			                //update_res(i, j, n, m, 0);
@@ -258,7 +270,7 @@ public:
                 cerr << endl;
             }   
         cerr << M << endl;
-        /*
+        if (tot != 0) {
         for (int i = 0; i < n; i ++) {
             for (int j = 0; j < m; j++) {
                 if((pos[i][j] == 0) && (res[i][j]==0) ) {
@@ -267,30 +279,36 @@ public:
                     if (suc ) {
                         cerr << i << j << endl;
                         res[i][j]= 1;
+                         update_res(i, j, n, m, 0);
                     }
                     suc = update_res(i, j, n, m, 2);
                     if (suc ) {
                         cerr << i << j << endl;
                         res[i][j]= 2;
+                         update_res(i, j, n, m, 0);
                     }
                     suc = update_res(i, j, n, m, 4);
                     if (suc ) {
                         cerr << i << j << endl;
                         res[i][j]= 4;
+                         update_res(i, j, n, m, 0);
                     }
                     //break;
                 }
                     
             }
-        } */
+        } 
+        }
         int obstCount = 0;
         int mirCount = 0;
         const int Total = 2;
         int skip = Total;
         cerr << "Tutses";
-        /*
         for (int i = 0; i < n; i ++) {
             for (int j = 0; j < m; j++) {
+                if(pos2[i][j]  == pos[i][j] && pos[i][j] > 0 && pos[i][j] < 16) {
+                    calc ++;
+                }
                 if(pos2[i][j]  != pos[i][j]) {
                    // fal.insert(pos3[i][j]);
                    if (skip != 0) {
@@ -299,6 +317,7 @@ public:
                    } else {
                        skip = Total;
                    }
+                   /*
                    if (obstCount < maxObstacles)  {
                         cerr << "OBst";
                        int x = pos3[i][j]/10000;
@@ -329,7 +348,7 @@ public:
                             //st.push_back(buf);
                             mirCount ++;
                        }
-                   }
+                   }*/
 
                 }
             }
@@ -360,7 +379,14 @@ public:
             cerr << st[i] << endl;
         }
         cerr << "Before return";
-        return st;
+        if (calc > mx) {
+            mx = calc;
+            BestSt = st;
+        }
+       }
+            cerr << "MAx" << mx;
+            remove_duplicates<string>(BestSt);
+        return BestSt;
 
         //return {"0 7 2", "9 5 1"};
     }

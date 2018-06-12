@@ -386,7 +386,7 @@ public:
         for (int i = 0; i < n; i ++) {
             for (int j = 0; j < m; j++) {
                 if((pos2[i][j]  == pos[i][j]) && (pos[i][j] > 0) && (pos[i][j] < 16)) {
-                    if (pos[i][j] != 1 || pos[i][j] != 2 || pos[i][j] != 4)
+                    if (pos[i][j] != 1 && pos[i][j] != 2 && pos[i][j] != 4)
                         calc += 30;
                     else calc+= 20;
                     totalLit ++;

@@ -134,7 +134,7 @@ public:
     vector<string> placeItems(vector<string> tB, int costLantern, int costMirror, int costObstacle, 
        int maxMirrors, int maxObstacles) {
             vector<string> BestSt;
-            int mx = 0;
+            int mx = -100000;
         for (int tot = 0 ; tot < 100; tot ++) {
            set<int> seen;
            int c;
@@ -354,10 +354,23 @@ public:
                 }
             }
         }
+        int totalLit = 0;
+        int totalCr = 0;
         for (int i = 0; i < n; i ++) {
             for (int j = 0; j < m; j++) {
-                if(pos2[i][j]  == pos[i][j] && pos[i][j] > 0 && pos[i][j] < 16) {
-                    calc ++;
+                if((pos2[i][j]  == pos[i][j]) && (pos[i][j] > 0) && (pos[i][j] < 16)) {
+                    if (pos[i][j] != 1 || pos[i][j] != 2 || pos[i][j] != 4)
+                        calc += 30;
+                    else calc+= 20;
+                    totalLit ++;
+                }
+                if((pos2[i][j]  != pos[i][j] ) && (pos[i][j] > 0) && (pos[i][j] < 16)) {
+                    calc -= 10;
+                }
+                if (res[i][j] > 0 && res[i][j] < 6 )
+                    calc -= costLantern;
+                if (pos[i][j] > 0 && pos[i][j] < 16){
+                    totalCr ++;
                 }
                 if(pos2[i][j]  != pos[i][j]) {
                    // fal.insert(pos3[i][j]);
@@ -428,7 +441,7 @@ public:
         for (int i = 0; i < st.size(); i++) {
             cerr << st[i] << endl;
         }
-        cerr << "Before return";
+        cerr << totalLit << " " <<  calc << " Before return";
         if (calc > mx) {
             mx = calc;
             BestSt = st;

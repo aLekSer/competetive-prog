@@ -138,14 +138,15 @@ public:
        int maxMirrors, int maxObstacles) {
             vector<string> BestSt;
             int mx = -100000;
+           const int n = tB.size();
+           const int m = tB[0].length();
+           const int MAL = 3;
         for (int tot = 0 ; tot < 400; tot ++) {
            set<int> seen;
            int c;
             vector<string> st;
            int calc = 0;
            //cerr << costObstacle;
-           const int n = tB.size();
-           const int m = tB[0].length();
 	  res = vector<vector<int>>(n, vector<int>(m, 0));
 	  pos = vector<vector<int>>(n, vector<int>(m, 0));
 	  pos2 = vector<vector<int>>(n, vector<int>(m, 0));
@@ -180,18 +181,20 @@ public:
             //M = M << 1;
            //}
             M = 0x1;
-           for (int k = 0; k < 3; k ++) {
+           //for (int k = 0; k < 3; k ++) {
 
                 for (int i = 0; i < n; i ++) {
                     bool br;
-                    if (placedC[i] & M) {
+                    if (true ) { //placedC[i] & M) {
                         //cerr << " Here ";
+                        int r = rand() %3;
+                        int r2 = rand() %10;
                         for (int j = 0; j < m; j++) {
-                            if((!pos[i][j]  && (res[i][j] == 0) &&  (placedR[j] & M) && (placedC[i] & M))) {
-                                res[i][j] = M;
+                            if((r2 < MAL && !pos[i][j]  && (res[i][j] == 0) /*&&  (placedR[j] & M) && (placedC[i] & M)*/)) {
+                                res[i][j] = 1 << r;
                                 //cerr <<  placedR[j] << "bef" << endl;
-                                placedR[j] = placedR[j] ^ M;
-                                placedC[i] = placedC[i] ^ M;
+                                //placedR[j] = placedR[j] ^ M;
+                                //placedC[i] = placedC[i] ^ M;
                                 //cerr <<  placedR[j] << "after" << endl;
                                 update_res(i, j, n, m, 0);
                                 //break;
@@ -211,22 +214,24 @@ public:
                         //cerr << endl;
                     }   
                 //cerr << M << endl; */
-           }
+           //}
             //cerr << "TU22";
 
             M = 0x1;
             
-           for (int k = 0; k < 3; k ++) {
+           //for (int k = 0; k < 3; k ++) {
 
                 for (int i = 0; i < n; i ++) {
                     bool br;
                         //cerr << " Here2324 " << k;
                     for (int j = 0; j < m; j++) {
-                        if(((pos[i][j] == 0) && (res[i][j] == 0) && (placedR[j] & M) && ( placedC[i] & M))) {
-                            res[i][j] = M;
+                        int r = rand() %3;
+                        int r2 = rand() %10;
+                        if(( r2 < MAL && (pos[i][j] == 0) && (res[i][j] == 0)/* && (placedR[j] & M) && ( placedC[i] & M)*/)) {
+                            res[i][j] = 1 << r;
                             //cerr <<  placedR[j] << "bef" << endl;
-                            placedR[j] = placedR[j] ^ M;
-                            placedC[i] = placedC[i] ^ M;
+                            //placedR[j] = placedR[j] ^ M;
+                            //placedC[i] = placedC[i] ^ M;
                             //cerr <<  placedR[j] << "aft" << endl;
                             /**/
 			                update_res(i, j, n, m, 0);
@@ -236,7 +241,7 @@ public:
                     }
                 }
                 M = M << 1;
-           }
+           //}
            //cerr << "step 2";
            set<long long > fal;
            /**/
@@ -252,8 +257,9 @@ public:
                         if (!suc ) {
                             //cerr << "FOUND" << endl;
                             //fal.insert(i*10000 + j);
-                            res[i][j] = 0;
-                            update_res(i, j, n, m, -1);
+                            //TODO uncomment
+                            //res[i][j] = 0;
+                            //update_res(i, j, n, m, -1);
                         } else {
                             //res[i][j] = (res[i][j]<<1 )% 8;
 			                //update_res(i, j, n, m, 0);
@@ -273,7 +279,7 @@ public:
                 //cerr << endl;
             }   
         //cerr << M << endl;
-        if (tot != 0) {
+        if (tot > 30) {
         for (int i = 0; i < n; i ++) {
             for (int j = 0; j < m; j++) {
                 if((pos[i][j] == 0) && (res[i][j]==0) ) {
@@ -305,7 +311,7 @@ public:
             }
         } 
         }
-        if (tot > 20) {
+        if (tot > 50) {
         for (int i = 0; i < n; i ++) {
             for (int j = 0; j < m; j++) {
                 if((pos[i][j] == 0) && (res[i][j]==0) ) {
@@ -376,8 +382,9 @@ public:
                     else calc+= 20;
                     totalLit ++;
                 }
-                if((pos2[i][j]  != pos[i][j] ) && (pos[i][j] > 0) && (pos[i][j] < 16)) {
+                if((pos2[i][j] == 0) && (pos2[i][j]  != pos[i][j] ) && (pos[i][j] > 0) && (pos[i][j] < 16)) {
                     calc -= 10;
+                    cerr << pos2[i][j] << endl;
                 }
                 if (res[i][j] > 0 && res[i][j] < 6 )
                     calc -= costLantern;

@@ -32,7 +32,7 @@ bool update_res(int i, int j, int n, int m, int ver) {
             if ( (ver==0) ){
                 if( !pos[i + i2][j] ) { //&& (res[i +i2][j] %100 == 0 )) {
                     res[i+i2][j] = 100; //lightning the area
-                    cerr << "Light "<<endl;
+                    //cerr << "Light "<<endl;
                 } else break;
             }
         else if (ver > 0) { 
@@ -41,7 +41,7 @@ bool update_res(int i, int j, int n, int m, int ver) {
             success = true;
             pos2[x][j] |= ver;
             pos3[x][j] = i*10000 + j;
-            cerr << "ASFD";
+            //cerr << "ASFD";
             return true;
         } else if (ver < 10 && ver > 0 && (pos[x][j] + res[x][j]) > 0 )  {
                 break;
@@ -138,12 +138,12 @@ public:
        int maxMirrors, int maxObstacles) {
             vector<string> BestSt;
             int mx = -100000;
-        for (int tot = 0 ; tot < 1000; tot ++) {
+        for (int tot = 0 ; tot < 400; tot ++) {
            set<int> seen;
            int c;
             vector<string> st;
            int calc = 0;
-           cerr << costObstacle;
+           //cerr << costObstacle;
            const int n = tB.size();
            const int m = tB[0].length();
 	  res = vector<vector<int>>(n, vector<int>(m, 0));
@@ -159,7 +159,7 @@ public:
                        seen.insert(c);
                        pos[i][j] = c;
                    } else if (tB[i][j] == 'X') {
-                       cerr << int('X') << endl;
+                       //cerr << int('X') << endl;
                         pos[i][j] = 16;
                    }
                }
@@ -171,7 +171,7 @@ public:
                for (int j = 0; j < m; j++) {
                    if(pos[i][j] && pos[i][j] != 16  ) {
                        placedC[i] = pos[i][j];
-                       cerr << placedC[i] << "added "<< endl;
+                       //cerr << placedC[i] << "added "<< endl;
                        placedR[j]  = pos[i][j];
                    }
                       
@@ -185,14 +185,14 @@ public:
                 for (int i = 0; i < n; i ++) {
                     bool br;
                     if (placedC[i] & M) {
-                        cerr << " Here ";
+                        //cerr << " Here ";
                         for (int j = 0; j < m; j++) {
                             if((!pos[i][j]  && (res[i][j] == 0) &&  (placedR[j] & M) && (placedC[i] & M))) {
                                 res[i][j] = M;
-                                cerr <<  placedR[j] << "bef" << endl;
+                                //cerr <<  placedR[j] << "bef" << endl;
                                 placedR[j] = placedR[j] ^ M;
                                 placedC[i] = placedC[i] ^ M;
-                                cerr <<  placedR[j] << "after" << endl;
+                                //cerr <<  placedR[j] << "after" << endl;
                                 update_res(i, j, n, m, 0);
                                 //break;
                             }
@@ -201,18 +201,18 @@ public:
                     }
                 }
                 M = M << 1;
-                    cerr << endl;
+                    //cerr << endl;
                     /*
                 for (int i = 0; i < n; i ++) {
                     bool br;
                     for (int j = 0; j < m; j++) {
-                        cerr << res[i][j] << " " ;
+                        //cerr << res[i][j] << " " ;
                     }
-                        cerr << endl;
+                        //cerr << endl;
                     }   
-                cerr << M << endl; */
+                //cerr << M << endl; */
            }
-            cerr << "TU22";
+            //cerr << "TU22";
 
             M = 0x1;
             
@@ -220,14 +220,14 @@ public:
 
                 for (int i = 0; i < n; i ++) {
                     bool br;
-                        cerr << " Here2324 " << k;
+                        //cerr << " Here2324 " << k;
                     for (int j = 0; j < m; j++) {
                         if(((pos[i][j] == 0) && (res[i][j] == 0) && (placedR[j] & M) && ( placedC[i] & M))) {
                             res[i][j] = M;
-                            cerr <<  placedR[j] << "bef" << endl;
+                            //cerr <<  placedR[j] << "bef" << endl;
                             placedR[j] = placedR[j] ^ M;
                             placedC[i] = placedC[i] ^ M;
-                            cerr <<  placedR[j] << "aft" << endl;
+                            //cerr <<  placedR[j] << "aft" << endl;
                             /**/
 			                update_res(i, j, n, m, 0);
                             //break;
@@ -237,20 +237,20 @@ public:
                 }
                 M = M << 1;
            }
-           cerr << "step 2";
+           //cerr << "step 2";
            set<long long > fal;
            /**/
         for (int i = 0; i < n; i ++) {
             bool br;
             for (int j = 0; j < m; j++) {
                 if(((pos[i][j] == 0)  && (res[i][j]>0 && res[i][j] < 100))) {
-                    cerr << "Light231" << endl;
+                    //cerr << "Light231" << endl;
                     bool suc =  update_res(i, j, n, m, res[i][j]);
                     if (!suc ) {
 
                         //bool suc = update_res(i, j, n, m, ((res[i][j]<<1 )% 8));
                         if (!suc ) {
-                            cerr << "FOUND" << endl;
+                            //cerr << "FOUND" << endl;
                             //fal.insert(i*10000 + j);
                             res[i][j] = 0;
                             update_res(i, j, n, m, -1);
@@ -264,37 +264,37 @@ public:
                     
             }
         }
-        cerr << "step 3";
+        //cerr << "step 3";
         for (int i = 0; i < n; i ++) {
             bool br;
             for (int j = 0; j < m; j++) {
-                cerr << res[i][j] + pos[i][j] << " " ;
+                //cerr << res[i][j] + pos[i][j] << " " ;
             }
-                cerr << endl;
+                //cerr << endl;
             }   
-        cerr << M << endl;
+        //cerr << M << endl;
         if (tot != 0) {
         for (int i = 0; i < n; i ++) {
             for (int j = 0; j < m; j++) {
                 if((pos[i][j] == 0) && (res[i][j]==0) ) {
-                        cerr << "44 44" << endl;
+                        //cerr << "44 44" << endl;
                     bool suc = update_res(i, j, n, m, 1);
                     if (suc ) {
-                        cerr << i << j << endl;
+                        //cerr << i << j << endl;
                         res[i][j]= 1;
                          update_res(i, j, n, m, 0);
                          continue;
                     }
                     suc = update_res(i, j, n, m, 2);
                     if (suc ) {
-                        cerr << i << j << endl;
+                        //cerr << i << j << endl;
                         res[i][j]= 2;
                          update_res(i, j, n, m, 0);
                          continue;
                     }
                     suc = update_res(i, j, n, m, 4);
                     if (suc ) {
-                        cerr << i << j << endl;
+                        //cerr << i << j << endl;
                         res[i][j]= 4;
                          update_res(i, j, n, m, 0);
                          continue;
@@ -313,23 +313,23 @@ public:
                     res[i][j] = 1 << newc;
                     update_res(i,j,n,m, 0);
                 }
-                cerr << res[i][j] + pos[i][j] << " " ;
+                //cerr << res[i][j] + pos[i][j] << " " ;
             }
 
-            cerr << endl << "  Next   ";
+            //cerr << endl << "  Next   ";
         }
         }
         for (int i = 0; i < n; i ++) {
             bool br;
             for (int j = 0; j < m; j++) {
                 if(((pos[i][j] == 0)  && (res[i][j]>0 && res[i][j] < 100))) {
-                    cerr << "Light231" << endl;
+                    //cerr << "Light231" << endl;
                     bool suc =  update_res(i, j, n, m, res[i][j]);
                     if (!suc ) {
 
                         //bool suc = update_res(i, j, n, m, ((res[i][j]<<1 )% 8));
                         if (!suc ) {
-                            cerr << "FOUND" << endl;
+                            //cerr << "FOUND" << endl;
                             //fal.insert(i*10000 + j);
                             res[i][j] = 0;
                             update_res(i, j, n, m, -1);
@@ -347,12 +347,12 @@ public:
         int mirCount = 0;
         const int Total = 2;
         int skip = Total;
-        cerr << "Tutses";
+        //cerr << "Tutses";
         // REcalc of pos2
         for (int i = 0; i < n; i ++) {
             for (int j = 0; j < m; j++) {
                 int r = rand()%10;
-                if (r < 2 && res[i][j] > 0 && res[i][j] < 6) {
+                if (r < 3 && res[i][j] > 0 && res[i][j] < 6) {
                     res[i][j] = 0;
                     update_res(i,j,n,m,-1);
                 }
@@ -394,14 +394,14 @@ public:
                    }
                    /*
                    if (obstCount < maxObstacles)  {
-                        cerr << "OBst";
+                        //cerr << "OBst";
                        int x = pos3[i][j]/10000;
                        int y = pos3[i][j]%10000;
                        int midX = (x + i) /2;
                        int midY = (y + j) /2;
-                       cerr << midX << midY;
+                       //cerr << midX << midY;
                        if (!pos[midX][midY] && res[midX][midY] == 100 && midX != i && midY != j && midX != x && midY != y ) {
-                        cerr << "bbOO";
+                        //cerr << "bbOO";
                             char buf[50];
                             sprintf(buf, "%d %d X", midX, midY);
                             res[midX][midY] = 16;
@@ -410,13 +410,13 @@ public:
                        }
                    }
                    if (mirCount < maxMirrors)  {
-                        cerr << "OBst";
+                        //cerr << "OBst";
                        int x = pos3[i][j]/10000;
                        int y = pos3[i][j]%10000;
                        int midX = (x + i) /2;
                        int midY = (y + j) /2;
                        if (!pos[midX][midY] && res[midX][midY] == 100 && midX != i && midY != j && midX != x && midY != y ) {
-                        cerr << "bbO2";
+                        //cerr << "bbO2";
                             char buf[50];
                             sprintf(buf, "%d %d \\", midX, midY);
                             res[midX][midY] = 32;
@@ -433,12 +433,12 @@ public:
            // and color that we should add at the certain row column
            /*
         */
-                cerr << "TUT2";
+                //cerr << "TUT2";
     
         for (int i = 0; i < n; i ++) {
             
             for (int j = 0; j < m; j++) {
-                   // cerr << "TUT3214";
+                   // //cerr << "TUT3214";
                     if (res[i][j]  < 15 && res[i][j] > 0) {
                         char buf[50];
                         sprintf(buf, "%d %d %d", i, j, res[i][j]);
@@ -451,9 +451,9 @@ public:
             }
         }
         for (int i = 0; i < st.size(); i++) {
-            cerr << st[i] << endl;
+            //cerr << st[i] << endl;
         }
-        cerr << totalLit << " " <<  calc << " Before return";
+        //cerr << totalLit << " " <<  calc << " Before return";
         if (calc > mx) {
             mx = calc;
             BestSt = st;
@@ -461,7 +461,10 @@ public:
        }
         cerr << "MAx" << mx;
         remove_duplicates<string>(BestSt);
-        return BestSt;
+        if (mx > -100)
+            return BestSt;
+        else
+            return {};
 
         //return {"0 7 2", "9 5 1"};
     }

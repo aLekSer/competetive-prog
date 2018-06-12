@@ -22,7 +22,7 @@ int primeFactors(int n)
     }
 //cout << n << endl;
 //cout <<  " sdf "<< sqrt(N);
-   if (n < 10000 && fact[n] != -1) {
+   if (n < 1000000 && fact[n] != -1) {
 //cout << "Here";
 	return count + fact[n];
    }
@@ -42,7 +42,7 @@ int primeFactors(int n)
     }
      if (n > 2)
 	count ++; 
-   if (N < 10000)
+   if (N < 1000000)
     fact[N] = count;
     return count;
 }
@@ -50,7 +50,7 @@ int main() {
     int T;
     cin >> T;
 
-fact = vector<int>(10001, -1);
+fact = vector<int>(1000001, -1);
     for (int i = 0; i < T; i++) {
         int n, m;
         cin >> n >> m;

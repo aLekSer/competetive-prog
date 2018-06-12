@@ -42,8 +42,9 @@ bool update_res(int i, int j, int n, int m, int ver) {
             pos2[x][j] |= ver;
             pos3[x][j] = i*10000 + j;
             //cerr << "ASFD";
-            return true;
-        } else if (ver < 10 && ver > 0 && (pos[x][j] + res[x][j]) > 0 )  {
+        break;
+            //return true;
+        } else if (ver < 10 && ver > 0 && (pos[x][j] ) > 0 )  {
                 break;
             }
         if (ver == -1 && pos[i+i2][j] == 0 ) {//&& res[i+i2][j] == 100) {
@@ -67,8 +68,9 @@ bool update_res(int i, int j, int n, int m, int ver) {
             success = true;
             pos2[i-i2][j] |= ver;
             pos3[i-i2][j] = i*10000 + j;
-            return true;
-        } else if (ver < 10 && ver > 0 && ( pos[x][j] + res[x][j] > 0))  {
+        break;
+            //return true;
+        } else if (ver < 10 && ver > 0 && ( pos[x][j]  > 0))  {
                 break;
             }
             if (ver == -1 && pos[i-i2][j] == 0) {//  &&  res[i-i2][j] == 100) {
@@ -91,8 +93,9 @@ bool update_res(int i, int j, int n, int m, int ver) {
             pos2[i][j+i2] |= ver;
                 success = true;
             pos3[i][j + i2] = i*10000 + j;
-            return true;
-            } else if (ver < 10 && ver > 0 && ( pos[i][x] + res[i][x] > 0))  {
+        break;
+            //return true;
+            } else if (ver < 10 && ver > 0 && ( pos[i][x] > 0))  {
                 break;
             }
             if (ver == -1 && pos[i][j+i2] == 0) {// && res[i][j+i2]%100 == 100) {
@@ -115,8 +118,9 @@ bool update_res(int i, int j, int n, int m, int ver) {
             //Seting failed lamp
             pos3[i][j - i2] = i*10000 + j;
 	    success = true;
-            return true;
-	} else if (ver < 10 && ver > 0 && ( pos[i][x] + res[i][x] > 0))  {
+        break;
+           // return true;
+	} else if (ver < 10 && ver > 0 && ( pos[i][x]  > 0))  {
                 break;
             }
     if (ver == -1 && pos[i][j-i2] == 0 ) {//&& res[i][j-i2] == 100) {
@@ -140,7 +144,7 @@ public:
             int mx = -100000;
            const int n = tB.size();
            const int m = tB[0].length();
-           const int MAL = 3;
+           const int MAL = 2;
         for (int tot = 0 ; tot < 400; tot ++) {
            set<int> seen;
            int c;
@@ -258,8 +262,8 @@ public:
                             //cerr << "FOUND" << endl;
                             //fal.insert(i*10000 + j);
                             //TODO uncomment
-                            //res[i][j] = 0;
-                            //update_res(i, j, n, m, -1);
+                            res[i][j] = 0;
+                            update_res(i, j, n, m, -1);
                         } else {
                             //res[i][j] = (res[i][j]<<1 )% 8;
 			                //update_res(i, j, n, m, 0);
@@ -337,8 +341,8 @@ public:
                         if (!suc ) {
                             //cerr << "FOUND" << endl;
                             //fal.insert(i*10000 + j);
-                            res[i][j] = 0;
-                            update_res(i, j, n, m, -1);
+                            //res[i][j] = 0;
+                            //update_res(i, j, n, m, -1);
                         } else {
                             //res[i][j] = (res[i][j]<<1 )% 8;
 			                //update_res(i, j, n, m, 0);
@@ -358,7 +362,7 @@ public:
         for (int i = 0; i < n; i ++) {
             for (int j = 0; j < m; j++) {
                 int r = rand()%10;
-                if (r < 3 && res[i][j] > 0 && res[i][j] < 6) {
+                if (r < MAL && res[i][j] > 0 && res[i][j] < 6) {
                     res[i][j] = 0;
                     update_res(i,j,n,m,-1);
                 }

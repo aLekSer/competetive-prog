@@ -138,7 +138,7 @@ public:
        int maxMirrors, int maxObstacles) {
             vector<string> BestSt;
             int mx = -100000;
-        for (int tot = 0 ; tot < 100; tot ++) {
+        for (int tot = 0 ; tot < 1000; tot ++) {
            set<int> seen;
            int c;
             vector<string> st;
@@ -349,6 +349,15 @@ public:
         int skip = Total;
         cerr << "Tutses";
         // REcalc of pos2
+        for (int i = 0; i < n; i ++) {
+            for (int j = 0; j < m; j++) {
+                int r = rand()%10;
+                if (r < 1 && res[i][j] > 0 && res[i][j] < 6) {
+                    res[i][j] = 0;
+                    update_res(i,j,n,m,-1);
+                }
+            }
+        }
 	  pos2 = vector<vector<int>>(n, vector<int>(m, 0));
         for (int i = 0; i < n; i ++) {
             for (int j = 0; j < m; j++) {

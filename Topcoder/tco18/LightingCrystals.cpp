@@ -25,7 +25,7 @@ vector<vector<long long>> pos3;
 // We will use to close the points for new lanterns if ver = 0
 // or to calculate the colored diamonds if ver = color
 // if ver = -1 removing the light
-bool update_res(int i, int j, int n, int m, int ver, int col = 0) {
+bool update_res(int i, int j, int n, int m, int ver, int col = 0, int* color = NULL) {
 	bool success = false;
     for (int i2 = 1; i2 < n; i2 ++) {
         if (i + i2 < n )  { 
@@ -60,9 +60,10 @@ bool update_res(int i, int j, int n, int m, int ver, int col = 0) {
             int x = i + i2;
         if (res[x][j] ==  16 || res[x][j] ==  32)
          return false;
-            if (pos[i][x] > 0)
+            if (pos[i][x] > 0) 
                 return false;
-            if (pos[x][j] == 0 && (res[x][j] > 0) && (res[x][j] < 6 ) && res[x][j] != 16) {//&& res[i+i2][j] == 100) {
+            if (pos[x][j] == 0 && (res[x][j] > 0) && (res[x][j] < 6 ) ) {//&& res[i+i2][j] == 100) {
+                *color = res[x][j];
                 return true;
             } 
             /*
@@ -110,6 +111,7 @@ bool update_res(int i, int j, int n, int m, int ver, int col = 0) {
         if (res[x][j] ==  16 || res[x][j] ==  32)
          return false;
             if (pos[x][j] == 0 && (res[x][j] > 0) && (res[x][j] < 6 ) && res[x][j] != 16) {//&& res[i+i2][j] == 100) {
+                *color = res[x][j];
                 return true;
             } /*
             if (pos[x][j] & col) {
@@ -152,6 +154,7 @@ bool update_res(int i, int j, int n, int m, int ver, int col = 0) {
         if (ver == -4) {
             int x = j+i2;
             if (pos[i][x] == 0 && (res[i][x] > 0) && (res[i][x] < 6 ) && res[i][x] != 16) {//&& res[i+i2][j] == 100) {
+                *color = res[i][x];
                 return true;
             }
             if (pos[i][x] > 0)
@@ -203,6 +206,7 @@ bool update_res(int i, int j, int n, int m, int ver, int col = 0) {
             if (pos[i][x] > 0)
                 return false;
             if (pos[i][x] == 0 && (res[i][x] > 0) && (res[i][x] < 6 ) && res[i][x] != 16) {//&& res[i+i2][j] == 100) {
+                *color = res[i][x];
                 return true;
         }
                 /*
@@ -215,7 +219,7 @@ bool update_res(int i, int j, int n, int m, int ver, int col = 0) {
     
     }
     }
-    
+
 	return success;
 
 }
@@ -501,6 +505,14 @@ public:
                 }
         int totalLit = 0;
         int totalCr = 0;
+	  pos2 = vector<vector<int>>(n, vector<int>(m, 0));
+        for (int i = 0; i < n; i ++) {
+            for (int j = 0; j < m; j++) {
+                if (res[i][j] > 0 && res[i][j] < 6) {
+                    update_res(i,j,n,m,res[i][j]);
+                }
+            }
+        }
         for (int i = 0; i < n; i ++) {
             for (int j = 0; j < m; j++) {
                     int r2 = rand() %10;
@@ -543,16 +555,101 @@ public:
                        int midX =  i;
                        int midY =  j;
                        int r = 0;
+                       int color = 0;
+                       int ll;
+                         int dx;
+                         int dy;
                        for (int l = -2 ; l > -6; l--) {
-                         r += update_res(midX, midY, n, m, l, 1) ? 1 :0;
+                           //ll = l;
+                         //r += update_res(midX, midY, n, m, l, 1, & color) ? 1 :0;
+
+                           switch (l) {
+                               case -2:
+                               dx = 0; dy = -1;
+                               break;
+                               case -3:
+                               dx = 0; dy = +1;
+                               break;
+                               case -4:
+                               dx = -1; dy = 0;
+                               break;
+                               case -5:
+                               dx = +1; dy = 0;
+                               break;                    
+                           }
+                           for (int o = 1; o < max(n, m); o++) {
+                               int x = midX + o*dx;
+                               int y = midY + o*dy;
+                               if (x >=0 && x < n && y >= 0 &&  y < m)
+                               if(res[x][y] > 0 && res[x][y] < 6) {
+                                   color = res[x][y];
+                                   r++;
+                                   continue;
+                               }
+                               if (pos[x][y] > 0) {
+                                   continue;
+                               }
+                           }
                        }
-                         cerr << r;
+                         //cerr << r;
                        if (r == 1) {
-                    int r2 = rand() %10;
+                    int r2 = rand() %3;
                        if (r2 < MAL && !pos[midX][midY] && res[midX][midY] % 100 == 0) { //  && midX != i && midY != j && midX != x && midY != y ) {
+
+                           switch (ll) {
+                               case -2:
+                               dx = 0; dy = -1;
+                               break;
+                               case -3:
+                               dx = 0; dy = +1;
+                               break;
+                               case -4:
+                               dx = -1; dy = 0;
+                               break;
+                               case -5:
+                               dx = +1; dy = 0;
+                               break;                    
+                           }
+                           for (int o = 1; o < max(n, m); o++) {
+                               int x = midX + o*dx;
+                               int y = midY + o*dy;
+                               if (x >=0 && x < n && y >= 0 &&  y < m)
+                               if(pos[x][y] > 0) {
+                                   if (pos[x][y] < 16) {
+                                       pos2[x][y] |= color;
+                                   }
+                                break;
+                               }
+                           }
+                           switch (ll) {
+                               case -2:
+                               dx = -1; dy = 0;
+                               break;
+                               case -3:
+                               dx = +1; dy = 0;
+                               break;
+                               case -4:
+                               dx = 0; dy = -1;
+                               break;
+                               case -5:
+                               dx = 0; dy = -1;
+                               break;                    
+                           }
+                           for (int o = 1; o < max(n, m); o++) {
+                               int x = midX + o*dx;
+                               int y = midY + o*dy;
+                               if (x >=0 && x < n && y >= 0 &&  y < m)
+                               if(pos[x][y] > 0) {
+                                   if (pos[x][y] < 16) {
+                                       if ( pos2[x][y] & color)
+                                        pos2[x][y] ^= color;
+                                   }
+                                break;
+                               }
+                           }
                         //cerr << "bbO2";
                             char buf[50];
-                            cerr << "Added";
+                            //cerr << "Added";
                             sprintf(buf, "%d %d /", midX, midY);
                             res[midX][midY] = 32;
                             st.push_back(buf);
@@ -561,14 +658,6 @@ public:
                        }
                    }/**/
 
-                }
-            }
-        }
-	  pos2 = vector<vector<int>>(n, vector<int>(m, 0));
-        for (int i = 0; i < n; i ++) {
-            for (int j = 0; j < m; j++) {
-                if (res[i][j] > 0 && res[i][j] < 6) {
-                    update_res(i,j,n,m,res[i][j]);
                 }
             }
         }
@@ -630,7 +719,7 @@ public:
             mx = calc;
             BestSt = st;
         }
-            BestSt = st;
+            //BestSt = st;
        }
        cerr << "MAx" << mx;
         remove_duplicates<string>(BestSt);

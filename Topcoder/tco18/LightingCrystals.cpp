@@ -8,6 +8,7 @@
 #include <set>
 #include <string>
 #include <algorithm>
+#include <time.h>
 
 template <typename T>
 void remove_duplicates(std::vector<T>& vec)
@@ -231,12 +232,13 @@ public:
     //  '1', '2' and '4' for lanterns of primary colors, '\' and '/' for a mirror and 'X' for an obstacle. 
     vector<string> placeItems(vector<string> tB, int costLantern, int costMirror, int costObstacle, 
        int maxMirrors, int maxObstacles) {
+    srand ( time(NULL) );
             vector<string> BestSt;
             int mx = -100000;
            const int n = tB.size();
            const int m = tB[0].length();
-           const int MAL = 3;
-        for (int tot = 0 ; tot < 300; tot ++) {
+           const int MAL = 5;
+        for (int tot = 0 ; tot < 400; tot ++) {
            set<int> seen;
            int c;
             vector<string> st;
@@ -283,9 +285,9 @@ public:
                     if (true ) { //placedC[i] & M) {
                         //cerr << " Here ";
                         for (int j = 0; j < m; j++) {
-                        int r = rand() %3;
                         int r2 = rand() %10;
                             for (int k = 6; k > 0; k --) {
+                            int r = rand() %3;
                             bool suc = update_res(i, j, n, m,  1 << r);
                             if((suc  && r2 < MAL && !pos[i][j]  && (res[i][j] == 0) /*&&  (placedR[j] & M) && (placedC[i] & M)*/)) {
                                 res[i][j] = 1 << r;
@@ -319,7 +321,7 @@ public:
             
            //for (int k = 0; k < 3; k ++) {
 
-        //if (tot > 70) {
+        if (tot > 50) {
                 for (int i = 0; i < n; i ++) {
                     bool br;
                         //cerr << " Here2324 " << k;
@@ -342,7 +344,7 @@ public:
                             
                     }
                 }
-       // }
+        }
                 M = M << 1;
            //}
            //cerr << "step 2";
@@ -393,6 +395,7 @@ public:
                 //cerr << endl;
             }   
         //cerr << M << endl;
+        /**/
         if (tot > 30) {
         for (int i = 0; i < n; i ++) {
             for (int j = 0; j < m; j++) {
@@ -430,7 +433,7 @@ public:
             for (int j = 0; j < m; j++) {
                 if((pos[i][j] == 0) && (res[i][j]==0) ) {
                     int newc = rand() % 3;
-                    bool suc = update_res(i, j, n, m, 1 << newc);
+                    bool suc = true; // update_res(i, j, n, m, 1 << newc);
                     if (suc) {
                         res[i][j] = 1 << newc;
                         update_res(i,j,n,m, 0);
@@ -490,14 +493,14 @@ public:
                         for (int j = 0; j < m; j++) {
                         int r = rand() %3;
                         int r2 = rand() %10;
-                                bool suc = update_res(i, j, n, m,  1 << r);
+                                bool suc =  true ; //update_res(i, j, n, m,  1 << r);
                             if((suc && r2 < MAL && !pos[i][j]  && (res[i][j] == 0) /*&&  (placedR[j] & M) && (placedC[i] & M)*/)) {
-                                res[i][j] = 1 << r;
+                               // res[i][j] = 1 << r;
                                 //cerr <<  placedR[j] << "bef" << endl;
                                 //placedR[j] = placedR[j] ^ M;
                                 //placedC[i] = placedC[i] ^ M;
                                 //cerr <<  placedR[j] << "after" << endl;
-                                update_res(i, j, n, m, 0);
+                               // update_res(i, j, n, m, 0);
                             }
                                 
                         }
@@ -505,6 +508,67 @@ public:
                 }
         int totalLit = 0;
         int totalCr = 0;
+        if (tot % 3 == 0) {
+                for (int i = 0; i < n; i ++) {
+                    bool br;
+                    if (true ) { //placedC[i] & M) {
+                        //cerr << " Here ";
+                        for (int j = 0; j < m; j++) {
+                        int r2 = rand() %10;
+                            for (int k = 6; k > 0; k --) {
+                            int r = rand() %3;
+                            bool suc = update_res(i, j, n, m,  1 << r);
+                            if((suc  && (res[i][j] % 100 == 0  ) && !pos[i][j]  && (res[i][j] == 0) /*&&  (placedR[j] & M) && (placedC[i] & M)*/)) {
+                                res[i][j] = 1 << r;
+                                //cerr <<  placedR[j] << "bef" << endl;
+                                //placedR[j] = placedR[j] ^ M;
+                                //placedC[i] = placedC[i] ^ M;
+                                //cerr <<  placedR[j] << "after" << endl;
+                                update_res(i, j, n, m, 0);
+                                break;
+                            }
+                            }
+                                
+                        }
+                    }
+                }
+        for (int i = 0; i < n; i ++) {
+            bool br;
+            for (int j = 0; j < m; j++) {
+                if(((pos[i][j] == 0)  && (res[i][j]>0 && res[i][j] < 100))) {
+                    //cerr << "Light231" << endl;
+                    bool suc =  update_res(i, j, n, m, res[i][j]);
+                    int r = rand() % 3;
+                    if (!suc ) {
+
+                            //
+                        //bool suc = update_res(i, j, n, m, ((res[i][j]<<1 )% 8));
+                        if (!suc ) {
+                            //cerr << "FOUND" << endl;
+                            //fal.insert(i*10000 + j);
+                            //TODO uncomment
+                            res[i][j] = 0;
+                            update_res(i, j, n, m, -1);
+                            for (int k = 3; k < 0; k ++) {
+                                suc = update_res(i, j, n, m,  1 << k);
+                                if (suc) {
+                                    res[i][j] = 1 << k;
+                                    update_res(i, j, n, m, 0);
+                                    break;
+                                }
+
+                            }
+                        } else {
+                            //res[i][j] = (res[i][j]<<1 )% 8;
+			                //update_res(i, j, n, m, 0);
+                        }
+                    }
+                    //break;
+                }
+                    
+            }
+        }
+        }
 	  pos2 = vector<vector<int>>(n, vector<int>(m, 0));
         for (int i = 0; i < n; i ++) {
             for (int j = 0; j < m; j++) {
@@ -565,16 +629,16 @@ public:
 
                            switch (l) {
                                case -2:
-                               dx = 0; dy = -1;
+                               dx = +1; dy = 0;
                                break;
                                case -3:
-                               dx = 0; dy = +1;
-                               break;
-                               case -4:
                                dx = -1; dy = 0;
                                break;
+                               case -4:
+                               dx = 0; dy = +1;
+                               break;
                                case -5:
-                               dx = +1; dy = 0;
+                               dx = 0; dy = -1;
                                break;                    
                            }
                            for (int o = 1; o < max(n, m); o++) {
@@ -584,6 +648,7 @@ public:
                                if(res[x][y] > 0 && res[x][y] < 6) {
                                    color = res[x][y];
                                    r++;
+                                   ll = l;
                                    continue;
                                }
                                if (pos[x][y] > 0) {
@@ -617,6 +682,7 @@ public:
                                if(pos[x][y] > 0) {
                                    if (pos[x][y] < 16) {
                                        pos2[x][y] |= color;
+                                      // cerr << "Here";
                                    }
                                 break;
                                }
@@ -641,8 +707,11 @@ public:
                                if (x >=0 && x < n && y >= 0 &&  y < m)
                                if(pos[x][y] > 0) {
                                    if (pos[x][y] < 16) {
-                                       if ( pos2[x][y] & color)
+                                       if ( pos2[x][y] & color) {
+
+                                      // cerr << "Here2";
                                         pos2[x][y] ^= color;
+                                       }
                                    }
                                 break;
                                }

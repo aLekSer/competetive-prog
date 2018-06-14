@@ -37,6 +37,8 @@ bool update_res(int i, int j, int n, int m, int ver) {
             }
         else if (ver > 0) { 
             int x = i + i2;
+        if (res[x][j] == 16)
+        break;
         if (pos[x][j] & ver) {
             success = true;
             pos2[x][j] |= ver;
@@ -51,7 +53,7 @@ bool update_res(int i, int j, int n, int m, int ver) {
             }
        
         }
-        if (ver == -1) { if ( pos[i+i2][j] == 0 ) {//&& res[i+i2][j] == 100) {
+        if (ver == -1) { if ( pos[i+i2][j] == 0 && res[i+i2][j] != 16) {//&& res[i+i2][j] == 100) {
             res[i+i2][j] -=100;
             } else break; }
     }
@@ -66,6 +68,8 @@ bool update_res(int i, int j, int n, int m, int ver) {
             }
         else if (ver > 0) {
             int x = i - i2;
+        if (res[x][j] == 16)
+        break;
         if (pos[i-i2][j] & ver) {
             success = true;
             pos2[i-i2][j] |= ver;
@@ -78,7 +82,7 @@ bool update_res(int i, int j, int n, int m, int ver) {
                 break;
             }
             }
-            if (ver == -1 ) { if ( pos[i-i2][j] == 0) {//  &&  res[i-i2][j] == 100) {
+            if (ver == -1 ) { if ( pos[i-i2][j] == 0 && res[i-i2][j] != 16) {//  &&  res[i-i2][j] == 100) {
                 res[i-i2][j] -= 100; 
                 } else break; }
         }
@@ -93,6 +97,8 @@ bool update_res(int i, int j, int n, int m, int ver) {
                 } else break;
             } else if (ver > 0) {
                 int x = j + i2;
+        if (res[x][j] == 16)
+        break;
             if (pos[i][j+i2] & ver) {
             pos2[i][j+i2] |= ver;
                 success = true;
@@ -107,7 +113,7 @@ bool update_res(int i, int j, int n, int m, int ver) {
             
            
          } 
-         if (ver == -1) { if ( pos[i][j+i2] == 0) {// && res[i][j+i2]%100 == 100) {
+         if (ver == -1) { if ( pos[i][j+i2] == 0 && res[i][j+i2] != 16) {// && res[i][j+i2]%100 == 100) {
                 res[i][j+i2] -= 100;
             } else break; }
          
@@ -121,6 +127,8 @@ bool update_res(int i, int j, int n, int m, int ver) {
              } else break;
         } else if (ver > 0) {
                 int x = j - i2;
+        if (res[x][j] == 16)
+        break;
 	   if (pos[i][j-i2] & ver) {
             pos2[i][j-i2] |= ver;
             //Seting failed lamp
@@ -134,7 +142,7 @@ bool update_res(int i, int j, int n, int m, int ver) {
                 break;
             }
 	 }
-    if (ver == -1 ) { if ( pos[i][j-i2] == 0 ) {//&& res[i][j-i2] == 100) {
+    if (ver == -1 ) { if ( pos[i][j-i2] == 0 && res[i][j-i2] != 16) {//&& res[i][j-i2] == 100) {
 		res[i][j-i2] -=100; 
             } else break; }
     }
@@ -393,6 +401,26 @@ public:
                 }
             }
         }
+                for (int i = 0; i < n; i ++) {
+                    bool br;
+                    if (true ) { //placedC[i] & M) {
+                        //cerr << " Here ";
+                        for (int j = 0; j < m; j++) {
+                        int r = rand() %3;
+                        int r2 = rand() %10;
+                                //bool suc = update_res(i, j, n, m,  1 << k);
+                            if((r2 < MAL && !pos[i][j]  && (res[i][j] == 0) /*&&  (placedR[j] & M) && (placedC[i] & M)*/)) {
+                                res[i][j] = 1 << r;
+                                //cerr <<  placedR[j] << "bef" << endl;
+                                //placedR[j] = placedR[j] ^ M;
+                                //placedC[i] = placedC[i] ^ M;
+                                //cerr <<  placedR[j] << "after" << endl;
+                                update_res(i, j, n, m, 0);
+                            }
+                                
+                        }
+                    }
+                }
         int totalLit = 0;
         int totalCr = 0;
         for (int i = 0; i < n; i ++) {
@@ -443,26 +471,6 @@ public:
                 }
             }
         }
-                for (int i = 0; i < n; i ++) {
-                    bool br;
-                    if (true ) { //placedC[i] & M) {
-                        //cerr << " Here ";
-                        for (int j = 0; j < m; j++) {
-                        int r = rand() %3;
-                        int r2 = rand() %10;
-                                //bool suc = update_res(i, j, n, m,  1 << k);
-                            if((r2 < MAL && !pos[i][j]  && (res[i][j] == 0) /*&&  (placedR[j] & M) && (placedC[i] & M)*/)) {
-                                res[i][j] = 1 << r;
-                                //cerr <<  placedR[j] << "bef" << endl;
-                                //placedR[j] = placedR[j] ^ M;
-                                //placedC[i] = placedC[i] ^ M;
-                                //cerr <<  placedR[j] << "after" << endl;
-                                update_res(i, j, n, m, 0);
-                            }
-                                
-                        }
-                    }
-                }
 	  pos2 = vector<vector<int>>(n, vector<int>(m, 0));
         for (int i = 0; i < n; i ++) {
             for (int j = 0; j < m; j++) {

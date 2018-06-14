@@ -238,7 +238,7 @@ public:
            const int n = tB.size();
            const int m = tB[0].length();
            const int MAL = 5;
-        for (int tot = 0 ; tot < 400; tot ++) {
+        for (int tot = 0 ; tot < 1000000; tot ++) {
            set<int> seen;
            int c;
             vector<string> st;
@@ -321,7 +321,7 @@ public:
             
            //for (int k = 0; k < 3; k ++) {
 
-        if (tot > 50) {
+        if (tot % 50 == 0) {
                 for (int i = 0; i < n; i ++) {
                     bool br;
                         //cerr << " Here2324 " << k;
@@ -532,6 +532,7 @@ public:
                         }
                     }
                 }
+        if (tot % 2 == 0) {
         for (int i = 0; i < n; i ++) {
             bool br;
             for (int j = 0; j < m; j++) {
@@ -567,6 +568,7 @@ public:
                 }
                     
             }
+        }
         }
         }
 	  pos2 = vector<vector<int>>(n, vector<int>(m, 0));
@@ -780,8 +782,8 @@ public:
                     }
             }
         }
-        for (int i = 0; i < st.size(); i++) {
-            //cerr << st[i] << endl;
+        if (tot % 10000) {
+            cerr << tot << endl;
         }
         //cerr << totalLit << " " <<  calc << " Before return";
         if (calc > mx) {

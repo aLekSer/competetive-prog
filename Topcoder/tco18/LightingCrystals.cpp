@@ -47,7 +47,7 @@ bool update_res(int i, int j, int n, int m, int ver, int col = 0) {
         break;
             //return true;
         } else if (ver < 10 && ver > 0 && (pos[x][j] ) > 0 )  {
-                if (pos[x][j]< 16)
+                if (pos[x][j] < 16)
                     pos2[x][j] |= ver;
                 break;
             }
@@ -494,7 +494,7 @@ public:
         int totalCr = 0;
         for (int i = 0; i < n; i ++) {
             for (int j = 0; j < m; j++) {
-                    int r2 = rand() %20;
+                    int r2 = rand() %40;
                 if(r2 < MAL && pos2[i][j]  != pos[i][j]) {
                    // fal.insert(pos3[i][j]);
                    /*
@@ -613,7 +613,7 @@ public:
        }
        cerr << "MAx" << mx;
         remove_duplicates<string>(BestSt);
-        if (mx > -10000)
+        if (mx > -1000000)
             return BestSt;
         else
             return {};

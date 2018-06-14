@@ -29,7 +29,7 @@ bool update_res(int i, int j, int n, int m, int ver, int col = 0) {
 	bool success = false;
     for (int i2 = 1; i2 < n; i2 ++) {
         if (i + i2 < n )  { 
-            if ( (ver==0) || (ver == -2) ){
+            if ( (ver==0)){
                 if( !pos[i + i2][j] ) { //&& (res[i +i2][j] %100 == 0 )) {
                     res[i+i2][j] += 100; //lightning the area
                     //cerr << "Light "<<endl;
@@ -56,26 +56,29 @@ bool update_res(int i, int j, int n, int m, int ver, int col = 0) {
         if (ver == -1) { if ( pos[i+i2][j] == 0 && res[i+i2][j] != 16) {//&& res[i+i2][j] == 100) {
             res[i+i2][j] -=100;
             } else break; }
-        }
         if (ver == -2) {
             int x = i + i2;
         if (res[x][j] ==  16 || res[x][j] ==  32)
-        break;
+         return false;
+            if (pos[i][x] > 0)
+                return false;
+            if (pos[x][j] == 0 && (res[x][j] > 0) && (res[x][j] < 6 ) && res[x][j] != 16) {//&& res[i+i2][j] == 100) {
+                return true;
+            } 
+            /*
             if (pos[x][j] & col) {
                 success = true;
                 pos2[x][j] |= col;
                 return true;
-            }
-            if (pos[x][j] == 0 && (res[x][j] > 0) && (res[x][j] < 6 ) && res[x][j] != 16) {//&& res[i+i2][j] == 100) {
-                return false;
-            } else break;
+            } */
+        }
         }
     }
 
     
     for (int i2 = 1; i2 < n; i2 ++) {
         if(i - i2 >=0 ) {
-            if  ((ver==0) || (ver == -3)) {
+            if  ((ver==0) ) {
                 if (!pos[i - i2][j] ) { // && (res[i - i2][j]%100 == 0 )) {
                 res[i-i2][j] +=100; //lightning the area
                 } else break;
@@ -102,16 +105,18 @@ bool update_res(int i, int j, int n, int m, int ver, int col = 0) {
 
         if (ver == -3) {
             int x = i - i2;
+            if (pos[i][x] > 0)
+                return false;
+        if (res[x][j] ==  16 || res[x][j] ==  32)
+         return false;
+            if (pos[x][j] == 0 && (res[x][j] > 0) && (res[x][j] < 6 ) && res[x][j] != 16) {//&& res[i+i2][j] == 100) {
+                return true;
+            } /*
             if (pos[x][j] & col) {
                 success = true;
                 pos2[x][j] |= col;
                 return true;
-            }
-        if (res[x][j] ==  16 || res[x][j] ==  32)
-        break;
-            if (pos[x][j] == 0 && (res[x][j] > 0) && (res[x][j] < 6 ) && res[x][j] != 16) {//&& res[i+i2][j] == 100) {
-                return false;
-            } else break;
+            }*/
         }
         }
     }
@@ -146,18 +151,19 @@ bool update_res(int i, int j, int n, int m, int ver, int col = 0) {
             } else break; }
         if (ver == -4) {
             int x = j+i2;
+            if (pos[i][x] == 0 && (res[i][x] > 0) && (res[i][x] < 6 ) && res[i][x] != 16) {//&& res[i+i2][j] == 100) {
+                return true;
+            }
+            if (pos[i][x] > 0)
+                return false;
         if (res[i][x] ==  16 || res[i][x] ==  32)
-        break;
+         return false;
+         /*
             if (pos[i][x] & col) {
                 success = true;
                 pos2[i][x] |= col;
                 return true;
-            }
-            if (pos[i][x] > 0)
-                return true;
-            if (pos[i][x] == 0 && (res[i][x] > 0) && (res[i][x] < 6 ) && res[i][x] != 16) {//&& res[i+i2][j] == 100) {
-                return false;
-            } else break;
+            } */
         }
          
     }
@@ -193,20 +199,23 @@ bool update_res(int i, int j, int n, int m, int ver, int col = 0) {
         if (ver == -5) {
             int x = j-i2;
         if (res[i][x] ==  16 || res[i][x] ==  32)
-        break;
+            return false;
+            if (pos[i][x] > 0)
+                return false;
+            if (pos[i][x] == 0 && (res[i][x] > 0) && (res[i][x] < 6 ) && res[i][x] != 16) {//&& res[i+i2][j] == 100) {
+                return true;
+        }
+                /*
             if (pos[i][x] & col) {
                 success = true;
                 pos2[i][x] |= col;
                 return true;
             }
-            if (pos[i][x] > 0)
-                return true;
-            if (pos[i][x] == 0 && (res[i][x] > 0) && (res[i][x] < 6 ) && res[i][x] != 16) {//&& res[i+i2][j] == 100) {
-                return false;
-            } else break;
-        }
+            */
     
     }
+    }
+    
 	return success;
 
 }
@@ -494,8 +503,8 @@ public:
         int totalCr = 0;
         for (int i = 0; i < n; i ++) {
             for (int j = 0; j < m; j++) {
-                    int r2 = rand() %40;
-                if(r2 < MAL && pos2[i][j]  != pos[i][j]) {
+                    int r2 = rand() %10;
+                if(r2 < MAL && pos[i][j] == 0 ) { // && pos2[i][j]  != pos[i][j]) {
                    // fal.insert(pos3[i][j]);
                    /*
                    if (skip != 0) {
@@ -504,40 +513,51 @@ public:
                    } else {
                        skip = Total;
                    }*/
-                   //if (tot > 70) {
+                   if (tot > 70) {
                    if (costObstacle < 10 && obstCount < maxObstacles)  {
                         //cerr << "OBst";
                        int x = pos3[i][j]/10000;
                        int y = pos3[i][j]%10000;
-                       int midX = (x + i) /2;
-                       int midY = (y + j) /2;
+                       //int midX = (x + i) /2;
+                       //int midY = (y + j) /2;
+                       int midX =  i;
+                       int midY =  j;
                        //cerr << midX << midY;
-                       if (!pos[midX][midY] && (res[midX][midY] % 100) == 0 && midX != i && midY != j && midX != x && midY != y ) {
+                       if (!pos[midX][midY] && (res[midX][midY] % 100) == 0) { //&& midX != i && midY != j && midX != x && midY != y ) {
                         //cerr << "bbOO";
                             char buf[50];
                             sprintf(buf, "%d %d X", midX, midY);
                             res[midX][midY] = 16;
                             st.push_back(buf);
-                            cerr << "Added 1" << endl;
+                            //cerr << "Added 1" << endl;
                             obstCount ++;
                        }
-                  // }
+                   }
                    } 
-                    int r2 = rand() %20;
-                   if (r2 < MAL && mirCount < maxMirrors)  {
+                   if ( mirCount < maxMirrors)  {
                         //cerr << "OBst";
                        int x = pos3[i][j]/10000;
                        int y = pos3[i][j]%10000;
-                       int midX = (x + i) /2;
-                       int midY = (y + j) /2;
-                       if (update_res(midX, midY, n, m, -4, 1) && update_res(midX, midY, n, m, -5, 2))
-                       if (!pos[midX][midY] && res[midX][midY] % 100 == 0 && midX != i && midY != j && midX != x && midY != y ) {
+                       //int midX = (x + i) /2;
+                       //int midY = (y + j) /2;
+                       int midX =  i;
+                       int midY =  j;
+                       int r = 0;
+                       for (int l = -2 ; l > -6; l--) {
+                         r += update_res(midX, midY, n, m, l, 1) ? 1 :0;
+                       }
+                         cerr << r;
+                       if (r == 1) {
+                    int r2 = rand() %10;
+                       if (r2 < MAL && !pos[midX][midY] && res[midX][midY] % 100 == 0) { //  && midX != i && midY != j && midX != x && midY != y ) {
                         //cerr << "bbO2";
                             char buf[50];
+                            cerr << "Added";
                             sprintf(buf, "%d %d /", midX, midY);
                             res[midX][midY] = 32;
                             st.push_back(buf);
                             mirCount ++;
+                       }
                        }
                    }/**/
 
@@ -610,6 +630,7 @@ public:
             mx = calc;
             BestSt = st;
         }
+            BestSt = st;
        }
        cerr << "MAx" << mx;
         remove_duplicates<string>(BestSt);

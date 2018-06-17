@@ -238,7 +238,7 @@ public:
            const int n = tB.size();
            const int m = tB[0].length();
            const int MAL = 5;
-        for (int tot = 0 ; tot < 1000000; tot ++) {
+        for (int tot = 0 ; tot < 100000; tot ++) {
            set<int> seen;
            int c;
             vector<string> st;
@@ -782,7 +782,7 @@ public:
                     }
             }
         }
-        if (tot % 10000) {
+        if (tot % 10000 == 0) {
             cerr << tot << endl;
         }
         //cerr << totalLit << " " <<  calc << " Before return";

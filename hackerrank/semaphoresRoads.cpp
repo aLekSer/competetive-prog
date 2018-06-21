@@ -7,6 +7,7 @@
 #include <stdio.h>
 #include <limits.h>
 #include <vector>
+//#include <priority_queue>
   
 // Number of vertices in the graph
 //#define V 9
@@ -26,17 +27,7 @@ int minDistance(vector<int> dist, vector<bool> sptSet)
   
    return min_index;
 }
-  
-// A utility function to print the constructed distance array
-int printSolution(vector<int> dist, int n)
-{
-   cerr <<"Vertex   Distance from Source\n";
-   char buf [256];
-   for (int i = 0; i <  dist.size(); i++) {
-      sprintf(buf, "%d tt %d\n", i, dist[i]);
-      cerr << buf << endl;
-   }
-}
+
   
 // Function that implements Dijkstra's single source shortest path algorithm
 // for a graph represented using adjacency matrix representation
@@ -75,12 +66,13 @@ long dijkstra(vector<vector<int>> graph, int src, int k)
                                        && dist[u]+graph[u][v] < dist[v])
                                        {
             dist[v] = dist[u] + graph[u][v];
+            if ( (( dist[v] / k ) % 2) == 1) {
+                dist[v] = (dist[v] / k + 1) * k;
+                cerr << "In red light " << dist[v];
+            }
                                        }
        }
      }
-  
-     // print the constructed distance array
-     printSolution(dist, graph.size());
      cerr << "sdf " << dist[graph.size()-1];
      return dist[graph.size()-1];
 }
@@ -105,21 +97,89 @@ int main()
     return 0;
 } */
 
+typedef vector<long> vi;
+typedef pair<int,int> pii;
+typedef vector< pii > vii;
+#define INF 0x3f3f3f3f
+ 
+vii *G;   // Graph
+vi Dist;  // for storing the distance of every other node from source.
+/*==========================================*/
+long Dijkstra(int source, int N, int k) {
+    priority_queue<pii, vector<pii>, greater<pii> > Q;   // min heap
+    Dist.assign(N+1,INF);
+    Dist[source] = 0;
+    Q.push({0,source});
+    while(!Q.empty()){
+        int u = Q.top().second;
+        Q.pop();
+        for(auto &c : G[u]){
+            int v = c.first;
+            int w = c.second;
+            //if ()
+            if (  (( Dist[u] / k ) % 2) == 1) {
+                long dist = (Dist[u]  / k + 1) * k;
+                cerr << "In red light " << dist;
+                if(Dist[v] > dist + w){
+                    Dist[v] = dist + w;
+                    Q.push({Dist[v],v});
+                }
+            } else {
+
+                if(Dist[v] > Dist[u] + w){
+                    Dist[v] = Dist[u] + w;
+                    Q.push({Dist[v],v});
+                }
+            }
+        }
+    }
+    return Dist[N];
+}
 // Complete the leastTimeToInterview function below.
 long leastTimeToInterview(int n, int k, int m) {
     // Return the least amount of time needed to reach the interview location in seconds.
     vector<vector<int>> gr(n, vector<int>(n));
+    /*
     for(int i = 0; i < m; i++) 
     {
       int s, d, t;
       cin >> s >> d >> t;
       gr[s-1][d-1] = t;
       gr[d-1][s-1] = t;
+    }   */         
+    // u,v and w are the end vertices and the weight associated with an edge
+    G = new vii[n+1];
+    
+      int u, v, w;
+    for(int i=0;i<m;++i){
+        cin >> u >> v >> w;
+        G[u].push_back({v,w});
+        G[v].push_back({u,w});
     }
-    return dijkstra(gr,0, k);
-     
+    long t =  Dijkstra(1, n, k);
+    return t;
 }
-
+/*
+int main() {
+    int N, M, u, v, w, source;  // N-total no of nodes, M-no. of edges, 
+    cin >> N >> M;              // u,v and w are the end vertices and the weight associated with an edge
+    G = new vii[N+1];
+    
+    for(int i=0;i<M;++i){
+        cin >> u >> v >> w;
+        G[u].push_back({v,w});
+        G[v].push_back({u,w});
+    }
+    cin >> source;
+    Dijkstra(source,N);
+    
+    for(int i=0;i<N;i++)
+        cout<<Dist[i]<<" ";
+    cout<<endl;
+    
+    return 0;
+}
+*/
 int main()
 {
     ofstream fout(getenv("OUTPUT_PATH"));

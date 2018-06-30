@@ -3,33 +3,35 @@
 
 using namespace std;
 
-bool inR(int a) {
-    int x = a % 10;
-    return x == 2 || x == 3 || x == 9; 
-}
+// 1 6 5 aaaaaa
 typedef long ll;
-long long  alg1(long long n, long long k, string & s)
+long long  alg1(ll n, ll k, string & s)
 {
     long long dup = 0;
     int d =  1 ; //-1;
     for (ll i = 0 ; i < k - 1 ; i++) { // - k + 1; i++) {
         if (s[i + 1] == s[i] ) {
-            dup += i + 1;
+            dup += min(n-k, i + 1);
             s[i] = ' ';
         }
+        cerr << i + 1 << endl;
     }
     for (ll i = k - 1; i < n - k -1; i++) { // - k + 1; i++) {
         if (s[i] != ' ' &&  s[i + 1] == s[i] ) {
-            dup += k;
+            dup += min(n-k, k);
             s[i] = ' ';
         }
+        if (s[i] != ' ' )
+        cerr << k  << endl;
     }
     int l2 = k;
     for (ll i = n - k - 1 ; i < n - 1; i++) { // - k + 1; i++) {
         //cerr << s[i];
         if (s[i] != ' ' && s[i + 1] == s[i] ) {
-            dup += l2;
+            dup += min(n-k, l2);
         }
+        if (s[i] != ' ' )
+        cerr << l2  << endl;
         l2 --;
     }
     //cerr << " H " << dup;
@@ -45,6 +47,7 @@ int main()
 	    cin >> n >> k; 
         string s;
         cin >> s;
+        //getline(cin, s);
 	    cout << alg1(n, k, s) << endl;
 	}
 return 0;

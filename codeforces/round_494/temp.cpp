@@ -10,10 +10,10 @@ template<class T> void getVector(vector<T>& v) {
     for (int i = 0; i < v.size(); ++i)
          cin >>  v[i];
 }
-double avg(vector<int> & a, int i,  int j) {
-	double res = 0;
+long long  avg(vector<int> & a, int i,  int j) {
+	long long res = 0;
 	for (int d = i; d < j; d ++) {
-		res += (double) (a[d]) / (double)  (j - i );
+		res += (a[d]) ;
 	}
 	return res;
 }
@@ -25,16 +25,22 @@ int main() {
 	vector<int> a(n);
 	getVector<int>(a);
 	int b1;
+	long long av = 0;
 	double max_a = 0.;
+	cout.precision(17);
 	for (int i = 0; i < n; i ++) {
-		double av = avg(a, i , i + k);
-		if (av > max_a) {
-			max_a = av;
+	    if (i + k <= n) {
+		 	av = avg(a, i , i + k);
+		} else {
+			 break;
+		}
+		if (((double )av/ (double)  (k) ) > max_a) {
+			max_a = ((double )av/ (double)  (k ) );
 		}
 		for(int j = i+k; j < n; j ++) {
-			av = ( av *  (j - i ) +(double) a[j]) / (double)(j - i + 2	);
-			if (av > max_a) {
-				max_a = av;
+			av = ( av  + a[j]) ; ;
+			if (( (double )av  / (double)(j - i + 2) )> max_a) {
+				max_a = ( (double )av  / (double)(j - i +2	) );
 			}
 		}
 	}

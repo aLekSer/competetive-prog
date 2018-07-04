@@ -29,7 +29,7 @@ double min_temperature = 0.1;
 double prob_change_1 = 0.2;
 double prob_change_2 = 0.3;
 double prob_change_3 = 0.4;
-const int cc = 3;
+const int cc = 10;
 // Player, position
 //bool players [30];
 vector<vector<int>> curSt;
@@ -121,13 +121,13 @@ class stch {
     }
     double Delta; 
 };
-stch StateChange1() {
+stch StateChange1(double temp) {
     stch stDel;
     stDel.shifts = vector<int>(cc);
 
     stDel.incr = vector<int>(10, 0);
     for (int i = 0; i < cc; i ++) {
-
+        if ((rand()% 100) / 100 < temp)
         stDel.shifts[i] = rand() % cc;
     }
     for (int i = 0; i < 10; i ++) {
@@ -140,9 +140,10 @@ stch StateChange1() {
     stDel.Delta = 0;
     for (int i = 0; i < cc; i ++) {
 
-        stDel.Delta += stDel.shifts[i] ;
+        if (stDel.shifts[i])
+            stDel.Delta ++ ;
     }
-        stDel.Delta /= (4 * 5);
+        stDel.Delta /= (cc * 5);
         return stDel;
 }
 void simulated_annealing() {
@@ -155,10 +156,10 @@ void simulated_annealing() {
           //cerr << used_time;
           while (count < 2000) {
               count ++;
-              if (count % 100 == 0) 
-              cerr << count << " d "<< maxSc << endl;
-        double temperature = (1.0 - (used_time - skip_time) / (timeout - skip_time))
+        double temperature = (1.0 - ( (double)count ) / (2000))
           * (max_temperature - min_temperature) + min_temperature;
+              if (count % 100 == 0) 
+              cerr << count << " d "<< maxSc << " T " <<  temperature << endl;
         
         for (int iteration = 0; iteration < 1000; iteration++) {
           double type = type_dist(rnd);
@@ -166,7 +167,7 @@ void simulated_annealing() {
           // prob_change_1 + prob_change_2 + prob_change_3 == 1.0
           
           if (type < prob_change_1) {
-            stch sd1 = StateChange1();
+            stch sd1 = StateChange1(temperature);
             ////cerr << sd1.Delta << " d " << endl;
             if (sd1.Delta < temperature) {
               sd1.apply();
@@ -175,13 +176,13 @@ void simulated_annealing() {
             }
           }
           else if (type < prob_change_1 + prob_change_2) {
-            stch sd2 = StateChange1();
+            stch sd2 = StateChange1(temperature);
             if (sd2.Delta < temperature)  {
               sd2.apply2();
             }
           }
           else {
-            stch sd3 = StateChange1();
+            stch sd3 = StateChange1(temperature);
             if (sd3.Delta < temperature) {
               sd3.apply();
               sd3.apply2();

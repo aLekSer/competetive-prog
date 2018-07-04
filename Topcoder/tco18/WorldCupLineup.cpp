@@ -14,19 +14,20 @@ vector<bool> pls;
 
 vector<vector<int>> stats;
 double start_time = 0;
-double timeout = 65; //10; // seconds
+double timeout = 10; // 65; //10; // seconds
 const double ticks_per_sec = 2500000000;
 inline double get_time() {
     uint32_t lo, hi;
     asm volatile ("rdtsc" : "=a" (lo), "=d" (hi));
+    cerr << (((uint64_t)hi << 32) | lo) / ticks_per_sec;;
     return (((uint64_t)hi << 32) | lo) / ticks_per_sec;
 }
 double max_temperature = 0.9;
 double min_temperature = 0.1;
 
-double prob_change_1 = 0.4;
+double prob_change_1 = 0.2;
 double prob_change_2 = 0.3;
-double prob_change_3 = 0.3;
+double prob_change_3 = 0.4;
 const int cc = 5;
 // Player, position
 //bool players [30];
@@ -64,16 +65,32 @@ class stch {
                 if( this->shifts[i] ==3) {
                     this->shifts[i] == 4;
                 }
-            pls[curSt[i][0]] = false;
-            curSt[i][0] += this->shifts[i] ;
+                int j = rand() % 10;
+            pls[curSt[j][0]] = false;
+            curSt[j][0] += this->shifts[i] ;
             
-             curSt[i][0] %= 30;
-            while (pls[curSt[i][0]] ) {
-                curSt[i][0] += this->shifts[i] ;
+             curSt[j][0] %= 30;
+            while (pls[curSt[j][0]] ) {
+                curSt[j][0] += this->shifts[i] ;
                 //cerr << this->shifts[i];
-             curSt[i][0] %= 30;
+             curSt[j][0] %= 30;
             }
-                pls[curSt[i][0]] = true;
+                pls[curSt[j][0]] = true;
+        }
+        curSc = calcS();
+        if (curSc > maxSc) {
+            maxSt = curSt;
+            maxSc = curSc;
+        }
+
+
+    }
+    void apply2() {
+
+        for (int i = 0; i < 10; i ++) {
+            curSt[i][1] += this->incr[i] ;
+            
+             curSt[i][1] %= 3;
         }
         curSc = calcS();
         if (curSc > maxSc) {
@@ -116,7 +133,8 @@ void simulated_annealing() {
       std::mt19937 rnd;
       int count = 0;
       //while (used_time < timeout) {
-          while (count < 3) {
+          cerr << used_time;
+          while (count < 300) {
               count ++;
         double temperature = (1.0 - (used_time - skip_time) / (timeout - skip_time))
           * (max_temperature - min_temperature) + min_temperature;
@@ -132,20 +150,21 @@ void simulated_annealing() {
             if (sd1.Delta < temperature) {
               sd1.apply();
             }
-          }/*
+          }
           else if (type < prob_change_1 + prob_change_2) {
-            stch sd2 = StateChange2();
-            if (accept(sd2.delta, temperature)) {
-              sd2.apply();
+            stch sd2 = StateChange1();
+            if (sd2.Delta < temperature)  {
+              sd2.apply2();
             }
           }
           else {
-            stch sd3 = StateChange3();
-            if (accept(sd3.delta, temperature)) {
+            stch sd3 = StateChange1();
+            if (sd3.Delta < temperature) {
               sd3.apply();
+              sd3.apply2();
             }
           }
-            */
+            /**/
         }
       }
       used_time = get_time() - start_time;

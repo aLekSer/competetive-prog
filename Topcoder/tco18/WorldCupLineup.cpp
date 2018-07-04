@@ -8,9 +8,13 @@
 #include <set>
 #include <string>
 #include <random>
-    
+    using namespace std;
+// F, M , D - 0, 1, 2
+vector<bool> pls;
+
+vector<vector<int>> stats;
 double start_time = 0;
-double timeout = 10; // seconds
+double timeout = 65; //10; // seconds
 const double ticks_per_sec = 2500000000;
 inline double get_time() {
     uint32_t lo, hi;
@@ -23,15 +27,97 @@ double min_temperature = 0.1;
 double prob_change_1 = 0.4;
 double prob_change_2 = 0.3;
 double prob_change_3 = 0.3;
-void StateChange1() {
+const int cc = 5;
+// Player, position
+//bool players [30];
+vector<vector<int>> curSt;
+vector<vector<int>> maxSt;  
+int curSc = 0;
+int maxSc = 0;
+class stch {
+    public:
+    //changing player number
+    vector<int> shifts; 
+    // changing player to forward etc
+    vector<int> incr;
+    int calcS() {
+        int a = 0;
+        int d = 0;
 
+        for (int i = 0; i < 10; i ++) {
+            if (curSt[i][1] == 1) {
+                a += stats[curSt[i][0]][0]; d += stats[curSt[i][0]][1];
+            } else if (curSt[i][1] == 0) {
+                a += 2* stats[curSt[i][0]][1];
+            } else {
+
+                d += 2*  stats[curSt[i][0]][0];
+            }
+        }
+        return min(a, d);
+    }
+    void apply() {
+
+        for (int i = 0; i < cc; i ++) {
+            if (this->shifts[i] == 0)  
+                continue;
+                if( this->shifts[i] ==3) {
+                    this->shifts[i] == 4;
+                }
+            pls[curSt[i][0]] = false;
+            curSt[i][0] += this->shifts[i] ;
+            
+             curSt[i][0] %= 30;
+            while (pls[curSt[i][0]] ) {
+                curSt[i][0] += this->shifts[i] ;
+                cerr << this->shifts[i];
+             curSt[i][0] %= 30;
+            }
+                pls[curSt[i][0]] = true;
+        }
+        curSc = calcS();
+        if (curSc > maxSc) {
+            maxSt = curSt;
+            maxSc = curSc;
+        }
+
+
+    }
+    double Delta; 
+};
+stch StateChange1() {
+    stch stDel;
+    stDel.shifts = vector<int>(cc);
+
+    stDel.incr = vector<int>(10, 0);
+    for (int i = 0; i < cc; i ++) {
+
+        stDel.shifts[i] = rand() % cc;
+    }
+    for (int i = 0; i < 10; i ++) {
+
+        bool r = rand() % 2;
+        if (r ) {
+            stDel.incr[i] ++;
+        }
+    }
+    stDel.Delta = 0;
+    for (int i = 0; i < cc; i ++) {
+
+        stDel.Delta += stDel.shifts[i] ;
+    }
+        stDel.Delta /= (30 * 5);
+        return stDel;
 }
 void simulated_annealing() {
       double skip_time = get_time() - start_time;
       double used_time = skip_time;
       std::uniform_real_distribution<double> type_dist(0, 1);
       std::mt19937 rnd;
-      while (used_time < timeout) {
+      int count = 0;
+      //while (used_time < timeout) {
+          while (count < 3) {
+              count ++;
         double temperature = (1.0 - (used_time - skip_time) / (timeout - skip_time))
           * (max_temperature - min_temperature) + min_temperature;
         
@@ -39,13 +125,14 @@ void simulated_annealing() {
           double type = type_dist(rnd);
             
           // prob_change_1 + prob_change_2 + prob_change_3 == 1.0
-          /*
+          
           if (type < prob_change_1) {
             stch sd1 = StateChange1();
-            if (accept(sd1.delta, temperature)) {
+            cerr << sd1.Delta << " d " << endl;
+            if (sd1.Delta < temperature) {
               sd1.apply();
             }
-          }
+          }/*
           else if (type < prob_change_1 + prob_change_2) {
             stch sd2 = StateChange2();
             if (accept(sd2.delta, temperature)) {
@@ -57,8 +144,8 @@ void simulated_annealing() {
             if (accept(sd3.delta, temperature)) {
               sd3.apply();
             }
-          }*/
-            
+          }
+            */
         }
       }
       used_time = get_time() - start_time;
@@ -86,20 +173,46 @@ std::vector<std::string> tokenize(const std::string& s, char c) {
 }
 
 using namespace std;
-// F, M , D - 0, 1, 2
-vector<int> players;
-
-vector<vector<int>> stats;
 class WorldCupLineup {
 public:
     vector<string> selectPositions(vector<string> players, vector<string> groups) {
        // cerr << "1";
+       stats = vector<vector<int>>(30, vector<int>(3));
        cerr << players.size() << " " << groups.size();
        for (int i = 0 ; i < players.size(); i ++) {
            vector<string> v = tokenize(players[i], ',');
            cerr << "a " << v[0] << " end ";
+           for (int j = 0; j < 3; j++) {
+                stats[i][j] = atoi(v[j].c_str());
+
+           }
        }
-        return vector<string>({"F 0", "F 1", "F 2", "M 3", "M 4", "M 5", "M 6", "D 7", "D 8", "D 9"});
+       curSt = 
+vector<vector<int>> (10, vector<int>(2));
+        pls = vector<bool> (30, false);
+       for (int i = 0 ; i < 10; i ++) {
+           curSt[i][0] = i;
+           curSt[i][0] = i % 3;
+           pls[i] = true;
+       }
+       simulated_annealing();
+vector<string> f(10);
+for (int i = 0; i < 10; i++) {
+    string s = "";
+    if (maxSt[i][1] == 0) {
+        s += "F " ;
+    }
+    if (maxSt[i][1] == 1) {
+        s += "M ";
+    }
+    if (maxSt[i][1] == 2) {
+        s += "D ";
+    }
+    s += to_string(maxSt[i][0]);
+    f[i] = s;
+}
+    return f;
+        //return  vector<string>({"F 0", "F 1", "F 2", "M 3", "M 4", "M 5", "M 6", "D 7", "D 8", "D 9"});
     }
 };
 // -------8<------- end of solution submitted to the website -------8<-------

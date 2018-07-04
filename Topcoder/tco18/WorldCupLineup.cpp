@@ -70,7 +70,7 @@ class stch {
              curSt[i][0] %= 30;
             while (pls[curSt[i][0]] ) {
                 curSt[i][0] += this->shifts[i] ;
-                cerr << this->shifts[i];
+                //cerr << this->shifts[i];
              curSt[i][0] %= 30;
             }
                 pls[curSt[i][0]] = true;
@@ -128,7 +128,7 @@ void simulated_annealing() {
           
           if (type < prob_change_1) {
             stch sd1 = StateChange1();
-            cerr << sd1.Delta << " d " << endl;
+            //cerr << sd1.Delta << " d " << endl;
             if (sd1.Delta < temperature) {
               sd1.apply();
             }
@@ -181,10 +181,13 @@ public:
        cerr << players.size() << " " << groups.size();
        for (int i = 0 ; i < players.size(); i ++) {
            vector<string> v = tokenize(players[i], ',');
-           cerr << "a " << v[0] << " end ";
+           cerr << "a " << v.size() << " end ";
+           if (v.size() > 0) {
+               
            for (int j = 0; j < 3; j++) {
                 stats[i][j] = atoi(v[j].c_str());
-
+                cerr << stats[i][j] <<  " stats   " << endl;
+           }
            }
        }
        curSt = 
@@ -192,7 +195,7 @@ vector<vector<int>> (10, vector<int>(2));
         pls = vector<bool> (30, false);
        for (int i = 0 ; i < 10; i ++) {
            curSt[i][0] = i;
-           curSt[i][0] = i % 3;
+           curSt[i][1] = i % 3;
            pls[i] = true;
        }
        simulated_annealing();
@@ -231,9 +234,12 @@ int main() {
     //cerr << H;
     vector<string> players(H);
     getVector(players);
-       // cerr << "1";
        string s;
        cin >> s;
+       cerr << s;
+       // cerr << "1";
+       //string s;
+       //cin >> s;
     cin >> H;
     cerr << H;
     vector<string> groups(H);

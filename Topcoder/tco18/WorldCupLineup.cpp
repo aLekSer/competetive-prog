@@ -13,7 +13,9 @@ using namespace std;
 class WorldCupLineup {
 public:
     vector<string> selectPositions(vector<string> players, vector<string> groups) {
-        return {"F 0", "F 1", "F 2", "M 3", "M 4", "M 5", "M 6", "D 7", "D 8", "D 9"};
+       // cerr << "1";
+       cerr << players.size() << " " << groups.size();
+        return vector<string>({"F 0", "F 1", "F 2", "M 3", "M 4", "M 5", "M 6", "D 7", "D 8", "D 9"});
     }
 };
 // -------8<------- end of solution submitted to the website -------8<-------
@@ -26,12 +28,19 @@ template<class T> void getVector(vector<T>& v) {
 int main() {
     WorldCupLineup sol;
     int H;
+       // cerr << "1";
     cin >> H;
+    cerr << H;
     vector<string> players(H);
     getVector(players);
+       // cerr << "1";
+       string s;
+       cin >> s;
     cin >> H;
+    cerr << H;
     vector<string> groups(H);
     getVector(groups);
+        //cerr << "1";
 
     vector<string> ret = sol.selectPositions(players, groups);
     cout << ret.size() << endl;

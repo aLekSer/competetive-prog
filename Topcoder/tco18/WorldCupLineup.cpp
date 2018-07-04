@@ -13,6 +13,7 @@
 vector<bool> pls;
 
 vector<vector<int>> stats;
+vector<vector<int>> locStats;
 double start_time = 0;
 double timeout = 10; // 65; //10; // seconds
 const double ticks_per_sec = 2500000000;
@@ -35,6 +36,8 @@ vector<vector<int>> curSt;
 vector<vector<int>> maxSt;  
 int curSc = 0;
 int maxSc = 0;
+vector<vector<int>> gr;
+vector<vector<int>> grSt;
 class stch {
     public:
     //changing player number
@@ -42,17 +45,33 @@ class stch {
     // changing player to forward etc
     vector<int> incr;
     int calcS() {
+        locStats = stats;
         int a = 0;
         int d = 0;
+        for (int i = 0; i <  gr.size(); i ++) {
+        bool all = true;
+        for (int j = 0; j < gr[i].size(); j ++) {
+            all &= pls[gr[i][j]] ;
+        }
+        if (all) {
+            cerr << "Updating " << i << endl;
+        for (int j = 0; j < gr[i].size(); j ++) {
+            for (int k = 0; k < 3 ; k ++)
+            locStats[gr[i][j]][k] += grSt[i][k];
+        }
+
+        }
+        }
 
         for (int i = 0; i < 10; i ++) {
             if (curSt[i][1] == 1) {
-                a += stats[curSt[i][0]][0]; d += stats[curSt[i][0]][1];
+                a += locStats[curSt[i][0]][0] * (1- (double)locStats[curSt[i][0]][2]/100)  ; 
+                d += locStats[curSt[i][0]][1]* (1- (double)locStats[curSt[i][0]][2]/100)  ;
             } else if (curSt[i][1] == 0) {
-                a += 2* stats[curSt[i][0]][1];
+                a += 2* locStats[curSt[i][0]][1]* (1- (double)locStats[curSt[i][0]][2]/100)  ;
             } else {
 
-                d += 2*  stats[curSt[i][0]][0];
+                d += 2*  locStats[curSt[i][0]][0]* (1- (double)locStats[curSt[i][0]][2]/100)  ;
             }
         }
         return min(a, d);
@@ -134,7 +153,7 @@ void simulated_annealing() {
       int count = 0;
       //while (used_time < timeout) {
           cerr << used_time;
-          while (count < 300) {
+          while (count < 10) {
               count ++;
         double temperature = (1.0 - (used_time - skip_time) / (timeout - skip_time))
           * (max_temperature - min_temperature) + min_temperature;
@@ -208,6 +227,24 @@ public:
            for (int j = 0; j < 3; j++) {
                 stats[i][j] = atoi(v[j].c_str());
                 cerr << stats[i][j] <<  " stats   " << endl;
+           }
+           }
+       }
+
+    gr = vector<vector<int>> (groups.size(), vector<int>());
+    grSt = vector<vector<int>> (groups.size(), vector<int>());
+       for (int i = 0 ; i < groups.size(); i ++) {
+           vector<string> v = tokenize(groups[i], ' ');
+           cerr << "a " << v.size() << " end ";
+           if (v.size() > 0) {
+           vector<string> v2 = tokenize(v[0], ',');
+           vector<string> v3 = tokenize(v[1], ',');
+           for (int j = 0; j < v2.size(); j++) {
+                gr[i].push_back(atoi(v2[j].c_str()));
+                cerr << stats[i][j] <<  " grstats   " << endl;
+           }
+           for (int j = 0; j < v3.size(); j++) {
+                grSt[i].push_back(atoi(v3[j].c_str()));
            }
            }
        }

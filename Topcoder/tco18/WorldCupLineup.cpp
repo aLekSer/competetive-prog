@@ -20,7 +20,7 @@ const double ticks_per_sec = 2500000000;
 inline double get_time() {
     uint32_t lo, hi;
     asm volatile ("rdtsc" : "=a" (lo), "=d" (hi));
-    cerr << (((uint64_t)hi << 32) | lo) / ticks_per_sec;;
+    //cerr << (((uint64_t)hi << 32) | lo) / ticks_per_sec;;
     return (((uint64_t)hi << 32) | lo) / ticks_per_sec;
 }
 double max_temperature = 0.9;
@@ -54,7 +54,7 @@ class stch {
             all &= pls[gr[i][j]] ;
         }
         if (all) {
-            cerr << "Updating " << i << endl;
+            //cerr << "Updating " << i << endl;
         for (int j = 0; j < gr[i].size(); j ++) {
             for (int k = 0; k < 3 ; k ++)
             locStats[gr[i][j]][k] += grSt[i][k];
@@ -91,7 +91,7 @@ class stch {
              curSt[j][0] %= 30;
             while (pls[curSt[j][0]] ) {
                 curSt[j][0] += this->shifts[i] ;
-                //cerr << this->shifts[i];
+                ////cerr << this->shifts[i];
              curSt[j][0] %= 30;
             }
                 pls[curSt[j][0]] = true;
@@ -152,9 +152,11 @@ void simulated_annealing() {
       std::mt19937 rnd;
       int count = 0;
       //while (used_time < timeout) {
-          cerr << used_time;
-          while (count < 10) {
+          //cerr << used_time;
+          while (count < 2000) {
               count ++;
+              if (count % 100 == 0) 
+              cerr << count << " d "<< maxSc << endl;
         double temperature = (1.0 - (used_time - skip_time) / (timeout - skip_time))
           * (max_temperature - min_temperature) + min_temperature;
         
@@ -165,11 +167,11 @@ void simulated_annealing() {
           
           if (type < prob_change_1) {
             stch sd1 = StateChange1();
-            //cerr << sd1.Delta << " d " << endl;
+            ////cerr << sd1.Delta << " d " << endl;
             if (sd1.Delta < temperature) {
               sd1.apply();
             } else {
-                //cerr << "not";
+                ////cerr << "not";
             }
           }
           else if (type < prob_change_1 + prob_change_2) {
@@ -216,17 +218,17 @@ using namespace std;
 class WorldCupLineup {
 public:
     vector<string> selectPositions(vector<string> players, vector<string> groups) {
-       // cerr << "1";
+       // //cerr << "1";
        stats = vector<vector<int>>(30, vector<int>(3));
-       cerr << players.size() << " " << groups.size();
+       //cerr << players.size() << " " << groups.size();
        for (int i = 0 ; i < players.size(); i ++) {
            vector<string> v = tokenize(players[i], ',');
-           cerr << "a " << v.size() << " end ";
+           //cerr << "a " << v.size() << " end ";
            if (v.size() > 0) {
                
            for (int j = 0; j < 3; j++) {
                 stats[i][j] = atoi(v[j].c_str());
-                cerr << stats[i][j] <<  " stats   " << endl;
+                //cerr << stats[i][j] <<  " stats   " << endl;
            }
            }
        }
@@ -235,13 +237,13 @@ public:
     grSt = vector<vector<int>> (groups.size(), vector<int>());
        for (int i = 0 ; i < groups.size(); i ++) {
            vector<string> v = tokenize(groups[i], ' ');
-           cerr << "a " << v.size() << " end ";
+           //cerr << "a " << v.size() << " end ";
            if (v.size() > 0) {
            vector<string> v2 = tokenize(v[0], ',');
            vector<string> v3 = tokenize(v[1], ',');
            for (int j = 0; j < v2.size(); j++) {
                 gr[i].push_back(atoi(v2[j].c_str()));
-                cerr << stats[i][j] <<  " grstats   " << endl;
+                //cerr << stats[i][j] <<  " grstats   " << endl;
            }
            for (int j = 0; j < v3.size(); j++) {
                 grSt[i].push_back(atoi(v3[j].c_str()));
@@ -288,22 +290,22 @@ int main() {
   start_time = get_time();
     WorldCupLineup sol;
     int H;
-       // cerr << "1";
+       // //cerr << "1";
     cin >> H;
-    //cerr << H;
+    ////cerr << H;
     vector<string> players(H);
     getVector(players);
        string s;
        cin >> s;
-       cerr << s;
-       // cerr << "1";
+       //cerr << s;
+       // //cerr << "1";
        //string s;
        //cin >> s;
     cin >> H;
-    cerr << H;
+    //cerr << H;
     vector<string> groups(H);
     getVector(groups);
-        //cerr << "1";
+        ////cerr << "1";
 
     vector<string> ret = sol.selectPositions(players, groups);
     cout << ret.size() << endl;

@@ -123,7 +123,7 @@ stch StateChange1() {
 
         stDel.Delta += stDel.shifts[i] ;
     }
-        stDel.Delta /= (30 * 5);
+        stDel.Delta /= (4 * 5);
         return stDel;
 }
 void simulated_annealing() {
@@ -149,6 +149,8 @@ void simulated_annealing() {
             //cerr << sd1.Delta << " d " << endl;
             if (sd1.Delta < temperature) {
               sd1.apply();
+            } else {
+                //cerr << "not";
             }
           }
           else if (type < prob_change_1 + prob_change_2) {

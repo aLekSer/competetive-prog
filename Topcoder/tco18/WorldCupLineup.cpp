@@ -29,7 +29,7 @@ double min_temperature = 0.1;
 double prob_change_1 = 0.2;
 double prob_change_2 = 0.3;
 double prob_change_3 = 0.4;
-const int cc = 5;
+const int cc = 3;
 // Player, position
 //bool players [30];
 vector<vector<int>> curSt;
@@ -270,6 +270,7 @@ for (int i = 0; i < 10; i++) {
         s += "D ";
     }
     s += to_string(maxSt[i][0]);
+    s += ",2,29,24,29";
     f[i] = s;
 }
     return f;

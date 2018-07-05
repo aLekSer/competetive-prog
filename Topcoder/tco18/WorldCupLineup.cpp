@@ -26,10 +26,10 @@ inline double get_time() {
 double max_temperature = 0.9;
 double min_temperature = 0.1;
 
-double prob_change_1 = 0.2;
-double prob_change_2 = 0.3;
-double prob_change_3 = 0.4;
-const int cc = 3;
+double prob_change_1 = 0.35;
+double prob_change_2 = 0.6;
+double prob_change_3 = 0.05;
+const int cc = 2;
 // Player, position
 //bool players [30];
 vector<vector<int>> curSt;
@@ -123,16 +123,20 @@ class stch {
 
 
     }
-    void apply3() {
+    void apply3(double temp) {
 
+        if (((double)(rand()% 100)) / 100 < temp)  
+        {
+            return ;
+        }
         int mi = 1000;
         int idx = 0;
         for (int i = 0; i < 10; i ++) {
-            int ma = 0;
+            double ma = 0;
             for (int j = 0; j < 2; j ++) {
-                ma = max(stats[curSt[i][0]][j], ma);
+                ma = max(stats[curSt[i][0]][j] *(1- (double)stats[curSt[i][0]][2]/100)  ,  ma);
             }
-                ma = max(stats[curSt[i][0]][0] + stats[curSt[i][0]][1] , ma);
+                ma = max((stats[curSt[i][0]][0] + stats[curSt[i][0]][1])* (1- (double)stats[curSt[i][0]][2]/100)   , ma);
             if (ma < mi) {
                 mi = ma;
                 idx = i;
@@ -141,13 +145,13 @@ class stch {
         int m2 = 0;
         int idx2 = 0;
         for (int i = 0; i < 30; i ++) {
-            int ma = 0;
+            double ma = 0;
             if (pls[i])
             continue;
             for (int j = 0; j < 2; j ++) {
-                ma = max(stats[i][j], ma);
+                ma = max(stats[i][j] * (1- (double)stats[i][2]/100)  , ma);
             }
-                ma = max(stats[i][0] + stats[i][1] , ma);
+                ma = max((stats[i][0] + stats[i][1] )* (1- (double)stats[i][2]/100) , ma);
             if (ma > m2) {
                 m2 = ma;
                 idx2 = i;
@@ -205,9 +209,10 @@ void simulated_annealing() {
       int count = 0;
       //while (used_time < timeout) {
           //cerr << used_time;
-          while (count < 200) {
+          const int t = 1200;
+          while (count < t) {
               count ++;
-        double temperature = (1.0 - ( (double)count ) / (2000))
+        double temperature = (1.0 - ( (double)count ) / (t))
           * (max_temperature - min_temperature) + min_temperature;
               if (count % 100 == 0) 
               cerr << count << " d "<< maxSc << " T " <<  temperature << endl;
@@ -239,7 +244,7 @@ void simulated_annealing() {
             //if (sd3.Delta < temperature) {
 
                 if(true) {
-              sd3.apply3();
+              sd3.apply3(temperature);
               //sd3.apply2();
             }
           }

@@ -29,7 +29,7 @@ double min_temperature = 0.1;
 double prob_change_1 = 0.2;
 double prob_change_2 = 0.3;
 double prob_change_3 = 0.4;
-const int cc = 10;
+const int cc = 3;
 // Player, position
 //bool players [30];
 vector<vector<int>> curSt;
@@ -100,6 +100,8 @@ class stch {
         if (curSc > maxSc) {
             maxSt = curSt;
             maxSc = curSc;
+        } else  if (curSc < maxSc / 3) {
+            //curSt = maxSt;
         }
 
 
@@ -115,6 +117,54 @@ class stch {
         if (curSc > maxSc) {
             maxSt = curSt;
             maxSc = curSc;
+        }else  if (curSc < maxSc / 3) {
+            //curSt = maxSt;
+        }
+
+
+    }
+    void apply3() {
+
+        int mi = 1000;
+        int idx = 0;
+        for (int i = 0; i < 10; i ++) {
+            int ma = 0;
+            for (int j = 0; j < 2; j ++) {
+                ma = max(stats[curSt[i][0]][j], ma);
+            }
+                ma = max(stats[curSt[i][0]][0] + stats[curSt[i][0]][1] , ma);
+            if (ma < mi) {
+                mi = ma;
+                idx = i;
+            } 
+        }
+        int m2 = 0;
+        int idx2 = 0;
+        for (int i = 0; i < 30; i ++) {
+            int ma = 0;
+            if (pls[i])
+            continue;
+            for (int j = 0; j < 2; j ++) {
+                ma = max(stats[i][j], ma);
+            }
+                ma = max(stats[i][0] + stats[i][1] , ma);
+            if (ma > m2) {
+                m2 = ma;
+                idx2 = i;
+            }
+
+        }
+        pls[curSt[idx][0]] = false;
+                curSt[idx][0]   = idx2;
+                ////cerr << this->shifts[i];
+             curSt[idx][0] %= 30;
+        pls[curSt[idx][0]] = true;
+        curSc = calcS();
+        if (curSc > maxSc) {
+            maxSt = curSt;
+            maxSc = curSc;
+        }else  if (curSc < maxSc / 3) {
+            //curSt = maxSt;
         }
 
 
@@ -127,13 +177,14 @@ stch StateChange1(double temp) {
 
     stDel.incr = vector<int>(10, 0);
     for (int i = 0; i < cc; i ++) {
-        if ((rand()% 100) / 100 < temp)
+        if (((double)(rand()% 100)) / 100 < temp) 
         stDel.shifts[i] = rand() % cc;
     }
     for (int i = 0; i < 10; i ++) {
 
         bool r = rand() % 2;
         if (r ) {
+        if (((double)(rand()% 100)) / 100 < temp) 
             stDel.incr[i] ++;
         }
     }
@@ -154,7 +205,7 @@ void simulated_annealing() {
       int count = 0;
       //while (used_time < timeout) {
           //cerr << used_time;
-          while (count < 2000) {
+          while (count < 200) {
               count ++;
         double temperature = (1.0 - ( (double)count ) / (2000))
           * (max_temperature - min_temperature) + min_temperature;
@@ -169,7 +220,8 @@ void simulated_annealing() {
           if (type < prob_change_1) {
             stch sd1 = StateChange1(temperature);
             ////cerr << sd1.Delta << " d " << endl;
-            if (sd1.Delta < temperature) {
+            //if (sd1.Delta < temperature) {
+                if(true) {
               sd1.apply();
             } else {
                 ////cerr << "not";
@@ -177,15 +229,18 @@ void simulated_annealing() {
           }
           else if (type < prob_change_1 + prob_change_2) {
             stch sd2 = StateChange1(temperature);
-            if (sd2.Delta < temperature)  {
+            //if (sd2.Delta < temperature)  {
+                if(true) {
               sd2.apply2();
             }
           }
           else {
             stch sd3 = StateChange1(temperature);
-            if (sd3.Delta < temperature) {
-              sd3.apply();
-              sd3.apply2();
+            //if (sd3.Delta < temperature) {
+
+                if(true) {
+              sd3.apply3();
+              //sd3.apply2();
             }
           }
             /**/

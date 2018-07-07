@@ -26,11 +26,11 @@ long long select(vector<int> &v, int k) {
 		}
 		used.insert(minPos);
 		mid += 1 << minPos;
-		cerr << minPos << " " <<"s";
+		//cerr << minPos << " " <<"s";
 		v[minPos] ++;
 		min = 6000;
 	}
-	cerr <<  endl;
+	//cerr <<  endl;
 	return mid;
 }
 int main() {
@@ -56,14 +56,20 @@ int main() {
 		for (int l = 0; l < n * n; l++ ) {
 			 mid = select(v, k);
 			 if (l != 0 && mid == init) {
-				 cerr << l;
+				 //cerr << l;
 				 stop = l;
 				 break;
 			 }
 		}
+		//cerr << "stop " << stop << " " << ((r % stop) - 1);
+		long long d = ((r % stop) - 1);
+		if (((r % stop) - 1) <= 0) {
+			d += stop;
+		}
+
 		vector<int> v2(n, 0);
-		for (long long k = 0/*(r / stop) * stop*/; k <  ((r % stop) - 1); k ++) {
-			 cerr << "Iter "<< k;
+		for (long long it = 0/*(r / stop) * stop*/; it <  d ; it++) {
+			 //cerr << "Iter "<< it;
 			 mid = select(v2, k);
 		}
 		set<int> used;
@@ -73,18 +79,18 @@ int main() {
 			min = v2[minPos];
 		}
 		for (int j = 0; j < n; j ++) {
-			cerr << " n " << v2[j];
+			//cerr << " n " << v2[j];
 		}
 		
-		cerr << "stop " << stop;
+		cout << "Case #" << i+1<<  ":" ;
 		for (int j = 0; j < k; j++)
 		{
-			for (int i = 0; i < v2.size(); i++) {
-				if(used.find(i) != used.end())
+			for (int iter = 0; iter < v2.size(); iter++) {
+				if(used.find(iter) != used.end())
 					continue;
-				if(v2[i] < min) {
-					min = v2[i];
-					minPos = i;
+				if(v2[iter] < min) {
+					min = v2[iter];
+					minPos = iter;
 				}
 			}
 			used.insert(minPos);

@@ -2,10 +2,12 @@
 #include <set>
 #include <iostream>
 #include <sstream>
+#include <algorithm>
 
 using namespace std;
 // we should iterate and wait when all v[i] == v[i-1]
 		vector<string> attr;
+		vector<pair<int, int>> v3;
 long long select(vector<int> &v, int k) {
 	int min = 6000;
 	int minPos = 0;
@@ -16,20 +18,14 @@ long long select(vector<int> &v, int k) {
 	set<int> initial;
 	//set<int> mid;
 	long long mid = 0;
+	sort(v3.begin(), v3.end());
+	
 	for (int j = 0; j < k; j++)
 	{
-		for (int i = 0; i < v.size(); i++) {
-			if(used.find(i) != used.end())
-				continue;
-			if(v[i] < min) {
-				min = v[i];
-				minPos = i;
-			}
-		}
-		used.insert(minPos);
+		
 		//mid += 1 << minPos;
 	//cerr << attr[minPos] << " " <<"s";
-		v[minPos] ++;
+		v3[j].first ++;
 		min = 6000;
 	}
 //cerr << endl;
@@ -67,6 +63,7 @@ int main() {
 		}
 		for (int j = 0; j < n; j ++) {
 			in >> attr[j];
+			v3.push_back(pair<int, int>(0, j));
 		}
 		long long stop;
 		/*

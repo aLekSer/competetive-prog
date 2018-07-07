@@ -6,12 +6,23 @@
 
 using namespace std;
 // we should iterate and wait when all v[i] == v[i-1]
-		vector<string> attr;
-		vector<pair<int, int>> v3;
+
+// run command:
+// cat ~/Downloads/tourist.txt |  ./a.out - > ./Output.txt
+
+vector<string> attr;
+vector<pair<int, int>> v3;
+bool pairCompare(const std::pair<int, int>& f, const std::pair<int, int>& s) {
+	if (f.first == s.first) {
+		return f.second < s.second;
+	}
+  return f.first < s.first;
+
+}
 long long select(vector<int> &v, int k) {
 	int min = 6000;
 	int minPos = 0;
-	sort(v3.begin(), v3.end());
+	sort(v3.begin(), v3.end(), pairCompare);
 	
 	for (int j = 0; j < k; j++)
 	{

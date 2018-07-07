@@ -11,13 +11,6 @@ using namespace std;
 long long select(vector<int> &v, int k) {
 	int min = 6000;
 	int minPos = 0;
-	if(v[minPos] < min) {
-		min = v[minPos];
-	}
-	set<int> used;
-	set<int> initial;
-	//set<int> mid;
-	long long mid = 0;
 	sort(v3.begin(), v3.end());
 	
 	for (int j = 0; j < k; j++)
@@ -26,7 +19,6 @@ long long select(vector<int> &v, int k) {
 		//mid += 1 << minPos;
 	//cerr << attr[v3[j].second] << " " <<" s ";
 		v3[j].first ++;
-		min = 6000;
 	}
 //cerr << endl;
 /*
@@ -41,18 +33,20 @@ long long select(vector<int> &v, int k) {
 }
 int main() {
 	int t;
-	/*
+	/** /
 		string s = "1 50 50 100000\n";
 		for (int i = 0 ; i < 50 ; i ++) {
 			
 			s +=  to_string(i) + " ";
 		}
 		stringstream in(s);
-		*/
+		/*/
 	cin >> t;
 	for (int i = 0; i < t; i++)
 	{
 		int n, k;
+		v3 = 
+		vector<pair<int, int>> ();
 		long long r;
 		cin >> n >> k >> r;
 		vector<int> v(n, 0);
@@ -65,7 +59,11 @@ int main() {
 		}
 		for (int j = 0; j < n; j ++) {
 			cin >> attr[j];
-			v3.push_back(pair<int, int>(0, j));
+			v3.push_back(make_pair(0, j));
+		}
+		for (int j = 0; j < n; j ++) {
+			//cerr << v3[j].first << " d " << v3[j].second << endl;
+//v3.push_back(make_pair(0, j));
 		}
 		long long stop;
 		/*
@@ -99,9 +97,8 @@ int main() {
 		//sprintf(s2, "%x", mid);
 		//cerr << s2 << endl;
 			for (int iter = 0; iter < k; iter++) {
-				
                     mid =  mid | (1ULL << v3[iter].second);
-
+					//cerr << v3[iter].second << " n: " << iter << " " ;
 					//cout << attr[v3[iter].second] << " ";
 			}
 

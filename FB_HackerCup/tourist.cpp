@@ -1,6 +1,7 @@
 #include <vector>
 #include <set>
 #include <iostream>
+#include <sstream>
 
 using namespace std;
 // we should iterate and wait when all v[i] == v[i-1]
@@ -44,14 +45,20 @@ long long select(vector<int> &v, int k) {
 }
 int main() {
 	int t;
-	cin >> t;
+		string s = "1 50 50 100000\n";
+		for (int i = 0 ; i < 50 ; i ++) {
+			
+			s +=  to_string(i) + " ";
+		}
+		stringstream in(s);
+	in >> t;
 	for (int i = 0; i < t; i++)
 	{
 		int n, k;
 		long long r;
-		cin >> n >> k >> r;
+		in >> n >> k >> r;
 		vector<int> v(n, 0);
-		unsigned int mid  = 0;
+		unsigned long long mid  = 0;
 		long long init = 0;
 		attr = vector<string> (n);
 		for (int j = 0; j < k; j++)
@@ -59,7 +66,7 @@ int main() {
 			init += 1 << j;
 		}
 		for (int j = 0; j < n; j ++) {
-			cin >> attr[j];
+			in >> attr[j];
 		}
 		long long stop;
 		/*
@@ -110,11 +117,20 @@ int main() {
 			used.insert(minPos);
 			//cout << attr[minPos] << " ";
 			v2[minPos] ++;
-			mid =  mid | (1 << minPos);
+			mid =  mid | (1ULL << minPos);
+			if (minPos > 48)
+			{
+			 cerr << "?1";
+
+			}
 			min = 6000;
 		}
+		char s2 [40];
+		cerr << mid << endl;
+		sprintf(s2, "%x", mid);
+		cerr << s2 << endl;
 			for (int iter = 0; iter < 55; iter++) {
-				if (mid & (1 << iter)) 
+				if (mid & (1ULL << iter)) 
 					cout << attr[iter] << " ";
 			}
 			//cerr << " " << mid << " ";

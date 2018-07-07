@@ -4,6 +4,7 @@
 
 using namespace std;
 // we should iterate and wait when all v[i] == v[i-1]
+		vector<string> attr;
 long long select(vector<int> &v, int k) {
 	int min = 6000;
 	int minPos = 0;
@@ -25,13 +26,21 @@ long long select(vector<int> &v, int k) {
 			}
 		}
 		used.insert(minPos);
-		mid += 1 << minPos;
-		//cerr << minPos << " " <<"s";
+		//mid += 1 << minPos;
+	//cerr << attr[minPos] << " " <<"s";
 		v[minPos] ++;
 		min = 6000;
 	}
+//cerr << endl;
+/*
+	for (int i = 1; i < v.size() ; i ++) {
+		if (v[i] != v[i-1])
+			return 0;
+	}
+	*/
+	return -1;
 	//cerr <<  endl;
-	return mid;
+	//return mid;
 }
 int main() {
 	int t;
@@ -41,10 +50,10 @@ int main() {
 		int n, k;
 		long long r;
 		cin >> n >> k >> r;
-		vector<string> attr(n);
 		vector<int> v(n, 0);
-		long long mid ;
+		unsigned int mid  = 0;
 		long long init = 0;
+		attr = vector<string> (n);
 		for (int j = 0; j < k; j++)
 		{
 			init += 1 << j;
@@ -53,36 +62,41 @@ int main() {
 			cin >> attr[j];
 		}
 		long long stop;
+		/*
 		for (int l = 0; l < n * n; l++ ) {
 			 mid = select(v, k);
-			 if (l != 0 && mid == init) {
+			 if (l != 0 && mid ==  -1 ) {// init) {
 				 //cerr << l;
 				 stop = l;
 				 break;
 			 }
 		}
+		*/
+		vector<int> v2(n, 0);
+		stop = k * n;
 		//cerr << "stop " << stop << " " << ((r % stop) - 1);
-		long long d = ((r % stop) - 1);
+		/*
+		*/
+		long long d = ((r % stop)  -1);
 		if (((r % stop) - 1) <= 0) {
 			d += stop;
 		}
 
-		vector<int> v2(n, 0);
 		for (long long it = 0/*(r / stop) * stop*/; it <  d ; it++) {
 			 //cerr << "Iter "<< it;
-			 mid = select(v2, k);
+			 /*mid =*/ select(v2, k);
 		}
 		set<int> used;
 		int min = 6000;
 		int minPos = 0;
-		if(v2[minPos] < min) {
+		if(v2[minPos] < min) {	
 			min = v2[minPos];
 		}
 		for (int j = 0; j < n; j ++) {
-			//cerr << " n " << v2[j];
+		//cerr << " n " << v2[j];
 		}
 		
-		cout << "Case #" << i+1<<  ":" ;
+		cout << "Case #" << i+1<<  ": " ;
 		for (int j = 0; j < k; j++)
 		{
 			for (int iter = 0; iter < v2.size(); iter++) {
@@ -94,10 +108,16 @@ int main() {
 				}
 			}
 			used.insert(minPos);
-			cout << attr[minPos] << " ";
+			//cout << attr[minPos] << " ";
 			v2[minPos] ++;
+			mid =  mid | (1 << minPos);
 			min = 6000;
 		}
+			for (int iter = 0; iter < 55; iter++) {
+				if (mid & (1 << iter)) 
+					cout << attr[iter] << " ";
+			}
+			//cerr << " " << mid << " ";
 		cout << endl;
 	}
 	return 0;

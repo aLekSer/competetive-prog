@@ -24,7 +24,7 @@ long long select(vector<int> &v, int k) {
 	{
 		
 		//mid += 1 << minPos;
-	//cerr << attr[minPos] << " " <<"s";
+	//cerr << attr[v3[j].second] << " " <<" s ";
 		v3[j].first ++;
 		min = 6000;
 	}
@@ -41,18 +41,20 @@ long long select(vector<int> &v, int k) {
 }
 int main() {
 	int t;
+	/*
 		string s = "1 50 50 100000\n";
 		for (int i = 0 ; i < 50 ; i ++) {
 			
 			s +=  to_string(i) + " ";
 		}
 		stringstream in(s);
-	in >> t;
+		*/
+	cin >> t;
 	for (int i = 0; i < t; i++)
 	{
 		int n, k;
 		long long r;
-		in >> n >> k >> r;
+		cin >> n >> k >> r;
 		vector<int> v(n, 0);
 		unsigned long long mid  = 0;
 		long long init = 0;
@@ -62,7 +64,7 @@ int main() {
 			init += 1 << j;
 		}
 		for (int j = 0; j < n; j ++) {
-			in >> attr[j];
+			cin >> attr[j];
 			v3.push_back(pair<int, int>(0, j));
 		}
 		long long stop;
@@ -81,8 +83,8 @@ int main() {
 		//cerr << "stop " << stop << " " << ((r % stop) - 1);
 		/*
 		*/
-		long long d = ((r % stop)  -1);
-		if (((r % stop) - 1) <= 0) {
+		long long d = ((r % stop) );
+		if (((r % stop) ) <= 0) {
 			d += stop;
 		}
 
@@ -90,46 +92,24 @@ int main() {
 			 //cerr << "Iter "<< it;
 			 /*mid =*/ select(v2, k);
 		}
-		set<int> used;
-		int min = 6000;
-		int minPos = 0;
-		if(v2[minPos] < min) {	
-			min = v2[minPos];
-		}
-		for (int j = 0; j < n; j ++) {
-		//cerr << " n " << v2[j];
-		}
 		
 		cout << "Case #" << i+1<<  ": " ;
-		for (int j = 0; j < k; j++)
-		{
-			for (int iter = 0; iter < v2.size(); iter++) {
-				if(used.find(iter) != used.end())
-					continue;
-				if(v2[iter] < min) {
-					min = v2[iter];
-					minPos = iter;
-				}
-			}
-			used.insert(minPos);
-			//cout << attr[minPos] << " ";
-			v2[minPos] ++;
-			mid =  mid | (1ULL << minPos);
-			if (minPos > 48)
-			{
-			 cerr << "?1";
+		//char s2 [40];
+		//cerr << mid << endl;
+		//sprintf(s2, "%x", mid);
+		//cerr << s2 << endl;
+			for (int iter = 0; iter < k; iter++) {
+				
+                    mid =  mid | (1ULL << v3[iter].second);
 
+					//cout << attr[v3[iter].second] << " ";
 			}
-			min = 6000;
-		}
-		char s2 [40];
-		cerr << mid << endl;
-		sprintf(s2, "%x", mid);
-		cerr << s2 << endl;
-			for (int iter = 0; iter < 55; iter++) {
-				if (mid & (1ULL << iter)) 
-					cout << attr[iter] << " ";
-			}
+
+                 for (int iter = 0; iter < 55; iter++) {
+                   if (mid & (1ULL << iter))
+                     cout << attr[iter] << " ";
+				 }
+
 			//cerr << " " << mid << " ";
 		cout << endl;
 	}

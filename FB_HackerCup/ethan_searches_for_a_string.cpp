@@ -1,7 +1,7 @@
 //#include <vector>
 #include <iostream>
-#include <string>
-#include <algorithm>
+//#include <string>
+//#include <algorithm>
 //#include <sstream>
 
 using namespace std;
@@ -80,8 +80,8 @@ int main() {
 		string b = getB(a);
 		if (b  == "") {
 			cout << "Impossible" << endl; 
-			string number = a + a;
-			
+			//string number = a + a;
+			/*
 			do  {//cout << "Permutation: " << number << endl;
  		std::size_t found = 
 				number.find(a);
@@ -93,12 +93,12 @@ int main() {
 				}
 			}
 			while (next_permutation(number.begin(),number.end()));
-			/**/
+			*/
 		} else {
 			cout << b << endl;
 		}
- 		std::size_t found = b.find(a);
-		cout <<  "Check " << ((b == "" && found == string::npos) || (b != "" && found != string::npos) )<< endl;
+ 		//std::size_t found = b.find(a);
+		//cout <<  "Check " << ((b == "" && found == string::npos) || (b != "" && found != string::npos) )<< endl;
 	}
 	return 0;
 }

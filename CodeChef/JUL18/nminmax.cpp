@@ -2,6 +2,7 @@
 #include <iostream>
 #include <string>
 #include <vector>
+//Task: NMNMX
 
 using namespace std;
 const int mod = 1000000007;
@@ -64,3 +65,4 @@ int main()
 		cout << combin(n, k, v) << endl;
 	}
 }
+

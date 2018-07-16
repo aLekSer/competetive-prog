@@ -27,7 +27,7 @@ public:
 	}
 };
  
- vector<vector<list<int>>> v;
+ vector<vector<vector<int>>> v;
 Graph::Graph(int V)
 {
     this->V = V;
@@ -53,7 +53,7 @@ bool Graph::isCyclicUtil(int v, bool visited[], int parent, int a_size)
         {
            if (isCyclicUtil(*i, visited, v, a_size + 1)) {
 				size  =  a_size + 1;
-			   cerr <<  "path " <<  *i;
+			   //cerr <<  "path " <<  *i;
               return true;
 		   }
         }
@@ -133,6 +133,7 @@ bool isReachable(int s, int d)
             // return true
             if (v[s][i].size() != 0 && i == d) {
 				path.push_back(d);
+				path.push_back(d);
                 return true;
 			}
  
@@ -152,13 +153,32 @@ bool isReachable(int s, int d)
     return false;
 }
 
+long long combin(int N, int K, vector<list<int>>& v)
+{
+    std::string bitmask(K, 1); // K leading 1's
+    bitmask.resize(N, 0); // N-K trailing 0's
+	long long res = 1;
+	long long total = 0;
+	long long max = 0;
+    // print integers and permute bitmask
+    do {
+		int count = 0;
+        for (int i = 0; i < N; ++i) // [0..N-1] integers
+        {
+            if (bitmask[i]) {
+					//cerr << i;
+					count ++;
+			} 
+        }
+    } while (std::prev_permutation(bitmask.begin(), bitmask.end()));
+}
 int main()
 {
 	int n = 0, m;
 	cin >> n >> m;
 	vector<ll> a(n);
 	vector<ll> c(m), k(m);
-	v = vector<vector<list<int>>>(n, vector<list<int>>(n));
+	v = vector<vector<vector<int>>>(n, vector<vector<int>>(n));
 	for (int i = 0; i < m; i++) {
 		int u, e ,w ;
 		cin >> u >> e >> w;
@@ -168,57 +188,76 @@ int main()
 	int q;
 	cin >> q;
 	
+		vector<vector<int>> color;
+	vector<int> p;
 	for (int i = 0; i < q; i++) {
 		que = list<int> ();
 		int u,e ,w ;
 		cin >> u >> e;
-		cerr << endl;
+		//cerr << endl;
 		path = vector<int>();
+		color = vector<vector<int>> ();
+	 p = vector<int>();
 		isReachable(u-1, e-1);
 		for (vector<int>::iterator it = path.begin(); it != path.end(); it+= 2 ){
-			cerr << "Path" << *it + 1 << endl;
+			//cerr << "Path" << *it + 1 << endl;
+			p.push_back(*it);
 		}
-	}
-	//vector<set<int>> g(n, set<int>());
-	Graph g(n);
+		vector<int>::iterator it1 = p.begin();
+		vector<int>::iterator it = p.begin() + 1;
+		for (; it != p.end(); it+= 1 ){
+			//cerr << "Edge " << *it1 << *it ;
+			color.push_back(v[*it1][*it]);
+			it1 ++;
 
-	for (int i = 0; i < n; i++) {
-		cin >> a[i];
-	}
-	int t; 
-	int x;
-	int y;
-	int v;
-	for (int i = 0; i < m; i++) {
-		cin >> t;
-		if (t == 1) {
-			cin >> x;
-			cin >> y;
-			a[x] = y;
-		} else if (t == 2) {
-			cin >> x;
-			cin >> y;	
-			cerr << "Adding edge " << x << " " << y;
-			//g[x].insert(y);		
-			g.addEdge(x, y);
-		} else if (t == 3) {
-			cin >> x;
-			cin >> y;
-			cin >> v;
-			if (g.isCyclic(x)) {
-				int s = g.getSize();
-					cerr << "Number" << i<< ": " <<  s << endl;
-				if ((s + 1) % 2 == 1 ) {
-					cout << 0 << endl;
-				} else {
-					cout << 1 << endl;
-				}
+			////cerr << "Path" << *it + 1 << endl;
+
+		}
+		long long max = 0;
+			for (vector<vector<int>>::iterator it = color.begin(); it != color.end(); it+= 1 ){
+				if (it->size() > max )
+			      max = it->size();
+				//cerr << "Size" << it->size() << endl;
 			}
-		}
-		
+			long long res =  1;
+			for (int i = 0; i < color.size(); i++)
+			 res *= max;
+			 long long t = 0;
+			 long long ma = 0;
+			for (long long j = 0; j < res; j ++) {
+			 long long t = 0;
+				long long l2 = j;
+				long long prev_c = -1;
+				for (vector<vector<int>>::iterator it = color.begin(); it != color.end(); it+= 1 ) {
+					int diff = l2 % max ;
+					l2 = l2 / max;
+						if (diff >= it->size()) {
+							//cerr<<"break" << endl;
+						 break;
+						}
+					if (prev_c != -1) {
+						if (diff >= it->size()) {
+							//cerr<<"break" << endl;
+						 break;
+						}
+						 if( prev_c != (*it)[diff]) {
+							t++;
+						 }
+					}
+					 prev_c = (*it)[diff];
+					
+				}
+				if (t > ma )
+				 ma = t;
+			}
+
+			//cerr << endl;
+			cout << ma << endl;
+			//cerr << "Outputed" << endl;
 	}
 
-	cerr << "ASDD";
+
+	//cerr << "ASDD";
 	/*
 	for (int i = 0; i < m; i++) {
 		long long min = 9223372036854775807;

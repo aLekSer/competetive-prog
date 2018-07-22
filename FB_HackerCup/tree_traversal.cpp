@@ -375,7 +375,7 @@ int main() {
         preorder(root, pre2);
         //postorder(root, post2);
         postOrderTraversal(root, post2);
-        
+        /*
         cout << endl << "Pre2    ";
         for (int i =0; i < pre2.size(); i++) {
             cout << pre2[i] << " ";
@@ -385,6 +385,7 @@ int main() {
         for (int i =0; i < post2.size(); i++) {
             cout << post2[i] << " ";
         }
+        */
          //cerr << endl;
          //Missmatched vertices
          int mism = 0;

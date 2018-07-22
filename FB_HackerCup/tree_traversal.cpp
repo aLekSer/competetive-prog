@@ -334,6 +334,7 @@ int main() {
         int n, k;
         cin >> n >> k;
 		cout << "Case #" << i + 1<<  ":";
+        cerr << endl << n <<  " "  << k << endl;
 		//cout << a << endl;
         Node * root = new Node(1);
         vector<Node *> vert(n);

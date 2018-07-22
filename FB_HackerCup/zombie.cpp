@@ -70,8 +70,6 @@ int  main() {
 		cout << "Case #" << i+1<<  ": " ;
         int n, m;
         cin >> n >> m;
-    ll left = 0;
-    ll right = 0;
         vector<int> a(n), b(n), l(n), r(n);
         vector<bool> v(n, false);
         vector<int> y(m), h(m);
@@ -80,12 +78,15 @@ int  main() {
         }
         for (int j = 0; j < m; j ++) {
             cin >> y[j] >> h[j];
-            v[y[j]] = true;
+            v[y[j] -1] = true;
         }
         for (int j = 0; j < m; j ++) {
         }
         for (int j = 0; j < n; j ++) {
+    ll left = 0;
+    ll right = 0;
             if(!v[j]) {
+                cerr << j << " j" << endl;
                 for (int k = 0 ; k < m ; k++) {
                     if (y[k] - 1 < j ) {
                         left = max(left, (ll)h[k]);
@@ -97,6 +98,8 @@ int  main() {
                 ll den = 1;
                 if (j > 0) {
                     p = -(left -b[j - 1]);
+                    if (p < 0)
+                     continue;
                     cerr << (long long) p << "pr" << endl;
                     den *= (b[j-1] - a[j-1] + 1);
                 }
@@ -104,6 +107,8 @@ int  main() {
                 ll den2 = 1;
                 if (j <= n - 2) {
                     p2 = - (right - b[j]);
+                    if (p2< 0)
+                     continue;
                     cerr <<(long long)  p2 << "pr2" << endl;
                     den *= (b[j] - a[j] + 1);
                 }

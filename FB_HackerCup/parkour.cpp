@@ -79,14 +79,17 @@ int main() {
 		vector<ll> h(n);
 		cin >>  h[0] >> h[1] >> w >> x >> y >> z;
 		ch(w, x, y, z, h);
+		vector<ll> hd(n);
 
 		for (int j = 0; j < n; j++) {
 							   cerr << h[j] << " h ";
+							   hd[j] = h[j];
 
 		}
 							   cerr << endl; 
 
 		vector<int> a(m), b(m), u(m) , d(m);
+		
 		for (int j = 0; j < m; j++)
 		{
 			cin >> a[j] >> b[j] >> u[j] >> d[j];
@@ -101,20 +104,22 @@ int main() {
 				for (int k = a[j] ; k < b[j] ; k ++)
 				{
 					cerr << k  << "Up " << endl;
-					if ( h[k] > h[k-1]) 
+					if ( hd[k] > hd[k-1]) 
 					   {
-						   double u1 =  h[k] - h[k-1];
+						   double u1 =  hd[k] - hd[k-1];
 						   if (u1 > u[j]) {
 							   change[k] = max(u1 - u[j], change[k]);
+							   hd[k] = hd[k-1] + u[j];
 							   cerr << change[k] << " change " << endl; 
 						   }
 
 					   }
-					if ( h[k] < h[k-1]) 
+					if ( hd[k] < hd[k-1]) 
 					   {
 						   double d1 =  - h[k] + h[k-1];
 						   if (d1 > d[j]) {
 							   dchange[k] = min(- (d1 - d[j]), dchange[k]);
+							   hd[k] = hd[k-1] - d[j];
 							   cerr << dchange[k] << " d	change " << endl; 
 						   }
 
@@ -128,19 +133,21 @@ int main() {
 				for (int k = a[j] - 1; k > b[j] - 1  ; k --)
 				{
 					cerr << k  << "Down " << endl;
-					if ( h[k] < h[k-1]) 
+					if ( hd[k] < hd[k-1]) 
 					   {
-						   double u1 =  h[k-1] - h[k];
+						   double u1 =  hd[k-1] - hd[k];
 						   if (u1 > u[j]) {
+							 hd[k-1]   = hd[k]  + u[j];
 							   change2[k] = max(u1 - u[j], change2[k]);
 							   cerr << change2[k] << " change " << endl; 
 						   }
 
 					   }
-					if ( h[k] > h[k-1]) 
+					if ( hd[k] > hd[k-1]) 
 					   {
-						   double d1 =  - h[k-1] + h[k];
+						   double d1 =  - hd[k-1] + hd[k];
 						   if (d1 > d[j]) {
+							 hd[k-1]   = hd[k]  - d[j];
 							   dchange2[k] = min(- (d1 - d[j]), dchange2[k]);
 							   cerr << dchange2[k] << " d2	change " << endl; 
 						   }
@@ -151,24 +158,40 @@ int main() {
 				}
 			}
 		}
+		cerr <<  "Investigate " << endl;
+
+		for (int i = 0; i < n ; i++) {
+			cerr << hd[i] - h[i]<< " ";
+		}
+		cerr << endl;
+		ll max = 0;
 		for (int i = 0; i < n ; i++) {
 							   cerr << change[i] << " " ;
+							   if (abs(change[i]) > max ) 
+							   	max  = abs(change[i]);
 
 		}
 		cerr << endl << "d	change " << endl;
 		for (int i = 0; i < n ; i++) {
 							   cerr << dchange[i] << " " ; 
+							   if (abs(dchange[i]) > max ) 
+							   	max  = abs(dchange[i]);
 		}
 		cerr << endl; 
 		for (int i = 0; i < n ; i++) {
 							   cerr << change2[i] << " " ;
+							   if (abs(change2[i]) > max ) 
+							   	max  = abs(change2[i]);
 
 		}
 		cerr << endl << "d	change " << endl;
 		for (int i = 0; i < n ; i++) {
 							   cerr << dchange2[i] << " " ; 
+							   if (abs(dchange2[i]) > max ) 
+							   	max  = abs(dchange2[i]);
 		}
-		cerr << endl; 
+		cerr << endl;
+		cerr << max << endl; 
 		long long stop;
 		/*
 		for (int l = 0; l < n * n; l++ ) {

@@ -273,48 +273,51 @@ class Graph
     list<int> *adj;
  
     // A function used by DFS
-    void DFSUtil(int v, bool visited[]);
+    void DFSUtil(int v, bool visited[], vector<int> & a);
 public:
     Graph(int V);   // Constructor
     void addEdge(int v, int w);
-    void connectedComponents();
+    void connectedComponents(vector<vector<int>> & v);
 };
  
 // Method to print connected components in an
 // undirected graph
-void Graph::connectedComponents()
+void Graph::connectedComponents(vector<vector<int>> & v2)
 {
     // Mark all the vertices as not visited
     bool *visited = new bool[V];
     for(int v = 0; v < V; v++)
         visited[v] = false;
  
-    cerr << "connectedCommponents";
+    //cerr << "connectedComponents";
     for (int v=0; v<V; v++)
     {
         if (visited[v] == false)
         {
+            vector<int> a;
             // print all reachable vertices
             // from v
-            DFSUtil(v, visited);
+            DFSUtil(v, visited, a);
+            v2.push_back(a);
  
-            cerr << "\n";
+            //cerr << "\n";
         }
     }
 }
  
-void Graph::DFSUtil(int v, bool visited[])
+void Graph::DFSUtil(int v, bool visited[], vector<int> & a )
 {
     // Mark the current node as visited and print it
     visited[v] = true;
-    cerr << v << " ";
+    //cerr << v << " ";
+    a.push_back(v);
  
     // Recur for all the vertices
     // adjacent to this vertex
     list<int>::iterator i;
     for(i = adj[v].begin(); i != adj[v].end(); ++i)
         if(!visited[*i])
-            DFSUtil(*i, visited);
+            DFSUtil(*i, visited , a);
 }
  
 Graph::Graph(int V)
@@ -336,7 +339,7 @@ int main() {
 	for (int i = 0; i < t ; i ++ ) {
         int n, k;
         cin >> n >> k;
-		cout << "Case #" << i + 1<<  ": ";
+		cout << "Case #" << i + 1<<  ":";
 		//cout << a << endl;
         Node * root = new Node(1);
         vector<Node *> vert(n);
@@ -364,30 +367,30 @@ int main() {
         /*
         printPreorder(root, pre);
         printPostorder(root, post);
-        cerr << "Pre";
+        //cerr << "Pre";
         for (int i =0; i < pre.size(); i++) {
-            cerr << pre[i] << " ";
+            //cerr << pre[i] << " ";
         }
-         cerr << endl;
-        cerr << "Post ";
+         //cerr << endl;
+        //cerr << "Post ";
         for (int i =0; i < post.size(); i++) {
-            cerr << post[i] << " ";
+            //cerr << post[i] << " ";
         }
-         cerr << endl;
+         //cerr << endl;
         */
         preorder(root, pre2);
         //postorder(root, post2);
         postOrderTraversal(root, post2);
-        cerr << "Pre2";
+        //cerr << "Pre2";
         for (int i =0; i < pre2.size(); i++) {
-            cerr << pre2[i] << " ";
+            //cerr << pre2[i] << " ";
         }
-         cerr << endl;
-        cerr << "Post2  ";
+         //cerr << endl;
+        //cerr << "Post2  ";
         for (int i =0; i < post2.size(); i++) {
-            cerr << post2[i] << " ";
+            //cerr << post2[i] << " ";
         }
-         cerr << endl;
+         //cerr << endl;
          //Missmatched vertices
          int mism = 0;
          set<int> s;
@@ -396,11 +399,32 @@ int main() {
          Graph g(n);
         for (int i = 0 ; i < min(pre2.size(), post2.size()); i ++) {
             if (pre2[i] != post2[i]) {
-                g.addEdge(pre2[i], post2[i]);
+                g.addEdge(pre2[i] - 1, post2[i] - 1);
                 mism ++;
             }
         }
-        g.connectedComponents();
+        vector<vector<int>> v2;
+        g.connectedComponents(v2); 
+        vector <int> res(n);
+        if (v2.size() < k) {
+            cout << " Impossible";
+        } else { 
+            int c = 1;
+            for (int i = 0; i < v2.size(); i ++) {
+                for (int j = 0 ; j < v2[i].size(); j ++ ) {
+                    res[v2[i][j]] = c; 
+                }
+                c ++ ;
+                if ( c > k) {
+                    c = k;
+                }
+            }
+            for (            vector <int>::iterator it = res.begin(); it != res.end(); it ++)
+            {
+                cout << " " << *it;
+            } 
+        }
+        cout << endl;
  		//std::size_t found = b.find(a);
 		//cout <<  "Check " << ((b == "" && found == string::npos) || (b != "" && found != string::npos) )<< endl;
 	}

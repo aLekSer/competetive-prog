@@ -233,6 +233,7 @@ class Graph
  
     // A function used by DFS
     void DFSUtil(int v, bool visited[], vector<int> & a);
+    void DFS(int s,bool visited[], vector<int> & a);
 public:
     Graph(int V);   // Constructor
     void addEdge(int v, int w);
@@ -248,7 +249,7 @@ void Graph::connectedComponents(vector<vector<int>> & v2)
     for(int v = 0; v < V; v++)
         visited[v] = false;
  
-    //cerr << "connectedComponents";
+    //cerr << "connectedComponenDFS(int s,bool visited[])ts";
     for (int v=0; v<V; v++)
     {
         if (visited[v] == false)
@@ -256,7 +257,8 @@ void Graph::connectedComponents(vector<vector<int>> & v2)
             vector<int> a;
             // print all reachable vertices
             // from v
-            DFSUtil(v, visited, a);
+           // DFSUtil(v, visited, a);
+            DFS(v, visited, a);
             v2.push_back(a);
  
             //cerr << "\n";
@@ -278,7 +280,40 @@ void Graph::DFSUtil(int v, bool visited[], vector<int> & a )
         if(!visited[*i])
             DFSUtil(*i, visited , a);
 }
+ void Graph::DFS(int s,bool visited[], vector<int> & a)
+{
+    // Initially mark all verices as not visited
+    //vector<bool> visited(V, false);
  
+    // Create a stack for DFS
+    stack<int> stack;
+ 
+    // Push the current source node.
+    stack.push(s);
+ 
+    while (!stack.empty())
+    {
+        // Pop a vertex from stack and print it
+        s = stack.top();
+        stack.pop();
+ 
+        // Stack may contain same vertex twice. So
+        // we need to print the popped item only
+        // if it is not visited.
+        if (!visited[s])
+        {
+            a.push_back(s);
+            visited[s] = true;
+        }
+ 
+        // Get all adjacent vertices of the popped vertex s
+        // If a adjacent has not been visited, then puah it
+        // to the stack.
+        for (auto i = adj[s].begin(); i != adj[s].end(); ++i)
+            if (!visited[*i])
+                stack.push(*i);
+    }
+}
 Graph::Graph(int V)
 {
     this->V = V;

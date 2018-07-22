@@ -1,5 +1,6 @@
 #include <vector>
 #include <iostream>
+#include <stack>
 //#include <string>
 //#include <algorithm>
 //#include <sstream>
@@ -136,8 +137,132 @@ void printPostorder(struct Node* node, vector<int> & v)
     // now deal with the node
     v.push_back(node->data);
 }
+ /*
+void preorder(struct Node* node, vector<int> & v)
+{
+    if (node == NULL)
+        return;
  
+    /* first print data of node 
+    Node * node1;
+    Node * node2;
+    while (v.size() != N) {
+        v.push_back(node->data);
+
+        /* then recur on left sutree 
+        node = node->left;
+
+        /* now recur on right subtree 
+        node = node->right;
+
+    }
+} */
+//iterativePreorder
+void preorder(Node *root, vector<int> & v)
+{
+    // Base Case
+    if (root == NULL)
+       return;
  
+    // Create an empty stack and push root to it
+    stack<Node *> nodeStack;
+    nodeStack.push(root);
+ 
+    /* Pop all items one by one. Do following for every popped item
+       a) print it
+       b) push its right child
+       c) push its left child
+    Note that right child is pushed first so that left is processed first */
+    while (nodeStack.empty() == false)
+    {
+        // Pop the top item from stack and print it
+        struct Node *node = nodeStack.top();
+        v.push_back(node->data);
+        nodeStack.pop();
+ 
+        // Push right and left children of the popped node to stack
+        if (node->right)
+            nodeStack.push(node->right);
+        if (node->left)
+            nodeStack.push(node->left);
+    }
+}
+void postorder(Node *root, vector<int> & v)
+{
+    // Base Case
+    if (root == NULL)
+       return;
+    std::stack<Node*> leftStack;
+    std::stack<Node*> rightStack;
+
+    Node* currentNode = root;
+    while( !leftStack.empty() || currentNode != NULL )
+    {
+        if( currentNode )
+        {
+            leftStack.push( currentNode );
+            currentNode = currentNode->left;
+        }
+        else
+        {
+            currentNode = leftStack.top();
+            leftStack.pop();
+
+            rightStack.push( currentNode );
+            currentNode = currentNode->right;
+        }
+    }
+
+    while( !rightStack.empty() )
+    {
+        currentNode = rightStack.top();
+        rightStack.pop();
+
+        v.push_back(currentNode->data);
+    }
+}
+void postOrderTraversal(Node* root, vector<int> & v)
+{
+    if(root == NULL)
+        return;
+
+    stack<Node*> st;
+    st.push(root);
+
+    //store most recent 'visited' node
+    Node* prev=root;
+
+    while(st.size() > 0)
+    {
+        Node* top = st.top();
+        if((top->left == NULL && top->right == NULL))
+        {
+            prev = top;
+            v.push_back(top->data);
+            st.pop();
+            continue;
+        }
+        else
+        {
+            //we can check if we are going back up the tree if the current
+            //node has a left or right child that was previously outputted
+            if((top->left == prev) || (top->right== prev))
+            {
+                prev = top;
+                v.push_back(top->data);
+                st.pop();
+                continue;
+            }
+
+            if(top->right != NULL)
+                st.push(top->right);
+
+            if(top->left != NULL)
+                st.push(top->left);
+        }
+    }
+}
+
 int main() {
 	int t ;
 	cin >> t;
@@ -168,16 +293,30 @@ int main() {
         printPostorder(root);
         cout << endl;*/
         vector<int> pre, post;
+        vector<int> pre2, post2;
         printPreorder(root, pre);
         printPostorder(root, post);
+        preorder(root, pre2);
+        //postorder(root, post2);
+        postOrderTraversal(root, post2);
         cerr << "Pre";
         for (int i =0; i < pre.size(); i++) {
             cerr << pre[i] << " ";
         }
          cerr << endl;
-        cerr << "Post";
+        cerr << "Post ";
         for (int i =0; i < post.size(); i++) {
             cerr << post[i] << " ";
+        }
+         cerr << endl;
+        cerr << "Pre2";
+        for (int i =0; i < pre2.size(); i++) {
+            cerr << pre2[i] << " ";
+        }
+         cerr << endl;
+        cerr << "Post2  ";
+        for (int i =0; i < post2.size(); i++) {
+            cerr << post2[i] << " ";
         }
          cerr << endl;
         

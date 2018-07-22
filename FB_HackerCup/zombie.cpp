@@ -16,8 +16,10 @@ ll modInverse(ll a, ll m)
     ll x, y;
     ll res = 0;
     ll g = gcdExtended(a, m, &x, &y);
-    if (g != 1)
-        cout << "Inverse doesn't exist";
+    if (g != 1) {
+        cerr << "Inverse doesn't exist";
+        cerr << (long long)a  << " " << (long long)m << endl;
+        }
     else
     {
         // m is added to handle negative x
@@ -46,7 +48,7 @@ ll gcdExtended(ll a, ll b, ll *x, ll *y)
  
     return gcd;
 }
-const ll m = 1000000007;
+const ll mod = 1000000007;
  
 int  main() {
     stringstream in( "2\n" 
@@ -63,12 +65,13 @@ int  main() {
     cin >> t;
 
 
-    ll left = 0;
-    ll right = 0;
     for (int i = 0; i < t; i ++)
     {
+		cout << "Case #" << i+1<<  ": " ;
         int n, m;
         cin >> n >> m;
+    ll left = 0;
+    ll right = 0;
         vector<int> a(n), b(n), l(n), r(n);
         vector<bool> v(n, false);
         vector<int> y(m), h(m);
@@ -80,8 +83,6 @@ int  main() {
             v[y[j]] = true;
         }
         for (int j = 0; j < m; j ++) {
-            cin >> y[j] >> h[j];
-            v[y[j]] = true;
         }
         for (int j = 0; j < n; j ++) {
             if(!v[j]) {
@@ -92,6 +93,25 @@ int  main() {
                         right = max(right,  (ll)h[k]);
                     }
                 }
+                ll p = 1;
+                ll den = 1;
+                if (j > 0) {
+                    p = -(left -b[j - 1]);
+                    cerr << (long long) p << "pr" << endl;
+                    den *= (b[j-1] - a[j-1] + 1);
+                }
+                ll  p2 = 1;
+                ll den2 = 1;
+                if (j <= n - 2) {
+                    p2 = - (right - b[j]);
+                    cerr <<(long long)  p2 << "pr2" << endl;
+                    den *= (b[j] - a[j] + 1);
+                }
+                den2 = modInverse(den, mod);
+                ll res = (p * p2) % mod;
+                res = (res  * den2 ) %mod;
+                cerr << (long long )res << "REs" << endl;
+                cout << " " <<  (long long )res << endl;
 
             }
         }

@@ -79,7 +79,7 @@ int main() {
 		vector<ll> h(n);
 		cin >>  h[0] >> h[1] >> w >> x >> y >> z;
 		ch(w, x, y, z, h);
-		vector<ll> hd(n);
+		vector<double> hd(n);
 
 		for (int j = 0; j < n; j++) {
 							   cerr << h[j] << " h ";
@@ -98,6 +98,7 @@ int main() {
 		vector<double> dchange(n, 0);
 		vector<double> change2(n,0);
 		vector<double> dchange2(n, 0);
+		int diff = 0;
 		for (int j = 0; j < m; j++)
 		{
 			if (b[j] > a[j]) {
@@ -105,20 +106,29 @@ int main() {
 				{
 					cerr << k  << "Up " << endl;
 					if ( hd[k] > hd[k-1]) 
-					   {
+					   { 
 						   double u1 =  hd[k] - hd[k-1];
 						   if (u1 > u[j]) {
+								hd[k] = hd[k-1] - diff;
 							   change[k] = max(u1 - u[j], change[k]);
+								if ( k == a[j]) {
+								   hd[k-1] = (hd[k] - hd[k-1]) / 2 + hd[k-1];
+								   diff = (hd[k] - hd[k-1]);
+								}
 							   hd[k] = hd[k-1] + u[j];
 							   cerr << change[k] << " change " << endl; 
 						   }
 
 					   }
-					if ( hd[k] < hd[k-1]) 
+					 else if ( hd[k] < hd[k-1]) 
 					   {
-						   double d1 =  - h[k] + h[k-1];
+						   double d1 =  - hd[k] + hd[k-1];
 						   if (d1 > d[j]) {
 							   dchange[k] = min(- (d1 - d[j]), dchange[k]);
+							   if ( k == a[j]) { 
+						  			 hd[k-1] = (hd[k] - hd[k-1]) / 2 + hd[k-1];
+								   diff = (hd[k] - hd[k-1]);
+							   }
 							   hd[k] = hd[k-1] - d[j];
 							   cerr << dchange[k] << " d	change " << endl; 
 						   }

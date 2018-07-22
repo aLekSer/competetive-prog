@@ -1,6 +1,9 @@
 #include <vector>
 #include <iostream>
 #include <stack>
+#include <set>
+#include <list>
+#include <map>
 //#include <string>
 //#include <algorithm>
 //#include <sstream>
@@ -262,6 +265,70 @@ void postOrderTraversal(Node* root, vector<int> & v)
         }
     }
 }
+class Graph
+{
+    int V;    // No. of vertices
+ 
+    // Pointer to an array containing adjacency lists
+    list<int> *adj;
+ 
+    // A function used by DFS
+    void DFSUtil(int v, bool visited[]);
+public:
+    Graph(int V);   // Constructor
+    void addEdge(int v, int w);
+    void connectedComponents();
+};
+ 
+// Method to print connected components in an
+// undirected graph
+void Graph::connectedComponents()
+{
+    // Mark all the vertices as not visited
+    bool *visited = new bool[V];
+    for(int v = 0; v < V; v++)
+        visited[v] = false;
+ 
+    cerr << "connectedCommponents";
+    for (int v=0; v<V; v++)
+    {
+        if (visited[v] == false)
+        {
+            // print all reachable vertices
+            // from v
+            DFSUtil(v, visited);
+ 
+            cerr << "\n";
+        }
+    }
+}
+ 
+void Graph::DFSUtil(int v, bool visited[])
+{
+    // Mark the current node as visited and print it
+    visited[v] = true;
+    cerr << v << " ";
+ 
+    // Recur for all the vertices
+    // adjacent to this vertex
+    list<int>::iterator i;
+    for(i = adj[v].begin(); i != adj[v].end(); ++i)
+        if(!visited[*i])
+            DFSUtil(*i, visited);
+}
+ 
+Graph::Graph(int V)
+{
+    this->V = V;
+    adj = new list<int>[V];
+}
+ 
+// method to add an undirected edge
+void Graph::addEdge(int v, int w)
+{
+    adj[v].push_back(w);
+    adj[w].push_back(v);
+}
 
 int main() {
 	int t ;
@@ -292,13 +359,11 @@ int main() {
         cout << endl;
         printPostorder(root);
         cout << endl;*/
-        vector<int> pre, post;
+        //vector<int> pre, post;
         vector<int> pre2, post2;
+        /*
         printPreorder(root, pre);
         printPostorder(root, post);
-        preorder(root, pre2);
-        //postorder(root, post2);
-        postOrderTraversal(root, post2);
         cerr << "Pre";
         for (int i =0; i < pre.size(); i++) {
             cerr << pre[i] << " ";
@@ -309,6 +374,10 @@ int main() {
             cerr << post[i] << " ";
         }
          cerr << endl;
+        */
+        preorder(root, pre2);
+        //postorder(root, post2);
+        postOrderTraversal(root, post2);
         cerr << "Pre2";
         for (int i =0; i < pre2.size(); i++) {
             cerr << pre2[i] << " ";
@@ -319,7 +388,19 @@ int main() {
             cerr << post2[i] << " ";
         }
          cerr << endl;
-        
+         //Missmatched vertices
+         int mism = 0;
+         set<int> s;
+         vector<int> su(n, -1);
+         vector<set<int>> v;
+         Graph g(n);
+        for (int i = 0 ; i < min(pre2.size(), post2.size()); i ++) {
+            if (pre2[i] != post2[i]) {
+                g.addEdge(pre2[i], post2[i]);
+                mism ++;
+            }
+        }
+        g.connectedComponents();
  		//std::size_t found = b.find(a);
 		//cout <<  "Check " << ((b == "" && found == string::npos) || (b != "" && found != string::npos) )<< endl;
 	}

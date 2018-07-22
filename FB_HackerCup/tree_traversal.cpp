@@ -10,49 +10,8 @@
 
 using namespace std;
 
-//contains() function
-//
-
-bool algo(string a, string b) {
-	int i = 0, j = 0;
-	while ( true ) {
-		if (i == a.length()) 
-			return true;
-		if (j == b.length() )
-			return false;
-		if (a[i] == b[j] ) 
-		{
-			//cerr<<"a"<<a[i]<<endl;
-			//cerr<<"b"<<b[j]<<endl;
-			i++; j ++;
-			//cerr << i << endl; 
-			continue;
-
-		}
-		if (i == 0) {
-			j++;
-			continue;
-		}
-		i = 0;
-	}
-	return false;
-}
-
-string getB(string a) {
-	int found = false;
-	for (int i = 1; i < a.length(); i++) {
-		if (a[0] == a[i]) {
-			found = true;
-			for (int j = 1; j < a.length() - i; j ++) {
-				if (a[j] != a[i + j]) {
-					//cerr << i << " " << j;	
-					return a.substr(0, i) + a;
-				}
-			}
-		}
-	}
-	return "";
-}
+// Run Command:
+// cat ~/Downloads/ethan_traverses_a_tree_sample_input.txt | ./t  - >> ./output.txt
 
 struct Node
 {
@@ -381,14 +340,15 @@ int main() {
         preorder(root, pre2);
         //postorder(root, post2);
         postOrderTraversal(root, post2);
-        //cerr << "Pre2";
+        
+        cout << endl << "Pre2    ";
         for (int i =0; i < pre2.size(); i++) {
-            //cerr << pre2[i] << " ";
+            cout << pre2[i] << " ";
         }
-         //cerr << endl;
-        //cerr << "Post2  ";
+         cout << endl;
+        cout <<  endl <<  "Post2  ";
         for (int i =0; i < post2.size(); i++) {
-            //cerr << post2[i] << " ";
+            cout << post2[i] << " ";
         }
          //cerr << endl;
          //Missmatched vertices

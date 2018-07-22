@@ -61,6 +61,7 @@ struct Node
         left = right = NULL;
     }
 };
+
 void printPostorder(struct Node* node)
 {
     if (node == NULL)
@@ -107,6 +108,35 @@ void printPreorder(struct Node* node)
     /* now recur on right subtree */
     printPreorder(node->right);
 } 
+void printPreorder(struct Node* node, vector<int> & v)
+{
+    if (node == NULL)
+        return;
+ 
+    /* first print data of node */
+    v.push_back(node->data);
+ 
+    /* then recur on left sutree */
+    printPreorder(node->left, v); 
+ 
+    /* now recur on right subtree */
+    printPreorder(node->right, v);
+} 
+void printPostorder(struct Node* node, vector<int> & v)
+{
+    if (node == NULL)
+        return;
+ 
+    // first recur on left subtree
+    printPostorder(node->left, v);
+ 
+    // then recur on right subtree
+    printPostorder(node->right , v);
+ 
+    // now deal with the node
+    v.push_back(node->data);
+}
+ 
  
 int main() {
 	int t ;
@@ -129,9 +159,28 @@ int main() {
                 vert[i]->left = vert[a-1];
             }
             if (b != 0) {
-                vert[i]->right = vert[a-1];
+                vert[i]->right = vert[b-1];
             }
         }
+        /*
+        printPreorder(root);
+        cout << endl;
+        printPostorder(root);
+        cout << endl;*/
+        vector<int> pre, post;
+        printPreorder(root, pre);
+        printPostorder(root, post);
+        cerr << "Pre";
+        for (int i =0; i < pre.size(); i++) {
+            cerr << pre[i] << " ";
+        }
+         cerr << endl;
+        cerr << "Post";
+        for (int i =0; i < post.size(); i++) {
+            cerr << post[i] << " ";
+        }
+         cerr << endl;
+        
  		//std::size_t found = b.find(a);
 		//cout <<  "Check " << ((b == "" && found == string::npos) || (b != "" && found != string::npos) )<< endl;
 	}

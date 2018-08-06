@@ -124,6 +124,7 @@ operator<<( std::ostream& dest, ll value )
     return dest;
 }
 
+// gcd (a, b) == gcd( (a^N)% b, b)
 ll prepare(ll a, ll b, ll n) {
     if (a == b) {
         return ( (ipow(a, n, MOD) + ipow(b, n, MOD)) % MOD);

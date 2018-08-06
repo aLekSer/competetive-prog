@@ -34,7 +34,7 @@ vector<ll> primeFactors(ll n)
     {
         //printf("%d ", 2);
         res.push_back(2);
-        cerr << " " << (long long ) 2;
+        cerr << "1 " << (long long ) 2;
         n = n/2;
     }
  
@@ -46,7 +46,7 @@ vector<ll> primeFactors(ll n)
         while (n%i == 0)
         {
             res.push_back(i);
-        cerr  << " " << (long long ) i;
+        cerr  << "2 " << (long long ) i;
             n = n/i;
         }
     }
@@ -55,7 +55,7 @@ vector<ll> primeFactors(ll n)
     // is a prime number greater than 2
     if (n > 2) {
         res.push_back(n);
-        cerr << " " <<(long long )  n;
+        cerr << "3 " <<(long long )  n;
     }
     return res;
 }
@@ -70,8 +70,10 @@ ll gcd (ll l, ll r)
 	//Find prime factors of the smaller number
 	vector<ll> pf = primeFactors(r);
     for (ll i = 0; i < pf.size(); i++) {
-        if ( l % pf[i] == 0)
+        if ( l % pf[i] == 0) {
+            l /= pf[i];
             res *= pf[i] ;
+        }
     }
     return res;
 	

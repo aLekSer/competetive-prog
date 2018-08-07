@@ -159,9 +159,10 @@ int prepare(const vector<int> & a, int s) {
     int k_m;
     for (int k = 1; k < n; k ++) {
             int mi = mid * 2;
+            cerr << "K " << k;
         for (int j = 0; j < n; j++) {
             int count = 0;
-            for (int i = max(0, j-k); i < min(n, j+k); i ++) {
+            for (int i = max(0, j-k); i <= min(n-1, j+k); i ++) {
                 if (a[i] < a[j]) {
                     count ++;
                     cerr << "++" ;
@@ -218,7 +219,7 @@ int main()
         cin >> n >> s;
         vector<int> a(n);
         for (int j = 0; j < n; j++) {
-            cin >> a[i];
+            cin >> a[j];
         }
         cout << (long long ) prepare(a, s) << endl;
     }

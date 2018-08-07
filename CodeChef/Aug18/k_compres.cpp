@@ -44,25 +44,41 @@ int algo(const vector<int> & b, int k) {
     }
     int N = b.size();
     sort(st.begin(), st.end());
+    int prev = 0;
     for (int i = 0; i < st.size(); i++) {
         cerr << "st" << st[i].first << " " << st[i].second;
         if (st[i].first == 0) {
             c[st[i].second] = 1;
+            prev = 1;
         } else {
             //TODO
+            bool found = false;
+                int cur_m = 100000;
             for (int l = 2; l < 100; l ++) {
                 c[st[i].second] = l;
                 int j = st[i].second;
                 int count = 0;
-                for (int i = max(0, j-k); i <= min(N-1, j+k); i ++) {
-                    if (c[i] < c[j]) {
+                for (int ii = max(0, j-k); ii <= min(N-1, j+k); ii ++) {
+                    if (c[ii] < c[j]) {
                         count ++;
                         cerr << "++" ;
                     }
+                    if (ii != j && c[ii] < cur_m) {
+                        cur_m = c[ii];
+                    }
                 }
-                if (count == b[j]) {
+                if (count == st[i].first) {
+                    found = true;
+                    prev = l;
                     break;
                 }
+            }
+            if (!found) {
+                if (cur_m == 100000) {
+                    cur_m = 1;
+                }
+                c[st[i].second] = cur_m + 2;
+                
             }
             
         }
@@ -139,12 +155,7 @@ int prepare(const vector<int> & a, int s) {
             break;
 
         }
-        int sum2 = 0;
-        for (int j = 0; j < n; j++) {
-            cerr << (c[j] - mi + 1 )<< endl;
-            sum2 += c[j] - mi + 1;
-        }
-        cerr << sum2 << endl;
+        
     }
     return k_m;
 }

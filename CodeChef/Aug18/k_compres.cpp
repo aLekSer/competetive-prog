@@ -200,5 +200,27 @@ int main()
 1
 1999999 1999999 1999994
 output: 0 ?
+
+
+Considerations how we can solve the problem:
+    First of all lets solve it on the paper:
+        4 2 8 1 4 3 8 1
+        Sol for k = 2
+        3 2 4 1 3 2 4 1 
+        Sol for k = 3
+        3 2 4 1 3 2 4 1
+        Why we could not do that for k = 4
+        4 2 5 1 4 3 5 1 Sum > 20
+
+        Suggested algo:
+        start with calculating the number of X the elements < ai
+        for example for k = 3:
+        2 1 5 0 3 2 4 0
+
+        We could start from 0 to 5
+        and then we put 1 for 0,
+        2, iterating to valid number for 1
+        the same for each other number starting from value = 2 
+        
 */
 

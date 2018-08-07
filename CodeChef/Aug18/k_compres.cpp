@@ -125,20 +125,46 @@ operator<<( std::ostream& dest, ll value )
     return dest;
 }
 
-int algo(const vector<int> & b) {
+int algo(const vector<int> & b, int k) {
     // find 0es - set them to 1
-    vector<int> c(b.size());
+    vector<int> c(b.size(), 1000000);
     vector<pair<int, int>> st;
     for (int i = 0; i < b.size(); i++) {
         st.push_back(make_pair(b[i], i));
     }
+    int N = b.size();
     sort(st.begin(), st.end());
     for (int i = 0; i < st.size(); i++) {
         cerr << "st" << st[i].first << " " << st[i].second;
+        if (st[i].first == 0) {
+            c[st[i].second] = 1;
+        } else {
+            //TODO
+            for (int l = 2; l < 100; l ++) {
+                c[st[i].second] = l;
+                int j = st[i].second;
+                int count = 0;
+                for (int i = max(0, j-k); i <= min(N-1, j+k); i ++) {
+                    if (c[i] < c[j]) {
+                        count ++;
+                        cerr << "++" ;
+                    }
+                }
+                if (count <= b[j]) {
+                    break;
+                }
+            }
+            
+        }
     }
+    
     long long sum_of_elems = 0;
-    for (auto& n : c)
+    cerr << "My elems:" << endl;
+    for (auto& n : c) {
+        cerr << n << " ";
         sum_of_elems += n;
+    }
+    cerr << endl;
     return sum_of_elems;
 
 }
@@ -193,8 +219,9 @@ int prepare(const vector<int> & a, int s) {
             }
             */
         }
-        auto siz = algo(b);
+        auto siz = algo(b, k);
         if (siz <= s) {
+            cerr << "Here " <<endl;
 
         } else {
             //TODO check do we have other K after one fail
@@ -209,6 +236,7 @@ int prepare(const vector<int> & a, int s) {
         }
         cerr << sum2 << endl;
     }
+    return k_m;
 }
 int main() 
 {

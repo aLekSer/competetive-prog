@@ -148,15 +148,23 @@ int prepare(const vector<int> & a, int s) {
             }
             if (c[j] == -1)
                 c[j] = mid;
-            for (int i = max(0, j-k); i < min(n, j+k); i ++) {
-                if (count > 0) {
-                    c[i] = c[j] - 1;
+            for (int i = max(0, j-k); i < j; i ++)
+            {
+                if (c[i] < c[j]) {
                     count --;
-                } else {
-                    c[i] = c[j];
                 }
-                if (c[i] < mi) {
-                    mi = c[i];
+            }
+            for (int i = j+1 ; i <  min(n, j+k); i ++) {
+                if (i != j) {
+                    if (count > 0) {
+                        c[i] = c[j] - 1;
+                        count --;
+                    } else {
+                        c[i] = c[j];
+                    }
+                    if (c[i] < mi) {
+                        mi = c[i];
+                    }
                 }
             }
         }
@@ -183,6 +191,7 @@ int main()
         }
         cout << (long long ) prepare(a, s) << endl;
     }
+    return 0;
 }
 
 //Some test cases

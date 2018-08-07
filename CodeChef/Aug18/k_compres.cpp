@@ -3,6 +3,7 @@
 
 # include <stdio.h>
 # include <math.h>
+# include <algorithm>
 
 using namespace std;
 
@@ -124,6 +125,23 @@ operator<<( std::ostream& dest, ll value )
     return dest;
 }
 
+int algo(const vector<int> & b) {
+    // find 0es - set them to 1
+    vector<int> c(b.size());
+    vector<pair<int, int>> st;
+    for (int i = 0; i < b.size(); i++) {
+        st.push_back(make_pair(b[i], i));
+    }
+    sort(st.begin(), st.end());
+    for (int i = 0; i < st.size(); i++) {
+        cerr << "st" << st[i].first << " " << st[i].second;
+    }
+    long long sum_of_elems = 0;
+    for (auto& n : c)
+        sum_of_elems += n;
+    return sum_of_elems;
+
+}
 // gcd (a, b) == gcd( (a^N)% b, b)
 int prepare(const vector<int> & a, int s) {
     vector<int> b = a;
@@ -137,15 +155,20 @@ int prepare(const vector<int> & a, int s) {
     }
     vector<int> c(n, -1);
     int mid = 10000;
-    for (int k = 0; k < n; k ++) {
+    //vector<int>  b (n);
+    int k_m;
+    for (int k = 1; k < n; k ++) {
             int mi = mid * 2;
         for (int j = 0; j < n; j++) {
             int count = 0;
             for (int i = max(0, j-k); i < min(n, j+k); i ++) {
                 if (a[i] < a[j]) {
                     count ++;
+                    cerr << "++" ;
                 }
             }
+            b[j] = count;
+            /*
             if (c[j] == -1)
                 c[j] = mid;
             for (int i = max(0, j-k); i < j; i ++)
@@ -167,6 +190,16 @@ int prepare(const vector<int> & a, int s) {
                     }
                 }
             }
+            */
+        }
+        auto siz = algo(b);
+        if (siz <= s) {
+
+        } else {
+            //TODO check do we have other K after one fail
+            k_m = k;
+            break;
+
         }
         int sum2 = 0;
         for (int j = 0; j < n; j++) {
@@ -175,8 +208,6 @@ int prepare(const vector<int> & a, int s) {
         }
         cerr << sum2 << endl;
     }
-    
-
 }
 int main() 
 {

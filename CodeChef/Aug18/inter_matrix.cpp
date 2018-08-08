@@ -23,7 +23,7 @@ pair<int, int> binS(int n, int v , int i) {
     if (cur2 == v) {
         return make_pair(i, r);
     }
-    while (l != r) {
+    while (l <= r) {
         int mid =  l + (r - l) / 2;
         //cerr << l << " " << r << endl;
         int cur = query(i, mid);

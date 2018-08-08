@@ -20,9 +20,12 @@ int query(int i , int mid) {
 pair<int, int> binS(int n, int v , int i) {
     int l = 0, r = n - 1;
     int cur2 = query(i, r);
+    if (cur2 == v) {
+        return make_pair(i, r);
+    }
     while (l != r) {
-        int mid = (l + r) / 2;
-        cerr << l << " " << r << endl;
+        int mid =  l + (r - l) / 2;
+        //cerr << l << " " << r << endl;
         int cur = query(i, mid);
         if (cur == v) {
             return make_pair(i, mid);
@@ -31,15 +34,15 @@ pair<int, int> binS(int n, int v , int i) {
             return make_pair(-1, -1);
         if (cur2  > cur ) {
             if (cur < v) {
-                l = mid;
+                l = mid + 1;
             } else {
-                r = mid;
+                r = mid - 1;
             }
         } else {
             if (cur < v) {
-                r = mid;
+                r = mid - 1;
             } else {
-                l = mid;
+                l = mid + 1;
             }
         }
     }
@@ -62,6 +65,7 @@ int main()
         if (res.first != -1) {
             found = true;
             cout << "2 " << res.first + 1 << " " << res.second + 1 << endl;
+            cout.flush();
             break;
 
         }
@@ -78,6 +82,30 @@ int main()
     }
     if (!found) {
         cout << "2 -1" << " -1" << endl;
+        cout.flush();
     }
     return 0;
 }
+
+/* Bug: Examples of infinite loop
+3 10 4
+1 1 3
+8
+0 2
+1 1 2
+6
+0 1
+1 1 1
+2
+0 1
+1 1 1
+2
+0 1
+1 1 1
+2
+0 1
+1 1 1
+2
+0 1
+1 1 1
+*/

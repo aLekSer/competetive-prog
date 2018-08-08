@@ -46,11 +46,13 @@ pair<int, int> binS(int n, int v , int i) {
             }
         }
     }
+    /*
     int mid =  l + (r - l) / 2;
     int cur = query(i, mid);
     if (cur == v) {
         return make_pair(i, mid);
     }
+    */
     return make_pair(-1, -1);
 
 

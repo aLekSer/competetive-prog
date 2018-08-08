@@ -46,7 +46,7 @@ pair<int, int> binS(int n, int v , int i) {
             }
         }
     }
-    int mid = (l + r) / 2;
+    int mid =  l + (r - l) / 2;
     int cur = query(i, mid);
     if (cur == v) {
         return make_pair(i, mid);
@@ -60,25 +60,33 @@ int main()
     int n, k, v;
     cin >> n >> k >> v;
     bool found = false;
-    for (int i = 0; i < n ; i++) {
-        auto res = binS(n, v, i);
-        if (res.first != -1) {
-            found = true;
-            cout << "2 " << res.first + 1 << " " << res.second + 1 << endl;
-            cout.flush();
-            break;
 
-        }
-        /*
-        for (int j = 0; j < n; j++)
-        {
-            int cur = query(i, j);
-            if (cur == v) {
-                found = true;
-                cout << "2 " << i + 1 << " " << j + 1 << endl;
+
+    if (k >= n * n) {
+        for (int i = 0; i < n ; i++) {
+            for (int j = 0; j < n; j++)
+            {
+                int cur = query(i, j);
+                if (cur == v) {
+                    found = true;
+                    cout << "2 " << i + 1 << " " << j + 1 << endl;
+                }
             }
         }
-        */
+    } else {
+        for (int i = 0; i < n ; i++) {
+            auto res = binS(n, v, i);
+            if (res.first != -1) {
+                found = true;
+                cout << "2 " << res.first + 1 << " " << res.second + 1 << endl;
+                cout.flush();
+                break;
+
+            }
+            /*
+            */
+        }
+
     }
     if (!found) {
         cout << "2 -1" << " -1" << endl;

@@ -7,6 +7,8 @@
 
 using namespace std;
 
+//g++ -o ./pr -g ./princ_dr.cpp
+
 int query(int i , int mid) {
 
     int cur = 0;
@@ -66,6 +68,10 @@ pair<int, int> binS(int n, int v , int i) {
 
 
 }
+        bool comp(int a , int b)
+        {
+            return a > b;
+        }
 int main() 
 {
     int t;
@@ -78,20 +84,26 @@ int main()
         for (int j = 0; j < n; j ++) {
             cin >> s[j];
         }
-        bool to_break = false;
-        sort(s.begin(), s.end());   
+        sort(s.begin(), s.end(), comp);   
         for (int j = 0; j < n; j ++) {
             cerr << "Here";
+            bool found = false;
             long long sum = 0;
-            for (int k = 0; k < max(n - j, j); k ++) {
+            int l = max(n - j, j);
+            for (int k = 0; k < l; k ++) {
                sum += s[k];
-               if (sum > p) {
+               if (sum >= p) {
                    if (j < n / 2)
-                    cout << k+j << " ";
+                    cout << k + j + 1 << " ";
                    else 
-                   cout << j - k << " ";
+                    cout << j - k + 1 << " ";
+                   found = true;
                    break;
+
                }
+            }
+            if (!found) {
+                cout << 0 << " ";
             }
         }         
         cout << endl;

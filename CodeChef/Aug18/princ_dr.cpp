@@ -85,7 +85,7 @@ int main()
             cin >> s[j];
         }
         sort(s.begin(), s.end(), comp);   
-        vector<int> v;
+        vector<int> v(n);
         for (int j = 0; j < n; j ++) {
             cerr << "Here";
             bool found = false;
@@ -95,12 +95,23 @@ int main()
                sum += s[k];
                if (sum >= p) {
                    int r = 0;
+                   int sign = +1;
+                   if (j > n/2) {
+                       sign = -1;
+
+                   }
+                    for (int h = 0; h < n; h ++) {
+                        v[(sign *h+j)% n] = s[h];
+                    }
                    for (int ii = 0; ii < n; ii++) {
-                        cerr << ii << " " << j << " " << k << endl;
-                       if (ii <= j - k || ii >= j + k) {
-                           cerr <<"Valid"<< ii << " " << j << " " << k << endl;
-                           r ++;
+                       int sum = 0;
+                       for (int h = min(ii, j); h <= max(ii, j); h ++ ) {
+                        sum += v[h];
                        }
+               if (sum >= p) {
+                   r ++;
+                   }
+
                    }
                    /*
                    if (j < n / 2) {

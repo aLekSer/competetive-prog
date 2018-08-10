@@ -9,73 +9,15 @@ using namespace std;
 
 //g++ -o ./pr -g ./princ_dr.cpp
 
-int query(int i , int mid) {
-
-    int cur = 0;
-    cout << "1 " << i + 1 << " " << mid + 1 << endl;
-    cout.flush();
-    cin >> cur;
-    return cur;
+bool comp(int a , int b)
+{
+    return a > b;
 }
-
-// binary Search on the rows of the matrix
-pair<int, int> binS(int n, int v , int i) {
-    int l = 0, r = n - 1;
-    int cur2 = query(i, r);
-    if (cur2 == v) {
-        return make_pair(i, r);
-    } 
-    int cur1 = -1;
-    while (l <= r) {
-        int mid =  l + (r - l) / 2;
-        //cerr << l << " " << r << endl;
-        int cur = query(i, mid);
-        if (cur == v) {
-            return make_pair(i, mid);
-        }
-        if (cur2  > cur && v > cur2) 
-            return make_pair(-1, -1);
-        else if (cur1 == -1) {
-            int cur1 = query(i, l);
-            if (cur1 == v) {
-                return make_pair(i, l);
-            }
-            if (cur1  < cur && v < cur1) 
-                return make_pair(-1, -1);
-        }
-        if (cur2  > cur ) {
-            if (cur < v) {
-                l = mid + 1;
-            } else {
-                r = mid - 1;
-            }
-        } else {
-            if (cur < v) {
-                r = mid - 1;
-            } else {
-                l = mid + 1;
-            }
-        }
-    }
-    /*
-    int mid =  l + (r - l) / 2;
-    int cur = query(i, mid);
-    if (cur == v) {
-        return make_pair(i, mid);
-    }
-    */
-    return make_pair(-1, -1);
-
-
-}
-        bool comp(int a , int b)
-        {
-            return a > b;
-        }
 int main() 
 {
     int t;
     cin >> t;
+    vector<int> v(20001);
     for (int i = 0; i < t; i++) {
         
         int n, p;
@@ -85,7 +27,6 @@ int main()
             cin >> s[j];
         }
         sort(s.begin(), s.end(), comp);   
-        vector<int> v(n);
         for (int j = 0; j < n; j ++) {
             cerr << "Here";
             bool found = false;
@@ -101,10 +42,14 @@ int main()
 
                    }
                     for (int h = 0; h < n; h ++) {
-                        v[(sign *h+j)% n] = s[h];
+                        int sh = (sign *h+j)% n;
+                        if (sh < 0) {
+                            sh += n;
+                        }
+                        v[sh] = s[h];
                     }
                    for (int ii = 0; ii < n; ii++) {
-                       int sum = 0;
+                        long long sum = 0;
                        for (int h = min(ii, j); h <= max(ii, j); h ++ ) {
                         sum += v[h];
                        }
@@ -130,41 +75,6 @@ int main()
         }         
         cout << endl;
     }
-    /*
-    int n, k, v;
-    cin >> n >> k >> v;
-    bool found = false;
-
-
-    if (k >= n * n) {
-        for (int i = 0; i < n ; i++) {
-            for (int j = 0; j < n; j++)
-            {
-                int cur = query(i, j);
-                if (cur == v) {
-                    found = true;
-                    cout << "2 " << i + 1 << " " << j + 1 << endl;
-                }
-            }
-        }
-    } else {
-        for (int i = 0; i < n ; i++) {
-            auto res = binS(n, v, i);
-            if (res.first != -1) {
-                found = true;
-                cout << "2 " << res.first + 1 << " " << res.second + 1 << endl;
-                cout.flush();
-                break;
-
-            }
-        }
-
-    }
-    if (!found) {
-        cout << "2 -1" << " -1" << endl;
-        cout.flush();
-    }
-            */
     return 0;
 }
 

@@ -85,18 +85,29 @@ int main()
             cin >> s[j];
         }
         sort(s.begin(), s.end(), comp);   
+        vector<int> v;
         for (int j = 0; j < n; j ++) {
             cerr << "Here";
             bool found = false;
             long long sum = 0;
-            int l = max(n - j, j);
+            int l = max(n - j, j+1);
             for (int k = 0; k < l; k ++) {
                sum += s[k];
                if (sum >= p) {
-                   if (j < n / 2)
-                    cout << k + j + 1 << " ";
-                   else 
+                   int r = 0;
+                   for (int ii = 0; ii < n; ii++) {
+                        cerr << ii << " " << j << " " << k << endl;
+                       if (ii <= j - k || ii >= j + k) {
+                           cerr <<"Valid"<< ii << " " << j << " " << k << endl;
+                           r ++;
+                       }
+                   }
+                   /*
+                   if (j < n / 2) {
+                   } else  {
                     cout << j - k + 1 << " ";
+                   }*/
+                   cout << r << " ";
                    found = true;
                    break;
 

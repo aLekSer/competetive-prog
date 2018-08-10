@@ -37,7 +37,7 @@ int main()
                if (sum >= p) {
                    int r = 0;
                    int sign = +1;
-                   if (j > n/2) {
+                   if (j >= n/2) {
                        sign = -1;
 
                    }
@@ -46,6 +46,7 @@ int main()
                         if (sh < 0) {
                             sh += n;
                         }
+                        cerr << sh << " a " << endl;
                         v[sh] = s[h];
                     }
                    for (int ii = 0; ii < n; ii++) {

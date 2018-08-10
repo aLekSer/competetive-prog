@@ -108,9 +108,9 @@ int main()
                        for (int h = min(ii, j); h <= max(ii, j); h ++ ) {
                         sum += v[h];
                        }
-               if (sum >= p) {
-                   r ++;
-                   }
+                        if (sum >= p) {
+                            r ++;
+                        }
 
                    }
                    /*
@@ -168,25 +168,8 @@ int main()
     return 0;
 }
 
-/* Bug: Examples of infinite loop
-3 10 4
-1 1 3
-8
-0 2
-1 1 2
-6
-0 1
-1 1 1
-2
-0 1
-1 1 1
-2
-0 1
-1 1 1
-2
-0 1
-1 1 1
-2
-0 1
-1 1 1
+/* Bug: Examples of sigabrt
+1 5 5
+23200 233300 234250 23425151 235 1 6160
+
 */

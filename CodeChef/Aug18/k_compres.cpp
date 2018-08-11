@@ -88,8 +88,8 @@ void Graph::topologicalSort(vector<int> & v)
 int algo2(const vector<ll> & b, int k, Graph &g, Graph &g2) {
     int n = b.size();
     for (int i = 0; i < b.size(); i++) {
-        for( int j = max(0, i -k); j < min(n, i+k + 1); j++ ) {
-            if(b[j] < b[i]) {
+        for( int j = max(0, i -k); j < min(n, i+k +1); j++ ) {
+            if(b[j] <= b[i]) {
                 g.addEdge(i, j);
                 g2.addEdge( j, i);
             }
@@ -106,6 +106,7 @@ int prepare(const vector<ll> & a, ll s) {
 
     // i is k itself
     int k = 0;
+    // TODO: add binary search of k over 0 : n
     for (int i = 0; i <= n; i ++) {
         Graph g(n);
         Graph g2(n);
@@ -129,19 +130,19 @@ int prepare(const vector<ll> & a, ll s) {
             }
                         
         }
-        cerr << " Max : " << i;
+       // cerr << " Max : " << i;
 
 
         ll sum = 0;
         for (int j = 0; j < c.size(); j++) {
-            cerr << r[j] << " ";
+            //cerr << r[j] << " ";
             sum += r[j];
 
         }
         if (sum <= s) {
             k++;
         }
-        cerr << endl;
+        //cerr << endl;
     }
     //cout << k + 1  << endl ;// << " a " << endl;
     return k ;
@@ -159,7 +160,7 @@ int main()
         }
         //prepare(a, s) ;
         cout <<  prepare(a, s) << endl;
-        cout.flush();
+       // cout.flush();
     }
     return 0;
 }

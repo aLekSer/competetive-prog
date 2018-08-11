@@ -9,10 +9,10 @@
 using namespace std;
  
 
-using namespace std;
 
 // A C++ program to print topological sorting of a DAG
 // Class to represent a graph
+typedef  long long ll;
 class Graph
 {
     int V;    // No. of vertices'
@@ -85,7 +85,7 @@ void Graph::topologicalSort(vector<int> & v)
         Stack.pop();
     }
 }
-int algo2(const vector<int> & b, int k, Graph &g, Graph &g2) {
+int algo2(const vector<ll> & b, int k, Graph &g, Graph &g2) {
     int n = b.size();
     for (int i = 0; i < b.size(); i++) {
         for( int j = max(0, i -k); j < min(n, i+k); j++ ) {
@@ -99,26 +99,26 @@ int algo2(const vector<int> & b, int k, Graph &g, Graph &g2) {
 }
 
 // gcd (a, b) == gcd( (a^N)% b, b)
-int prepare(const vector<int> & a, int s) {
-    vector<int> b = a;
+int prepare(const vector<ll> & a, ll s) {
+    //vector<int> b = a;
     const int n = a.size();
-    int sum = 0;
+    ll sum = 0;
 
     // i is k itself
     int k = 0;
     for (int i = 0; i <= n; i ++) {
         Graph g(n);
         Graph g2(n);
-        algo2(b, i, g, g2);
+        algo2(a, i, g, g2);
         vector<int> c;
         g.topologicalSort(c);
         //cerr << endl << i << endl;
-        vector<int> r(n);
+        vector<ll> r(n);
         for (int j = 0; j < c.size(); j++) {
             if (g2.adj[c[j]].size() == 0) {
                 r[c[j]] = 1;
             } else {
-                int max = 0;
+                ll max = 0;
                 // Set the level value of the node to the max(parents) + 1
                 for (list<int>::iterator it = g2.adj[c[j]].begin(); it != g2.adj[c[j]].end(); it++  ) {
                     if (r[*it] > max) {
@@ -132,7 +132,7 @@ int prepare(const vector<int> & a, int s) {
         //cerr << " Max : ";
 
 
-        int sum = 0;
+        ll sum = 0;
         for (int j = 0; j < c.size(); j++) {
             //cerr << r[j] << " ";
             sum += r[j];
@@ -153,7 +153,7 @@ int main()
     for (int i = 0; i < t ; i++) {
         long long  n, s;
         cin >> n >> s;
-        vector<int> a(n);
+        vector<ll> a(n);
         for (int j = 0; j < n; j++) {
             cin >> a[j];
         }

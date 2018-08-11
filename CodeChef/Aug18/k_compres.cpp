@@ -106,7 +106,7 @@ int prepare(const vector<int> & a, int s) {
 
     // i is k itself
     int k = 0;
-    for (int i = 0; i < n; i ++) {
+    for (int i = 0; i <= n; i ++) {
         Graph g(n);
         Graph g2(n);
         algo2(b, i, g, g2);

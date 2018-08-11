@@ -20,6 +20,8 @@ int main()
     vector<int> v(20001);
     for (int i = 0; i < t; i++) {
         
+    vector<int> res1;
+    vector<int> res2;
         int n, p;
         cin  >> n >> p;
         vector<int> s(n);
@@ -53,29 +55,32 @@ int main()
 
             } while (std::next_permutation(v2.begin(), v2.end()));
             if (ma == 0) {
-                cout << 0 << " ";
+                //cout << 0 << " ";
+                res1.push_back(0);
             } else {
-                cout << ma << " ";
+               // cout << ma << " ";
+                res1.push_back(ma);
             }
             /**/
             //cerr << "Here";
         }
-        cout << endl;
+        //cout << endl;
        //     cout << "Right sol "  << endl;
             //End of solution to compare
         for (int j = 0; j < n; j ++) {
             bool found = false;
             long long sum = 0;
             int l = max(n - j, j+1);
+            /*
             for (int k = 0; k < l; k ++) {
                sum += s[k];
-               if (sum >= p) {
+               if (sum >= p) { */
                    int r = 0;
                    int sign = +1;
                    if (j >= n/2) {
                        sign = -1;
                    }
-                   int su = 0;
+                   long long  su = 0;
                    int total_used = 0;
                     for (int h = 0; h < n; h ++) {
                         int sh = (sign *h+j)% n;
@@ -111,17 +116,22 @@ int main()
 
                    }
                    cout << r << " ";
+                res2.push_back(r);
                    found = true;
-                   break;
-
+                   //break;
+/*
                }
-            }
+            }*/
             if (!found) {
                 cout << 0 << " ";
+                res2.push_back(0);
             }
                //* /
         }         
         cout << endl;
+        if (!(res1 == res2) ) {
+            //cout << "Error missmatch";
+        }
     }
     return 0;
 }
@@ -139,4 +149,7 @@ Should be:
 But for now
 2 1 0 0 0 0 1 2
 
+Try 2
+8 125 12 31 71 51 12 2 2 2
+1 1 1
 */

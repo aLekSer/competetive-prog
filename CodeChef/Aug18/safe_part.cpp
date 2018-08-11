@@ -150,7 +150,7 @@ Graph g2(n+1);
     d[n] = 1;
     for (int i = n ; i >= 0; i--) {
         for (list<int>::iterator it = g2.adj[i].begin(); it != g2.adj[i].end(); it ++ ) {
-            d[*it] = d[*it] + d[i];
+            d[*it] = (d[*it] + d[i]) % mod;
         }        
     }
     cout << d[0] << endl;

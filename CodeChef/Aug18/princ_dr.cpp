@@ -27,15 +27,19 @@ int main()
             cin >> s[j];
         }
         sort(s.begin(), s.end(), comp); 
-        v = s;  
+            // Solution to compare
+            vector<int> v3 ;
+            vector<int> v2 = s;
         for (int j = 0; j < n; j ++) {
+            vector<int> v (n, -1);
+            
             int ma = 0;
             do {
                 int r = 0;
                    for (int ii = 0; ii < n; ii++) {
                         long long sum = 0;
                        for (int h = min(ii, j); h <= max(ii, j); h ++ ) {
-                        sum += v[h];
+                        sum += v2[h];
                        }
                         if (sum >= p) {
                             r ++;
@@ -44,16 +48,22 @@ int main()
                    }
                    if (r > ma) {
                        ma = r;
+                       v3 = v2;
                    }
 
-            } while (std::next_permutation(v.begin(), v.end()));
+            } while (std::next_permutation(v2.begin(), v2.end()));
             if (ma == 0) {
                 cout << 0 << " ";
             } else {
                 cout << ma << " ";
             }
-            /*
-            cerr << "Here";
+            /**/
+            //cerr << "Here";
+        }
+        cout << endl;
+       //     cout << "Right sol "  << endl;
+            //End of solution to compare
+        for (int j = 0; j < n; j ++) {
             bool found = false;
             long long sum = 0;
             int l = max(n - j, j+1);
@@ -64,15 +74,31 @@ int main()
                    int sign = +1;
                    if (j >= n/2) {
                        sign = -1;
-
                    }
+                   int su = 0;
+                   int total_used = 0;
                     for (int h = 0; h < n; h ++) {
                         int sh = (sign *h+j)% n;
                         if (sh < 0) {
                             sh += n;
                         }
-                        cerr << sh << " a " << endl;
+                        //cerr << sh << " a " << endl;
                         v[sh] = s[h];
+                        su += v[sh];
+                        if (su >= p) {
+                            sign = -1 *sign;
+                            total_used = h;
+                            break;
+                        }
+                    }
+                    for (int h = 1; h < n - total_used; h ++) {
+                        int sh = (sign *h+j)% n;
+                        if (sh < 0) {
+                            sh += n;
+                        }
+                        //cerr << sh << " a " << endl;
+                        v[sh] = s[h + total_used ];
+                        su += v[sh];
                     }
                    for (int ii = 0; ii < n; ii++) {
                         long long sum = 0;
@@ -84,11 +110,6 @@ int main()
                         }
 
                    }
-                   /*
-                   if (j < n / 2) {
-                   } else  {
-                    cout << j - k + 1 << " ";
-                   }* /
                    cout << r << " ";
                    found = true;
                    break;
@@ -98,7 +119,7 @@ int main()
             if (!found) {
                 cout << 0 << " ";
             }
-               */
+               //* /
         }         
         cout << endl;
     }
@@ -108,5 +129,14 @@ int main()
 /* Bug: Examples of sigabrt
 1 5 5
 23200 233300 234250 23425151 235 1 6160
+
+Solution to compare
+1 8 20
+
+2 2 3 4 4 3 2 2
+Should be:
+2 0 0 0 0 0 1 1
+But for now
+2 1 0 0 0 0 1 2
 
 */

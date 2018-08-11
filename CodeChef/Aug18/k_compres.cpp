@@ -11,33 +11,6 @@ using namespace std;
 
 using namespace std;
 
-typedef __uint128_t ll ;
-
-std::ostream&
-operator<<( std::ostream& dest, ll value )
-{
-    std::ostream::sentry s( dest );
-    if ( s ) {
-        ll tmp = value < 0 ? -value : value;
-        char buffer[ 128 ];
-        char* d = std::end( buffer );
-        do
-        {
-            -- d;
-            *d = "0123456789"[ tmp % 10 ];
-            tmp /= 10;
-        } while ( tmp != 0 );
-        if ( value < 0 ) {
-            -- d;
-            *d = '-';
-        }
-        int len = std::end( buffer ) - d;
-        if ( dest.rdbuf()->sputn( d, len ) != len ) {
-            dest.setstate( std::ios_base::badbit );
-        }
-    }
-    return dest;
-}
 // A C++ program to print topological sorting of a DAG
 // Class to represent a graph
 class Graph
@@ -86,7 +59,7 @@ void Graph::topologicalSortUtil(int v, bool visited[],
     // Push current vertex to stack which stores result
     Stack.push(v);
 }
- 
+
 // The function to do Topological Sort. It uses recursive 
 // topologicalSortUtil()
 void Graph::topologicalSort(vector<int> & v)
@@ -124,65 +97,7 @@ int algo2(const vector<int> & b, int k, Graph &g, Graph &g2) {
     }
 
 }
-int algo(const vector<int> & b, int k) {
-    // find 0es - set them to 1
-    vector<int> c(b.size(), 1000000);
-    vector<pair<int, int>> st;
-    for (int i = 0; i < b.size(); i++) {
-        st.push_back(make_pair(b[i], i));
-    }
-    int N = b.size();
-    sort(st.begin(), st.end());
-    int prev = 0;
-    for (int i = 0; i < st.size(); i++) {
-        //cerr << "st" << st[i].first << " " << st[i].second;
-        if (st[i].first == 0) {
-            c[st[i].second] = 1;
-            prev = 1;
-        } else {
-            //TODO
-            bool found = false;
-                int cur_m = 100000;
-            for (int l = 2; l < 100; l ++) {
-                c[st[i].second] = l;
-                int j = st[i].second;
-                int count = 0;
-                for (int ii = max(0, j-k); ii <= min(N-1, j+k); ii ++) {
-                    if (c[ii] < c[j]) {
-                        count ++;
-                        //cerr << "++" ;
-                    }
-                    if (ii != j && c[ii] < cur_m) {
-                        cur_m = c[ii];
-                    }
-                }
-                if (count == st[i].first) {
-                    found = true;
-                    prev = l;
-                    break;
-                }
-            }
-            if (!found) {
-                if (cur_m == 100000) {
-                    cur_m = 1;
-                }
-                c[st[i].second] = cur_m + 2;
-                
-            }
-            
-        }
-    }
-    
-    long long sum_of_elems = 0;
-    //cerr << "My elems:" << endl;
-    for (auto& n : c) {
-        //cerr << n << " ";
-        sum_of_elems += n;
-    }
-    //cerr << endl;
-    return sum_of_elems;
 
-}
 // gcd (a, b) == gcd( (a^N)% b, b)
 int prepare(const vector<int> & a, int s) {
     vector<int> b = a;
@@ -191,7 +106,7 @@ int prepare(const vector<int> & a, int s) {
 
     // i is k itself
     int k = 0;
-    for (int i = 1; i < n; i ++) {
+    for (int i = 0; i < n; i ++) {
         Graph g(n);
         Graph g2(n);
         algo2(b, i, g, g2);
@@ -224,12 +139,12 @@ int prepare(const vector<int> & a, int s) {
 
         }
         if (sum <= s) {
-            k = i;
+            k++;
         }
         //cerr << endl;
     }
-    cout << k + 1  << endl ;// << " a " << endl;
-    return 0;
+    //cout << k + 1  << endl ;// << " a " << endl;
+    return k ;
 }
 int main() 
 {
@@ -242,8 +157,9 @@ int main()
         for (int j = 0; j < n; j++) {
             cin >> a[j];
         }
-        prepare(a, s) ;
-        //cout << (long long ) prepare(a, s) << endl;
+        //prepare(a, s) ;
+        cout <<  prepare(a, s) << endl;
+        cout.flush();
     }
     return 0;
 }

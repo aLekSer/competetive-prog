@@ -88,7 +88,7 @@ void Graph::topologicalSort(vector<int> & v)
 int algo2(const vector<ll> & b, int k, Graph &g, Graph &g2) {
     int n = b.size();
     for (int i = 0; i < b.size(); i++) {
-        for( int j = max(0, i -k); j < min(n, i+k); j++ ) {
+        for( int j = max(0, i -k); j < min(n, i+k + 1); j++ ) {
             if(b[j] < b[i]) {
                 g.addEdge(i, j);
                 g2.addEdge( j, i);
@@ -129,19 +129,19 @@ int prepare(const vector<ll> & a, ll s) {
             }
                         
         }
-        //cerr << " Max : ";
+        cerr << " Max : " << i;
 
 
         ll sum = 0;
         for (int j = 0; j < c.size(); j++) {
-            //cerr << r[j] << " ";
+            cerr << r[j] << " ";
             sum += r[j];
 
         }
         if (sum <= s) {
             k++;
         }
-        //cerr << endl;
+        cerr << endl;
     }
     //cout << k + 1  << endl ;// << " a " << endl;
     return k ;
@@ -191,6 +191,16 @@ Considerations how we can solve the problem:
         and then we put 1 for 0,
         2, iterating to valid number for 1
         the same for each other number starting from value = 2 
+
+        Found error:
+        ./kc
+1 2 2
+2 1
+ Max : 01 1
+ Max : 11 1
+ Max : 21 2
+2
+
         
 */
 

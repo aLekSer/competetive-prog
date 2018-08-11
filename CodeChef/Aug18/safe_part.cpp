@@ -27,6 +27,7 @@ class Graph
      
     // No. of vertices 
     // in graph
+public:
     int V; 
     list<int> *adj;
  
@@ -36,7 +37,6 @@ class Graph
                         bool [],
                         int &);
  
-public:
  
     // Constructor
     Graph(int V); 
@@ -113,20 +113,6 @@ void Graph::countPathsUtil(int u, int d,
     visited[u] = false;
 }
 void prepare(vector<vector<int>> & c, vector<int> & v, int i, int j, Graph &g ) {
-    int min = 1000000;
-    int max = 0;
-    for (int l = i; l <= j; l++) {
-        if (v[l] < min) {
-            min = v[l];
-        }
-        if (v[l] > max) {
-            max = v[l];
-        }
-    }
-    c[i][j] = int( min <= ( j-i + 1) && ( j-i + 1) <=  max);
-    if (c[i][j]) {
-        g.addEdge(i,j+1);
-    }
 
 }
 int main() 
@@ -138,14 +124,36 @@ int main()
         cin >> v[i];
     }
 Graph g(n+1);
+Graph g2(n+1);
     vector<vector<int>> c(n, vector<int>(n));
     for (int i = 0; i < n; i++) {
+        int min = 1000000;
+        int max = 0;
         for (int j = i; j < n; j ++) {
+            if (v[j] < min) {
+                min = v[j];
+            }
+            if (v[j] > max) {
+                max = v[j];
+            }
+            c[i][j] = int( min <= ( j-i + 1) && ( j-i + 1) <=  max);
+            if (c[i][j]) {
+                g.addEdge(i,j+1);
+                g2.addEdge(j+1, i);
+            }
             prepare(c, v, i, j, g);
-            cerr << c[i][j];
+           // cerr << c[i][j];
         }
-        cerr << endl;
+       // cerr << endl;
     }
-    cout << g.countPaths(0, n);
+    vector<long long> d(n+1, 0);
+    d[n] = 1;
+    for (int i = n ; i >= 0; i--) {
+        for (list<int>::iterator it = g2.adj[i].begin(); it != g2.adj[i].end(); it ++ ) {
+            d[*it] = d[*it] + d[i];
+        }        
+    }
+    cout << d[0] << endl;
+    //cout << g.countPaths(0, n) << endl;
     return 0;
 }

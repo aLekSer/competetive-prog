@@ -1,9 +1,13 @@
 #include <iostream>
 #include <vector>
 
-# include <stdio.h>
-# include <math.h>
-# include <algorithm>
+#include <stdio.h>
+#include <math.h>
+#include <algorithm>
+#include <list>
+#include <stack>
+using namespace std;
+ 
 
 using namespace std;
 
@@ -35,11 +39,6 @@ operator<<( std::ostream& dest, ll value )
     return dest;
 }
 // A C++ program to print topological sorting of a DAG
-#include<iostream>
-#include <list>
-#include <stack>
-using namespace std;
- 
 // Class to represent a graph
 class Graph
 {
@@ -108,7 +107,7 @@ void Graph::topologicalSort(vector<int> & v)
     // Print contents of stack
     while (Stack.empty() == false)
     {
-        cerr << Stack.top() << " ";
+        //cerr << Stack.top() << " ";
         v.push_back(Stack.top());
         Stack.pop();
     }
@@ -136,7 +135,7 @@ int algo(const vector<int> & b, int k) {
     sort(st.begin(), st.end());
     int prev = 0;
     for (int i = 0; i < st.size(); i++) {
-        cerr << "st" << st[i].first << " " << st[i].second;
+        //cerr << "st" << st[i].first << " " << st[i].second;
         if (st[i].first == 0) {
             c[st[i].second] = 1;
             prev = 1;
@@ -151,7 +150,7 @@ int algo(const vector<int> & b, int k) {
                 for (int ii = max(0, j-k); ii <= min(N-1, j+k); ii ++) {
                     if (c[ii] < c[j]) {
                         count ++;
-                        cerr << "++" ;
+                        //cerr << "++" ;
                     }
                     if (ii != j && c[ii] < cur_m) {
                         cur_m = c[ii];
@@ -175,12 +174,12 @@ int algo(const vector<int> & b, int k) {
     }
     
     long long sum_of_elems = 0;
-    cerr << "My elems:" << endl;
+    //cerr << "My elems:" << endl;
     for (auto& n : c) {
-        cerr << n << " ";
+        //cerr << n << " ";
         sum_of_elems += n;
     }
-    cerr << endl;
+    //cerr << endl;
     return sum_of_elems;
 
 }
@@ -198,7 +197,7 @@ int prepare(const vector<int> & a, int s) {
         algo2(b, i, g, g2);
         vector<int> c;
         g.topologicalSort(c);
-        cerr << endl << i << endl;
+        //cerr << endl << i << endl;
         vector<int> r(n);
         for (int j = 0; j < c.size(); j++) {
             if (g2.adj[c[j]].size() == 0) {
@@ -215,83 +214,22 @@ int prepare(const vector<int> & a, int s) {
             }
                         
         }
-        cerr << " Max : ";
+        //cerr << " Max : ";
 
 
         int sum = 0;
         for (int j = 0; j < c.size(); j++) {
-            cerr << r[j] << " ";
+            //cerr << r[j] << " ";
             sum += r[j];
 
         }
         if (sum <= s) {
             k = i;
         }
-        cerr << endl;
+        //cerr << endl;
     }
-    cout << k + 1 << " a " << endl;
+    cout << k + 1  << endl ;// << " a " << endl;
     return 0;
-    for (int j = 0; j < n; j++) {
-        sum += a[j];        
-    }
-    if (sum < s) {
-        return n;
-    }
-    vector<int> c(n, -1);
-    int mid = 10000;
-    //vector<int>  b (n);
-    int k_m;
-    for (int k = 1; k < n; k ++) {
-            int mi = mid * 2;
-            cerr << "K " << k;
-        for (int j = 0; j < n; j++) {
-            int count = 0;
-            for (int i = max(0, j-k); i <= min(n-1, j+k); i ++) {
-                if (a[i] < a[j]) {
-                    count ++;
-                    cerr << "++" ;
-                }
-            }
-            b[j] = count;
-            /*
-            if (c[j] == -1)
-                c[j] = mid;
-            for (int i = max(0, j-k); i < j; i ++)
-            {
-                if (c[i] < c[j]) {
-                    count --;
-                }
-            }
-            for (int i = j+1 ; i <  min(n, j+k); i ++) {
-                if (i != j) {
-                    if (count > 0) {
-                        c[i] = c[j] - 1;
-                        count --;
-                    } else {
-                        c[i] = c[j];
-                    }
-                    if (c[i] < mi) {
-                        mi = c[i];
-                    }
-                }
-            }
-            */
-        }
-        //auto siz = algo(b, k);
-        /*
-        if (siz <= s) {
-            cerr << "Here " <<endl;
-
-        } else {
-            //TODO check do we have other K after one fail
-            k_m = k;
-            break;
-
-        }
-        */
-        
-    }
-    return k_m;
 }
 int main() 
 {
@@ -304,7 +242,8 @@ int main()
         for (int j = 0; j < n; j++) {
             cin >> a[j];
         }
-        cout << (long long ) prepare(a, s) << endl;
+        prepare(a, s) ;
+        //cout << (long long ) prepare(a, s) << endl;
     }
     return 0;
 }

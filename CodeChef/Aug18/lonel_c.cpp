@@ -1,5 +1,5 @@
 #include <iostream>
-#include <vector>
+#include <vector> 
 
 # include <stdio.h>
 # include <math.h>
@@ -22,17 +22,35 @@ using namespace std;
 // A directed graph using
 // adjacency list
 // representation
+#define FINISHED -1
+#define NOCYCLE -2
 class Graph
 {
      
     // No. of vertices 
     // in graph
 public:
+int index;
     int V; 
     list<int> *adj;
     vector<int> path;
+    vector<int> path2;
+    int back_idx;
+    vector<int> parnt;
+    void set_index();
+    void 
+printCycle(int v, int u) {
+  if (v==u) 
+    path2.push_back(v);
+     
+  else {
+    path2.push_back(v);
+     printCycle(parnt[v], u);
+      
+  }
+     }
 
-bool isCyclicUtil(int v, bool visited[], int parent);
+int isCyclicUtil(int v, bool visited[], int *cycleVertices, int parent);
 bool  isCyclic();
     // A recursive function
     // used by countPaths()
@@ -54,8 +72,13 @@ Graph::Graph(int V)
 {
     this->V = V;
     adj = new list<int>[V];
+    this->index = 0;
 }
- 
+
+void Graph::set_index()
+{
+    this->index = 0;
+}
 void Graph::addEdge(int u, int v)
 {
      
@@ -151,31 +174,34 @@ void Graph::countPathsUtil(int u, int d,
     visited[u] = false;
 }
 
-bool Graph::isCyclicUtil(int v, bool visited[], int parent)
+int Graph::isCyclicUtil(int v, bool visited[], int *cycleVertices, int parent)
 {
-    // Mark the current node as visited
     visited[v] = true;
- 
-    // Recur for all the vertices adjacent to this vertex
+
     list<int>::iterator i;
     for (i = adj[v].begin(); i != adj[v].end(); ++i)
     {
-        // If an adjacent is not visited, then recur for that adjacent
         if (!visited[*i])
         {
-            path.push_back(*i);
-           if (isCyclicUtil(*i, visited, v))
-              return true;
+            int result = isCyclicUtil(*i, visited, cycleVertices, v);
+            if (result == FINISHED)
+                return FINISHED;
+            else if (result != NOCYCLE) {
+                cycleVertices[index++] = v;
+                if (result == v)
+                    return FINISHED;
+                else
+                    return result;
+            }
         }
- 
-        // If an adjacent is visited and not parent of current vertex,
-        // then there is a cycle.
+
         else if (*i != parent) {
-           return true;
+            return *i;
         }
     }
-    return false;
+    return NOCYCLE;
 }
+
  
 // Returns true if the graph contains a cycle, else false.
 bool Graph::isCyclic()
@@ -188,9 +214,10 @@ bool Graph::isCyclic()
  
     // Call the recursive helper function to detect cycle in different
     // DFS trees
+    int cycleVertices[4];
     for (int u = 0; u < V; u++)
         if (!visited[u]) // Don't recur for u if it is already visited
-          if (isCyclicUtil(u, visited, -1))
+          if (isCyclicUtil(u, visited, cycleVertices, -1)) 
              return true;
  
     return false;
@@ -204,6 +231,9 @@ int main()
         cin >> n >> m;
         vector<int> v(n);
         Graph g(n+1);
+        int *cycleVertices = new int[m];
+        for (int i = 0; i <m; i++)
+            cycleVertices[i] = -1;
         vector<pair<int, int>> e;
         for (int i = 0; i < m; i++) {
             int u, v;
@@ -211,10 +241,21 @@ int main()
             g.addEdge(u, v);
             e.push_back(make_pair(u, v));
         }
-        cerr << g.isCyclic() << endl;
+        bool *visited = new bool[m];
+        for (int i = 0; i < m; i++)
+            visited[i] = false;
+        g.isCyclicUtil(1, visited, cycleVertices, -1) ? cerr << "Graph contains cycle\n" :
+            cerr << "Graph doesn't contain cycle\n";
+        int x = 0;
+        while (cycleVertices[x] != -1)
+            cerr << cycleVertices[x++] << " ";
+       // cerr << g.isCyclicUtil() << endl;
+
         for( vector<int>::iterator it = g.path.begin(); it != g.path.end(); it ++) {
             cerr << *it << "  : ";
         }
+        cerr << "New ine" << endl;
+       // g.printCycle(g.back_idx, g.parnt[g.back_idx]);
         cerr << endl;
         for (int i = 0; i < m; i ++) {
             int res = g.countPaths(e[i].first, n, e[i]);
@@ -223,58 +264,6 @@ int main()
 
     }
     /*
-    Graph g2(n+1);
-    vector<vector<int>> c(n, vector<int>(n));
-        int mi = 1000000;
-        int max = 0;
-        vector<int> mm(n);
-        vector<int> b(n);
-    for (int i = n-1; i >= 0; i--) {
-        if(v[i] < mi) {
-            mi = v[i];
-            mm[i] = v[i];
-        } else {
-            mm[i] = mi;
-        }
-        cerr << mm[i];
-        if(v[i] > max) {
-            max = v[i];
-            b[i] = v[i];
-        } else {
-            b[i] = max;
-        }
-    }
-    for (int i = 0; i < n; i++) {
-        int mi = 1000000;
-        int max = 0;
-        for (int j = i; j < min(n, i + b[i]); j ++) {
-            if (v[j] < mi) {
-                mi = v[j];
-            }
-            if (v[j] > max) {
-                max = v[j];
-            }
-            c[i][j] = int( mi <= ( j-i + 1) && ( j-i + 1) <=  max);
-            if (c[i][j]) {
-                g.addEdge(i,j+1);
-                g2.addEdge(j+1, i);
-            }
-            prepare(c, v, i, j, g);
-           // cerr << c[i][j];
-        }
-       // cerr << endl;
-    }
-    vector<long long> d(n+1, 0);
-    d[n] = 1;
-
-    // Aglorithm to calculate all paths in DAG (directed acyclic graph) with backtrace and reverse topology ordering
-    for (int i = n ; i >= 0; i--) {
-        for (list<int>::iterator it = g2.adj[i].begin(); it != g2.adj[i].end(); it ++ ) {
-            d[*it] = (d[*it] + d[i]) % mod;
-        }        
-    }
-    cout << d[0] << endl;
-    //cout << g.countPaths(0, n) << endl;
     */
     return 0;
 }

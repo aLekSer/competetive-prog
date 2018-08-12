@@ -30,6 +30,7 @@ class Graph
 public:
     int V; 
     list<int> *adj;
+    vector<int> path;
 
 bool isCyclicUtil(int v, bool visited[], int parent);
 bool  isCyclic();
@@ -162,14 +163,16 @@ bool Graph::isCyclicUtil(int v, bool visited[], int parent)
         // If an adjacent is not visited, then recur for that adjacent
         if (!visited[*i])
         {
+            path.push_back(*i);
            if (isCyclicUtil(*i, visited, v))
               return true;
         }
  
         // If an adjacent is visited and not parent of current vertex,
         // then there is a cycle.
-        else if (*i != parent)
+        else if (*i != parent) {
            return true;
+        }
     }
     return false;
 }
@@ -208,6 +211,11 @@ int main()
             g.addEdge(u, v);
             e.push_back(make_pair(u, v));
         }
+        cerr << g.isCyclic() << endl;
+        for( vector<int>::iterator it = g.path.begin(); it != g.path.end(); it ++) {
+            cerr << *it << "  : ";
+        }
+        cerr << endl;
         for (int i = 0; i < m; i ++) {
             int res = g.countPaths(e[i].first, n, e[i]);
             cout << res << endl;

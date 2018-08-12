@@ -85,13 +85,16 @@ void Graph::topologicalSort(vector<int> & v)
         Stack.pop();
     }
 }
-int algo2(const vector<ll> & b, int k, Graph &g, Graph &g2) {
+int algo2(const vector<ll> & b, int k, Graph &g, Graph &g2, Graph & g3) {
     int n = b.size();
     for (int i = 0; i < b.size(); i++) {
         for( int j = max(0, i -k); j < min(n, i+k +1); j++ ) {
-            if(b[j] <= b[i]) {
+            if(b[j] < b[i] && j != i) {
                 g.addEdge(i, j);
                 g2.addEdge( j, i);
+            }
+            if (b[j] == b[i] && j != i) {
+                g3.addEdge(j, i);
             }
         }
     }
@@ -110,11 +113,13 @@ int prepare(const vector<ll> & a, ll s) {
     for (int i = 0; i <= n; i ++) {
         Graph g(n);
         Graph g2(n);
-        algo2(a, i, g, g2);
+        Graph g3(n);
+        algo2(a, i, g, g2, g3);
         vector<int> c;
         g.topologicalSort(c);
         //cerr << endl << i << endl;
-        vector<ll> r(n);
+        vector<ll> r(n, 0);
+        r[c[0]] = 1;
         for (int j = 0; j < c.size(); j++) {
             if (g2.adj[c[j]].size() == 0) {
                 r[c[j]] = 1;
@@ -126,23 +131,29 @@ int prepare(const vector<ll> & a, ll s) {
                         max = r[*it];
                     }
                 }
-                r[c[j]] = max + 1;
+                r[c[j]] = max == 0 ? 1 : max   + 1;
+                for (list<int>::iterator it = g3.adj[c[j]].begin(); it != g3.adj[c[j]].end(); it++  ) {
+                    if (r[*it]  == 0) {
+                         r[*it] = r[c[j]];
+                    }
+                }
+
             }
                         
         }
-       // cerr << " Max : " << i;
+       cerr << " Max : " << i;
 
 
         ll sum = 0;
         for (int j = 0; j < c.size(); j++) {
-            //cerr << r[j] << " ";
+            cerr << r[j] << " ";
             sum += r[j];
 
         }
         if (sum <= s) {
             k++;
         }
-        //cerr << endl;
+        cerr << endl;
     }
     //cout << k + 1  << endl ;// << " a " << endl;
     return k ;

@@ -84,6 +84,7 @@ void Graph::addEdge(int u, int v)
      
     // Add v to u’s list.
     adj[u].push_back(v); 
+    adj[v].push_back(u); 
 }
  
 // Returns count of
@@ -187,7 +188,7 @@ int Graph::isCyclicUtil(int v, bool visited[], int *cycleVertices, int parent)
             if (result == FINISHED)
                 return FINISHED;
             else if (result != NOCYCLE) {
-                cycleVertices[index++] = v;
+                cycleVertices[index++] = *i;
                 if (result == v)
                     return FINISHED;
                 else
@@ -196,6 +197,9 @@ int Graph::isCyclicUtil(int v, bool visited[], int *cycleVertices, int parent)
         }
 
         else if (*i != parent) {
+                cycleVertices[index++] = *i;
+
+                //cycleVertices[index++] = *i;
             return *i;
         }
     }
@@ -231,8 +235,9 @@ int main()
         cin >> n >> m;
         vector<int> v(n);
         Graph g(n+1);
-        int *cycleVertices = new int[m];
-        for (int i = 0; i <m; i++)
+        //int *cycleVertices = new int[n];
+        int cycleVertices[10];
+        for (int i = 0; i <n; i++)
             cycleVertices[i] = -1;
         vector<pair<int, int>> e;
         for (int i = 0; i < m; i++) {
@@ -241,10 +246,10 @@ int main()
             g.addEdge(u, v);
             e.push_back(make_pair(u, v));
         }
-        bool *visited = new bool[m];
-        for (int i = 0; i < m; i++)
+        bool *visited = new bool[n];
+        for (int i = 0; i < n; i++)
             visited[i] = false;
-        g.isCyclicUtil(1, visited, cycleVertices, -1) ? cerr << "Graph contains cycle\n" :
+        g.isCyclicUtil(3, visited, cycleVertices, -1) ? cerr << "Graph contains cycle\n" :
             cerr << "Graph doesn't contain cycle\n";
         int x = 0;
         while (cycleVertices[x] != -1)

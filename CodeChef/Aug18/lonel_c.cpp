@@ -235,8 +235,8 @@ int main()
         cin >> n >> m;
         vector<int> v(n);
         Graph g(n+1);
-        //int *cycleVertices = new int[n];
-        int cycleVertices[10];
+        int *cycleVertices = new int[m];
+        //int cycleVertices[m];
         for (int i = 0; i <n; i++)
             cycleVertices[i] = -1;
         vector<pair<int, int>> e;
@@ -252,8 +252,17 @@ int main()
         g.isCyclicUtil(3, visited, cycleVertices, -1) ? cerr << "Graph contains cycle\n" :
             cerr << "Graph doesn't contain cycle\n";
         int x = 0;
-        while (cycleVertices[x] != -1)
+        while (cycleVertices[x] != -1) {
             cerr << cycleVertices[x++] << " ";
+        }
+         x = 0;
+        set<pair<int, int>> s;
+        while (cycleVertices[++x] != -1) {
+            s.insert(make_pair(cycleVertices[x],cycleVertices[x-1]));
+            s.insert(make_pair(cycleVertices[x-1],cycleVertices[x]));
+        }
+            s.insert(make_pair(cycleVertices[0],cycleVertices[x-1]));
+            s.insert(make_pair(cycleVertices[x-1],cycleVertices[0]));
        // cerr << g.isCyclicUtil() << endl;
 
         for( vector<int>::iterator it = g.path.begin(); it != g.path.end(); it ++) {

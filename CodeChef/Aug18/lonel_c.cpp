@@ -95,12 +95,12 @@ void Graph::countPathsUtil(int u, int d,
     // If current vertex is 
     // same as destination, 
     // then increment count
-    if (u == d)
+   // if (u == d)
         pathCount++;
  
     // If current vertex 
     // is not destination
-    else
+    //else
     {
         // Recur for all the 
         // vertices adjacent to
@@ -127,12 +127,12 @@ void Graph::countPathsUtil(int u, int d,
     // If current vertex is 
     // same as destination, 
     // then increment count
-    if (u == d)
+  //  if (u == d)
         pathCount++;
  
     // If current vertex 
     // is not destination
-    else
+   // else
     {
         // Recur for all the 
         // vertices adjacent to

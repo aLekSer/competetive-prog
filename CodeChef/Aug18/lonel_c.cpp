@@ -31,11 +31,17 @@ class Graph
     // in graph
 public:
 int index;
+bool used; // cycle usage
     int V; 
     list<int> *adj;
     vector<int> path;
     vector<int> path2;
     int back_idx;
+    set<pair<int, int>> s;
+    void set_set(
+    set<pair<int, int>> m_s) {
+        s = m_s;
+    }
     vector<int> parnt;
     void set_index();
     void 
@@ -96,7 +102,7 @@ int Graph::countPaths(int s, int d, pair<int, int> e)
     // as not visited
     bool *visited = new bool[V];
     memset(visited, false, sizeof(visited));
- 
+    used = false;
     // Call the recursive helper
     // function to print
     // all paths
@@ -136,9 +142,21 @@ void Graph::countPathsUtil(int u, int d,
         for (i = adj[u].begin(); i != 
                     adj[u].end(); ++i)
                     {
-                        if (e.second == *i && !visited[*i])
+                        if (e.second == *i && !visited[*i]) {
+                            if (s.find(make_pair(u, *i)) != s.end()) {
+                                if (!used ) {
+                                    used = false;
+                                    countPathsUtil(*i, d, visited,
+                                                    pathCount);
+                                } else {
+
+                                }
+                            } else {
+
                             countPathsUtil(*i, d, visited,
                                                 pathCount);
+                            }
+                        }
                         
                     }
     }
@@ -235,9 +253,9 @@ int main()
         cin >> n >> m;
         vector<int> v(n);
         Graph g(n+1);
-        int *cycleVertices = new int[m];
-        //int cycleVertices[m];
-        for (int i = 0; i <n; i++)
+        //int *cycleVertices = new int[m];
+        int cycleVertices[10];
+        for (int i = 0; i <10; i++)
             cycleVertices[i] = -1;
         vector<pair<int, int>> e;
         for (int i = 0; i < m; i++) {
@@ -264,7 +282,7 @@ int main()
             s.insert(make_pair(cycleVertices[0],cycleVertices[x-1]));
             s.insert(make_pair(cycleVertices[x-1],cycleVertices[0]));
        // cerr << g.isCyclicUtil() << endl;
-
+        g.set_set(s);
         for( vector<int>::iterator it = g.path.begin(); it != g.path.end(); it ++) {
             cerr << *it << "  : ";
         }

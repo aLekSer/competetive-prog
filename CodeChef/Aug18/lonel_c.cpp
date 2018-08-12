@@ -56,7 +56,7 @@ printCycle(int v, int u) {
   }
      }
 
-int isCyclicUtil(int v, bool visited[], int *cycleVertices, int parent);
+int isCyclicUtil(int v, bool visited[], vector<int> & cycleVertices, int parent);
 bool  isCyclic();
     // A recursive function
     // used by countPaths()
@@ -193,7 +193,7 @@ void Graph::countPathsUtil(int u, int d,
     visited[u] = false;
 }
 
-int Graph::isCyclicUtil(int v, bool visited[], int *cycleVertices, int parent)
+int Graph::isCyclicUtil(int v, bool visited[], vector<int>& cycleVertices, int parent)
 {
     visited[v] = true;
 
@@ -206,7 +206,7 @@ int Graph::isCyclicUtil(int v, bool visited[], int *cycleVertices, int parent)
             if (result == FINISHED)
                 return FINISHED;
             else if (result != NOCYCLE) {
-                cycleVertices[index++] = *i;
+                cycleVertices.push_back(*i);
                 if (result == v)
                     return FINISHED;
                 else
@@ -215,7 +215,7 @@ int Graph::isCyclicUtil(int v, bool visited[], int *cycleVertices, int parent)
         }
 
         else if (*i != parent) {
-                cycleVertices[index++] = *i;
+                cycleVertices.push_back(*i);
 
                 //cycleVertices[index++] = *i;
             return *i;
@@ -236,7 +236,7 @@ bool Graph::isCyclic()
  
     // Call the recursive helper function to detect cycle in different
     // DFS trees
-    int cycleVertices[4];
+    vector<int> cycleVertices;
     for (int u = 0; u < V; u++)
         if (!visited[u]) // Don't recur for u if it is already visited
           if (isCyclicUtil(u, visited, cycleVertices, -1)) 
@@ -254,9 +254,7 @@ int main()
         vector<int> v(n);
         Graph g(n+1);
         //int *cycleVertices = new int[m];
-        int cycleVertices[10];
-        for (int i = 0; i <10; i++)
-            cycleVertices[i] = -1;
+        vector<int> cycleVertices;
         vector<pair<int, int>> e;
         for (int i = 0; i < m; i++) {
             int u, v;
@@ -270,6 +268,8 @@ int main()
         g.isCyclicUtil(3, visited, cycleVertices, -1) ? cerr << "Graph contains cycle\n" :
             cerr << "Graph doesn't contain cycle\n";
         int x = 0;
+        for (int i = 0; i <3; i++)
+            cycleVertices.push_back( -1);
         while (cycleVertices[x] != -1) {
             cerr << cycleVertices[x++] << " ";
         }

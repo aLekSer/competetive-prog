@@ -1,4 +1,4 @@
-nclude <bits/stdc++.h>
+#include <bits/stdc++.h>
 
 using namespace std;
 
@@ -13,7 +13,11 @@ long countTriplets(vector<long> arr, long r) {
     // value to index backward mapping
     unordered_map<l, vector<l>> m;
     for (l i = 0 ; i != arr.size(); i++) {
-        m[arr[i]] = vector<l>();
+
+        if (m.find(arr[i]) == m.end())
+        {
+            m[arr[i]] = vector<l>();
+        }
 		m[arr[i]].push_back(i);
     }
     int calc = 0;

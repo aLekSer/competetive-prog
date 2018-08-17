@@ -8,58 +8,66 @@ vector<string> split(const string &);
 
 // Complete the countTriplets function below.
 typedef long l;
-typedef long long ll;
+typedef __uint128_t ll;
 long countTriplets(vector<long> arr, long r) {
     // value to index backward mapping
     unordered_map<l, vector<l>> m;
     for (l i = 0 ; i != arr.size(); i++) {
-
         if (m.find(arr[i]) == m.end())
         {
             m[arr[i]] = vector<l>();
         }
-		m[arr[i]].push_back(i);
+        m[arr[i]].push_back(i);
     }
-    int calc = 0;
+    ll calc = 0;
+    if (r == 1) {
+        for (unordered_map<l, vector<l>>::iterator it = m.begin(); it != m.end(); it ++)
+        {
+            ll s = (*it).second.size();
+            cerr << (int) s << endl;
+            if (s >= 3) {
+                calc += (ll(s) * (ll(s) - ll(1)) * (ll(s)-ll(2)))/ll(6);
+            }
+        }
+        cerr << (long long) calc;
+        return calc;
+    }
     set<ll> s;
     vector<vector<l>> d(3,vector<l>());
     vector<l> e(3);
     for (l i = 0 ; i != arr.size(); i++) {
         l x = arr[i] * r;
         bool found = false ;
-        d[0] = vector<l>(1, i);
+        d[0] = m[arr[i]];
         if (m.find(x) != m.end())
         {
             d[1] = m[x];
             found = true;
-        }
-        x = x * r;
-        if (m.find(x) != m.end())
-        {
-            d[2] = m[x];
-            found = found && true;
-        } else {
-            found = false;
+            x = x * r;
+            if (m.find(x) != m.end())
+            {
+                d[2] = m[x];
+                found = found && true;
+            } else {
+                found = false;
+            }
         }
         if (found) {
-            for (int i = 0; i < d[1].size(); i++ ) {
-                for (int j = 0; j < d[2].size(); j++ ) {
-                    e[0] = d[0][0];
-                    e[1] = d[1][i];
-                    e[2] = d[2][j];
-                    if (e[0] != e[1] && e[2] != e[1] && e[2] != e[0]) 
-                    { 
-                    	sort(e.begin(), e.end());
-                        cerr << e[0] << " " << e[1] << " " << e[2]<<endl;
-                        const int b = 1e9;
-                        ll num = ll(e[0]) * b * b + ll(e[1]) * b + ll(e[2]);
-                        s.insert(num);
-                    }
-                }
+            e[0] = d[0][0];
+            e[1] = d[1][0];
+            e[2] = d[2][0];
+            sort(e.begin(), e.end());
+            if (e[0] != e[1] && e[2] != e[1] && e[2] != e[0]) 
+            { 
+                const int b = 1e9;
+                ll num = ll(arr[e[0]]) * b * b + ll(arr[e[1]]) * b + ll(arr[e[2]]);
+                if (s.find(num) == s.end())
+                    calc += d[0].size() *d[1].size() *d[2].size();
+                s.insert(num);    
             }
         }
     }
-    return s.size();
+    return calc;
 }
 
 int main()

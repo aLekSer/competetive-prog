@@ -49,10 +49,14 @@ int main() {
                 int c = b[count];
                 b[count] = a[b.size() - count];
                 a[b.size() - count] = c;
+        sort(a.begin(), a.end());
+        sort(b.begin(), b.end());
             } else {
                 int c = a[count];
                 a[count] = b[b.size() - count];
                 b[b.size() - count] = c;
+        sort(a.begin(), a.end());
+        sort(b.begin(), b.end());
             }
                 
         }

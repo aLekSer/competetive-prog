@@ -16,29 +16,31 @@ int main() {
 	// your code goes here
 	ll N, M;
     cin >> N >> M;
-	vector<ll> a, b;
+	vector<ll> a(N), b(N);
     map<ll, ll, greater<ll>> m;
 	for (int i = 0 ; i < N; i++)
 	{
 	    ll cc;
 	    cin >> cc;
-	    a.push_back(cc);
+	   // a.push_back(cc);
+        a[i] = cc;
 	}
 	for (int i = 0 ; i < N; i++)
 	{
 	    ll cc;
 	    cin >> cc;
-	    b.push_back(cc);
+	    //b.push_back(cc);
+        b[i] = cc;
         m.insert(make_pair(cc, i));
 	}
     ll left = M;
     ll mx =0;
-    vector<pair<ll, ll>> x;
+    vector<pair<ll, ll>> x(N);
 	for (int i = 0 ; i < N; i++)
 	{
         ll c = can(a[i], b[i], 0);
         if (c > 0) {
-            x.push_back(make_pair(c, i));
+            x[i] = (make_pair(c, i));
         }
     }
     make_heap(x.begin(), x.end());
@@ -49,10 +51,11 @@ int main() {
         x.pop_back();
         ll mx2 = x.front().first;
         ll num_it = min((mx - mx2) / b[id] + 1, M  - i  ) ; 
+        //cerr << num_it;
         if (mx == mx2) {
             num_it = 1;
         }
-        mx -= b[x.front().second] * num_it;
+        mx -= b[id] * num_it;
         x.push_back(make_pair(mx,id));
         push_heap(x.begin(), x.end());
         i += num_it;

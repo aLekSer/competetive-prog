@@ -14,7 +14,7 @@
         }
         return sum;
     }
-    const ll iters = 1073741824; 
+    const ll iters = 1024*1024; 
     void findMin(ll n, ll d, ll & mn, ll & op) {
         mn = n;
         op = 0;
@@ -34,7 +34,7 @@
     for (ll i = 0; i < iters; i++) {
         ll s = i;
         ll nn = n;
-        for (int j = 0; j < 30; j ++) {
+        for (int j = 0; j < 20; j ++) {
             if (s%2 == 0) {
                 nn = nn + d;
             } else {

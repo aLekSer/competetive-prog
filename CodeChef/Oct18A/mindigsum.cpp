@@ -19,10 +19,11 @@ void findMin(ll n, ll d, ll & mn, ll & op) {
     mn = n;
     op = 0;
     for (int i = 0; i < iters; i ++) {
+        ll n1 = n;
         for (int j = 0; j < iters; j ++) {
-            n = digsum(n);
-            if ( n < mn ) {
-                mn = n;
+            n1 = digsum(n1);
+            if ( n1 < mn ) {
+                mn = n1;
                 op = i + j + 1;
             }
         }

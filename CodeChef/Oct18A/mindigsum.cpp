@@ -14,10 +14,11 @@ ll digsum(ll a) {
     }
     return sum;
 }
-const ll iters = 1000; 
+const ll iters = 8000; 
 void findMin(ll n, ll d, ll & mn, ll & op) {
     mn = n;
     op = 0;
+    /* 
     for (int i = 0; i < iters; i ++) {
         ll n1 = n;
         for (int j = 0; j < iters; j ++) {
@@ -29,6 +30,29 @@ void findMin(ll n, ll d, ll & mn, ll & op) {
         }
         n += d;
     } 
+    */
+   for (int i = 0; i < iters; i++) {
+       ll s = i;
+       int nn = n;
+       for (int j = 0; j < 12; j ++) {
+           if (s%2 == 0) {
+            nn = nn + d;
+           } else {
+            nn = digsum(nn);
+            if ( nn < mn ) {
+                mn = nn;
+                op = j + 1;
+            }
+            if ( nn == mn ) {
+                if (j + 1 < op) {
+                  op = j + 1;
+                }
+            }
+           }
+           s /= 2;
+       }
+   }
+
 }
 
 int main() {

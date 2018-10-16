@@ -78,8 +78,8 @@ int main() {
             num_it = 1;
         }
         mx -= b[id] * num_it;
-        x[x.size()-1].first = mx;
-        x[x.size()-1].second= id;
+        x[x.size()].first = mx;
+        x[x.size()].second= id;
         push_heap(x.begin(), x.end(), cmp);
         i += num_it;
 

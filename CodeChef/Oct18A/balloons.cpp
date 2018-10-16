@@ -65,31 +65,35 @@ int main() {
             x[i].second = i;
         }
     }
-    make_heap(x.begin(), x.end(), cmp);
+    //make_heap(x.begin(), x.end(), cmp);
+    sort(x.begin(), x.end(), cmp);
+    //cerr << x[0].first << " " << x[x.size()-1].first << endl;
     for (int i = 0 ; i < M;) {
-        ll mx = x.front().first;
-        ll id = x.front().second;
-        pop_heap(x.begin(), x.end(), cmp);
+        ll mx = x.back().first;
+        ll id = x.back().second;
+        //pop_heap(x.begin(), x.end(), cmp);
         x.pop_back();
-        ll mx2 = x.front().first;
+        ll mx2 = x.back().first;
+        //cerr << mx << " " << mx2 << endl;
         ll num_it = min((mx - mx2) / b[id] + 1, M  - i  ) ; 
         //cerr << num_it;
         if (mx == mx2) {
             num_it = 1;
         }
         mx -= b[id] * num_it;
-        x[x.size()].first = mx;
-        x[x.size()].second= id;
-        push_heap(x.begin(), x.end(), cmp);
+        x.push_back(make_pair(mx,id));
+        //push_heap(x.begin(), x.end(), cmp);
+        sort(x.begin(), x.end(), cmp);
+
         i += num_it;
 
     }
-    if (x.front().first < 0)
+    if (x.back().first < 0)
     {
         cout << 0 << endl;
         return 0;
     }
-    cout << x.front().first << endl;
+    cout << x.back().first << endl;
     /*
 	for (map<ll, ll>::iterator i = m.begin(); i != m.end(); i++)
 	{

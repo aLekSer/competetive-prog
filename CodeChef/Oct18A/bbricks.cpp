@@ -3,6 +3,7 @@
 #include <string>
 #include <vector>
 
+    const int m = 1000;
 using namespace std;
 const int mod = 1000000007;
 void comb(int N, int K)
@@ -38,9 +39,13 @@ long long combin(int N, int K)
     count = min(4, N) * combin(N - 3, K - 1 ) + max ((N - 4), 0) * combin(N - 4, K - 1);
 	return count;
 }
+vector<vector<int>> cc;
+vector<vector<int>> cc2;
 long long combi(int N, int K);
 long long combi2(int N, int K)
 {
+    if ((N < m) && (K < m) && cc2[N][K] != -1)
+        return cc2[N][K] ;
 	long long res = 1;
     int count = 0;
     if ( K == N && N == 1 ) {
@@ -59,10 +64,14 @@ long long combi2(int N, int K)
     // 6 
     // edge cells not always 4 
     count = (combi2(N-1, K - 1) + combi(N-1, K)) %mod;
+    if ((N < m) && (K < m) && cc2[N][K] == -1)
+        cc2[N][K] = count ;
 	return count;
 }
 long long combi(int N, int K)
 {
+    if ((N < m) && (K < m) && cc[N][K] != -1)
+        return cc[N][K] ;
 	long long res = 1;
     int count = 0;
     if ( K == N && N == 1 ) {
@@ -81,10 +90,14 @@ long long combi(int N, int K)
     // 6 
     // edge cells not always 4 
     count = (2 * combi2(N-1, K - 1) + combi(N-1, K)) %mod;
+    if ((N < m) && (K < m) && cc[N][K] == -1)
+        cc[N][K] = count ;
 	return count;
 }
 int main()
 {
+    cc = vector<vector<int>> (m , vector<int>(m , -1));
+    cc2 = vector<vector<int>> (m , vector<int>(m , -1));
 	int t = 0;
 	cin >> t;
 	for (int i = 0; i < t; i++) {

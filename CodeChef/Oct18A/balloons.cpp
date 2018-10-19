@@ -56,58 +56,22 @@ int main() {
 
     ll left = M;
     ll mx =0;
-    vector<pair<ll, ll>> y(N);
+    vector<pair<ll, ll>> x(N);
 	for (int i = 0 ; i < N; i++)
 	{
         ll c = can(a[i], b[i], 0);
         if (c > 0) {
-            y[i].first = c;
-            y[i].second = i;
+            x[i].first = c;
+            x[i].second = i;
         }
     }
-    sort(y.begin(), y.end(), cmp);
-    const ll t =  int( y.size()/100); //min(30,
-    vector<pair<ll, ll>> x(t);
-    for (int a = 0 ; a < t ; a ++) {
-        x[a ] = y[y.size() - 1 - a ];
-    }
-    ll mi = x[x.size() - 1- t ].first;
     make_heap(x.begin(), x.end(), cmp);
-    //max_element(x.begin(), x.end(), cmp);
-    //cerr << x[0].first << " " << x[x.size()-1].first << endl;
-    int i = 0 ;
-    for (; (i < M ) && (x.back().first > mi) ;) {
-        ll mx = x.front().first;
-        ll id = x.front().second;
+    for (int i = 0 ; i < M;) {
         pop_heap(x.begin(), x.end(), cmp);
-        x.pop_back();
-        ll mx2 = x.front().first;
-        //cerr << mx << " " << mx2 << endl;
-        ll num_it = min((mx - mx2) / b[id] + 1, M  - i  ) ; 
-        //cerr << num_it;
-        if (mx == mx2) {
-            num_it = 1;
-        }
-        mx -= b[id] * num_it;
-        x.push_back(make_pair(mx,id));
-        push_heap(x.begin(), x.end(), cmp);
-        //sort(x.begin(), x.end(), cmp);
-
-        i += num_it;
-
-    }
-
-    for (int a = 0 ; a < t ; a ++) {
-         y[y.size() - 1 - a ] = x[a];
-    }
-    x = y;
-    for (; (i < M ) ;) {
         ll mx = x.back().first;
         ll id = x.back().second;
-        pop_heap(x.begin(), x.end(), cmp);
         x.pop_back();
-        ll mx2 = x.back().first;
-        //cerr << mx << " " << mx2 << endl;
+        ll mx2 = x.front().first;
         ll num_it = min((mx - mx2) / b[id] + 1, M  - i  ) ; 
         //cerr << num_it;
         if (mx == mx2) {
@@ -116,11 +80,10 @@ int main() {
         mx -= b[id] * num_it;
         x.push_back(make_pair(mx,id));
         push_heap(x.begin(), x.end(), cmp);
-        //sort(x.begin(), x.end(), cmp);
-
         i += num_it;
 
     }
+        pop_heap(x.begin(), x.end(), cmp);
     if (x.back().first < 0)
     {
         cout << 0 << endl;

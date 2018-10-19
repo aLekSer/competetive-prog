@@ -1,13 +1,53 @@
 // CPP program to check if two  
 // numbers are co-prime or not 
 #include<bits/stdc++.h> 
+#include <vector>
 using namespace std; 
-  
+typedef int ll;
 // function to check and print if  
 // two numbers are co-prime or not  
+vector<vector<int>> res;
+const int S =  20000;
+ll gcdExtended(ll a, ll b, ll *x, ll *y)
+{
+    // Base Case
+    if ( a< S && b < S && res[a][b] != 0)
+        return res[a][b] ;
+    if (a == 0)
+    {
+        *x = 0, *y = 1;
+        return b;
+    }
+ 
+    ll x1, y1; // To store results of recursive call
+    ll gcd = gcdExtended(b%a, a, &x1, &y1);
+ 
+    // Update x and y using results of recursive
+    // call
+    *x = y1 - (b/a) * x1;
+    *y = x1;
+     if ( a< S && b < S )
+     {
+        res[b%a][a] = gcd;
+        res[a][b%a] = gcd;
+
+     }
+ 
+    return gcd;
+}
 bool coprime(int a, int b) { 
       
-    return ( __gcd(a, b) == 1);
+    //return ( __gcd(a, b) == 1);
+    ll c = 0 , d = 0;
+    ll r = 
+    gcdExtended(a, b, &c, &d);
+     if ( a< S && b < S )
+     {
+        res[b][a] = r;
+        res[a][b] = r;
+
+     }
+    return ( gcdExtended(a, b, &c, &d) == 1);
 }
 class Graph
 {
@@ -115,6 +155,7 @@ void Graph::addEdge(int v, int w)
 // driver code 
 int main() 
 { 
+    res = vector<vector<int>> (S, vector<int>(S, 0));
     int n;
     cin >> n;
     vector<int> v(n);

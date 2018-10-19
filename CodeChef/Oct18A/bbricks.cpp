@@ -45,20 +45,20 @@ long long combi2(int N, int K)
     int count = 0;
     if ( K == N && N == 1 ) {
         return 1;
-    }
+    } 
     if (K> N ) 
      {
         return 0;
     }
     if (K == 0 )
-    return 1;
+        return 1;
     if (N == 0 && K > 0) {
         return 0;
     }
     // print integers and permute bitmask
     // 6 
     // edge cells not always 4 
-    count = combi2(N-1, K - 1) + combi(N-1, K);
+    count = (combi2(N-1, K - 1) + combi(N-1, K)) %mod;
 	return count;
 }
 long long combi(int N, int K)
@@ -75,12 +75,12 @@ long long combi(int N, int K)
     if (N == 0 && K > 0) {
         return 0;
     }
-    if (K == 0 )
-    return 1;
+    if (K == 0  )
+        return 1;
     // print integers and permute bitmask
     // 6 
     // edge cells not always 4 
-    count = 2 * combi2(N-1, K - 1) + combi(N-1, K);
+    count = (2 * combi2(N-1, K - 1) + combi(N-1, K)) %mod;
 	return count;
 }
 int main()
@@ -94,6 +94,6 @@ int main()
 		for (int j = 0; j < n; j++) {
 			//cerr << v[j];
 		}
-		cout << combi(2*n, k) << endl;
+		cout << combi(n, k) << endl;
 	}
 }

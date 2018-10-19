@@ -62,11 +62,12 @@ long countTriplets(vector<long> arr, long r) {
                 const int b = 1e9;
                 ll num = ll(arr[e[0]]) * b * b + ll(arr[e[1]]) * b + ll(arr[e[2]]);
                 if (s.find(num) == s.end())
-                    calc += d[0].size() *d[1].size() *d[2].size();
+                    calc += ll(d[0].size()) * ll (d[1].size()) * ll(d[2].size());
                 s.insert(num);    
             }
         }
     }
+    cerr << (long long )calc;
     return calc;
 }
 

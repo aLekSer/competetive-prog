@@ -22,7 +22,8 @@ pair<int, int> binS(int n, int v , int i) {
     int cur2 = query(i, r);
     if (cur2 == v) {
         return make_pair(i, r);
-    }
+    } 
+    int cur1 = -1;
     while (l <= r) {
         int mid =  l + (r - l) / 2;
         //cerr << l << " " << r << endl;
@@ -32,6 +33,14 @@ pair<int, int> binS(int n, int v , int i) {
         }
         if (cur2  > cur && v > cur2) 
             return make_pair(-1, -1);
+        else if (cur1 == -1) {
+            int cur1 = query(i, l);
+            if (cur1 == v) {
+                return make_pair(i, l);
+            }
+            if (cur1  < cur && v < cur1) 
+                return make_pair(-1, -1);
+        }
         if (cur2  > cur ) {
             if (cur < v) {
                 l = mid + 1;

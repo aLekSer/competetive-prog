@@ -32,6 +32,8 @@ int main()
             // Solution to compare
             vector<int> v3 ;
             vector<int> v2 = s;
+            /*
+        */
         for (int j = 0; j < n; j ++) {
             vector<int> v (n, -1);
             
@@ -55,18 +57,18 @@ int main()
 
             } while (std::next_permutation(v2.begin(), v2.end()));
             if (ma == 0) {
-                //cout << 0 << " ";
+                cout << 0 << " ";
                 res1.push_back(0);
             } else {
-               // cout << ma << " ";
+                cout << ma << " ";
                 res1.push_back(ma);
             }
-            /**/
             //cerr << "Here";
         }
-        //cout << endl;
+        cout << endl;
        //     cout << "Right sol "  << endl;
             //End of solution to compare
+            int temp = 0;
         for (int j = 0; j < n; j ++) {
             bool found = false;
             long long sum = 0;
@@ -116,21 +118,46 @@ int main()
 
                    }
                    cout << r << " ";
+                   temp = r;
                 res2.push_back(r);
                    found = true;
                    //break;
 /*
                }
             }*/
+            break;
             if (!found) {
                 cout << 0 << " ";
                 res2.push_back(0);
             }
                //* /
         }         
+        int t = temp;
+            if (temp == 0) {
+                
+                for (int l = 1; l < n ; l++) {
+                    cout << 0 << " ";
+                }
+            } else {
+                
+            if (temp == n) {
+                for (int l = 1; l < n ; l++) {
+                    cout << n << " ";
+                }
+            } else {
+                
+                for (int l =  1; l <  n/2 + 1 ; l++) {   
+                        cout << max(0, --t) << " " ;
+                        res2.push_back( max(0, --t) );
+                }
+                for (int l =   n/2 + 1 ; l < n; l++) {   
+                    cout << res2[n - l];
+                }
+            }
+        }
         cout << endl;
         if (!(res1 == res2) ) {
-            //cout << "Error missmatch";
+           // cout << "Error missmatch";
         }
     }
     return 0;

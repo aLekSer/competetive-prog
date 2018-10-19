@@ -66,7 +66,7 @@ int main() {
         }
     }
     sort(y.begin(), y.end(), cmp);
-    const ll t = min(2, int( y.size()));
+    const ll t =  int( y.size()/100); //min(30,
     vector<pair<ll, ll>> x(t);
     for (int a = 0 ; a < t ; a ++) {
         x[a ] = y[y.size() - 1 - a ];

@@ -115,6 +115,9 @@ void Graph::countPathsUtil(int u, int d,
 void prepare(vector<vector<int>> & c, vector<int> & v, int i, int j, Graph &g ) {
 
 }
+
+//Use segment tree to get the local maximum and minimum in range
+
 int main() 
 {
     int n;
@@ -126,17 +129,36 @@ int main()
 Graph g(n+1);
 Graph g2(n+1);
     vector<vector<int>> c(n, vector<int>(n));
-    for (int i = 0; i < n; i++) {
-        int min = 1000000;
+        int mi = 1000000;
         int max = 0;
-        for (int j = i; j < n; j ++) {
-            if (v[j] < min) {
-                min = v[j];
+        vector<int> mm(n);
+        vector<int> b(n);
+    for (int i = n-1; i >= 0; i--) {
+        if(v[i] < mi) {
+            mi = v[i];
+            mm[i] = v[i];
+        } else {
+            mm[i] = mi;
+        }
+        cerr << mm[i];
+        if(v[i] > max) {
+            max = v[i];
+            b[i] = v[i];
+        } else {
+            b[i] = max;
+        }
+    }
+    for (int i = 0; i < n; i++) {
+        int mi = 1000000;
+        int max = 0;
+        for (int j = i; j < min(n, i + b[i]); j ++) {
+            if (v[j] < mi) {
+                mi = v[j];
             }
             if (v[j] > max) {
                 max = v[j];
             }
-            c[i][j] = int( min <= ( j-i + 1) && ( j-i + 1) <=  max);
+            c[i][j] = int( mi <= ( j-i + 1) && ( j-i + 1) <=  max);
             if (c[i][j]) {
                 g.addEdge(i,j+1);
                 g2.addEdge(j+1, i);
@@ -148,6 +170,8 @@ Graph g2(n+1);
     }
     vector<long long> d(n+1, 0);
     d[n] = 1;
+
+    // Aglorithm to calculate all paths in DAG (directed acyclic graph) with backtrace and reverse topology ordering
     for (int i = n ; i >= 0; i--) {
         for (list<int>::iterator it = g2.adj[i].begin(); it != g2.adj[i].end(); it ++ ) {
             d[*it] = (d[*it] + d[i]) % mod;

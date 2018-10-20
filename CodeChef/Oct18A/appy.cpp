@@ -6,6 +6,9 @@
 #include <numeric>
 using namespace std;
 
+
+//Problem Code in Oct18A HMAPPY
+
 typedef uint64_t ll;
 //Return the number of candies we need give
 ll can(ll a, ll b, ll l) {

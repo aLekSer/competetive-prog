@@ -13,20 +13,21 @@ typedef long long ll;
 int c(vector<vector<ll>> & a, int ll, int r, int b, int c) {
     set<int> rows;
     int count = 0;
-    for (int i = ll ; i < r - 1 ; i ++ )
+    for (int i = ll ; i < r + 1  ; i ++ )
     {
-        for (int j = b ; j < c ; j ++ )
+        for (int l = i + 1; l < r +1; l ++ )
         {
-            for (int l = i + 1; l < r ; l ++ )
+            for (int j = b ; j < c +1 ; j ++ )
             {
 
                 if (a[i][j] != a[l][j]) {
                     rows.insert(i);
                     rows.insert(l);
+                    break;
                 }
             }
         }}
-    return rows.size() == 0? rows.size() : 1;
+    return rows.size() == 0?1  :  rows.size();
 }
 int main() {
 	ll N, M;
@@ -55,6 +56,7 @@ int main() {
             }
         }
     }
+    c(a, 0, 1,0,1);
     cout << count << endl;
     return 0;
 }

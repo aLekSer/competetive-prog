@@ -119,7 +119,7 @@ int prepare(const vector<ll> & a, ll s) {
         g.topologicalSort(c);
         //cerr << endl << i << endl;
         vector<ll> r(n, 0);
-        r[c[0]] = 1;
+        //r[c[0]] = 1;
         for (int j = 0; j < c.size(); j++) {
             if (g2.adj[c[j]].size() == 0) {
                 r[c[j]] = 1;
@@ -131,7 +131,8 @@ int prepare(const vector<ll> & a, ll s) {
                         max = r[*it];
                     }
                 }
-                r[c[j]] = max == 0 ? 1 : max   + 1;
+                if (r[c[j]] == 0)
+                    r[c[j]] = max == 0 ? 1 : max   + 1;
                 for (list<int>::iterator it = g3.adj[c[j]].begin(); it != g3.adj[c[j]].end(); it++  ) {
                     if (r[*it]  == 0) {
                          r[*it] = r[c[j]];

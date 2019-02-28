@@ -33,22 +33,6 @@ int countOnes(int i) {
     return ((i>>3)&1)+((i>>2)&1)+((i>>1)&1)+(i&1);
 }
 
-int count (vector<int> a, vector<int> b) {
-    if ((a.size() == 2 )&& (b.size() == 2)) {
-        return res(a[0], a[1], b[0], b[1]);
-    }
-
-    if (a.size() == 1 && b.size() == 2) {
-        return res(a[0], b[0], b[1]);
-    }
-
-    if (a.size() == 1 && b.size() == 1) {
-        return res(a[0], b[0]);
-    }
-    if (a.size() == 1 && b.size() == 1) {
-        return res(a[0], b[0]);
-    }
-}
 // calculate fitness function
 int res(int i, int j, int k, int l)
 {
@@ -104,6 +88,26 @@ int res(int i, int j)
         }
 
 }
+
+
+int count (vector<int> a, vector<int> b) {
+    if ((a.size() == 2 )&& (b.size() == 2)) {
+        return res(a[0], a[1], b[0], b[1]);
+    }
+
+    if (a.size() == 1 && b.size() == 2) {
+        return res(a[0], b[0], b[1]);
+    }
+
+    if (a.size() == 1 && b.size() == 1) {
+        return res(a[0], b[0]);
+    }
+    if (a.size() == 1 && b.size() == 1) {
+        return res(a[0], b[0]);
+    }
+    return 0;
+}
+
 int main(int argc,char *argv[])
 {
     fstream ci ;
@@ -150,7 +154,7 @@ int main(int argc,char *argv[])
     }
     cout << t2.size() << endl;
     //number of iterations
-    int m = 1 ;
+    int m = 10 ;
 
     // Best solution
     int total = 0;
@@ -195,13 +199,21 @@ int main(int argc,char *argv[])
             }
         }
         // TODO
-        int count = 0;
+        int coun = 0;
         for (int j = 1; j < cur.size(); j ++)
         {
-           int r = count(sol[j], sol[j-1]);
+           int r = count(cur[j], cur[j-1]);
            // cout << "new "<< endl;
+            if (r > 0 ) {
+                coun += r;
+            } else {
+
+                coun = 0;
+                break;
+            }
         }
-        if (count > 0 ) {
+        if (coun != 0 && coun > sum) {
+            sum = coun;
             sol = cur;
         }
         

@@ -106,6 +106,7 @@ func compare(p1, p2 photo) int {
 }
 
 func calcMentric(photos []photo) (res int) {
+	res = 0
 	for i := 0; i < len(photos)-1; i++ {
 		res += compare(photos[i], photos[i+1])
 	}
@@ -155,11 +156,12 @@ func main() {
 	sort.Slice(photos, func(i, j int) bool { return len(photos[i].Tags) > len(photos[j].Tags) })
 
 	// sort photos maximizing the metric
+	param := 100
 	for i := 0; i < len(photos)-1; i++ {
-		max := -1
-		maxI := 0
+		max := compare(photos[i], photos[i+1])
+		maxI := i + 1
 		// test 100 photos
-		for j := i + 2; j < i+100 && j < len(photos); j++ {
+		for j := i + 1; j < i+param && j < len(photos); j++ {
 			m := compare(photos[i], photos[j])
 			if m > max {
 				maxI = j
@@ -168,6 +170,6 @@ func main() {
 		photos[i+1], photos[maxI] = photos[maxI], photos[i+1]
 	}
 
-	//fmt.Println(calcMentric(photos))
+	fmt.Println(calcMentric(photos))
 	printResult(photos)
 }

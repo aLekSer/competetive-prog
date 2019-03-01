@@ -4,6 +4,7 @@
 # include <stdio.h>
 # include <math.h>
 # include <algorithm>
+# include <list>
 # include <set>
 #include <map>
 #include <fstream>
@@ -28,7 +29,7 @@ void  tag(string s, int i , int j)
     int c = p / 8;
     f[i][r] = f[i][r]  | 1 << c;
 }
-const int K = 64;
+const int K = 271;
 int countOnes(int i) {
     return ((i>>3)&1)+((i>>2)&1)+((i>>1)&1)+(i&1);
 }
@@ -117,7 +118,7 @@ int main(int argc,char *argv[])
     fo.open("results.txt", ios::out | ios::in );
     int t;
     ci >> t;
-    cout << t;
+    cout << t << endl;
 
 
     f = vector<vector<int> >(t, vector<int>(64, 0));
@@ -159,7 +160,7 @@ int main(int argc,char *argv[])
     // Best solution
     int total = 0;
     int sum = 0;
-    vector<vector <int> > sol;
+    list<vector <int> > sol;
 
     /*
     for (int j = 0; j < t; j ++)
@@ -167,10 +168,17 @@ int main(int argc,char *argv[])
         cout << "ou" << rot[j] <<endl;
     }
     */
+   int T = t-1;
+   switch (t) {
+       case 1000:
+       T = t/3;
+
+   }
     for (int i = 0; i < m; i ++) {
         vector<vector <int> > cur;
+        list<vector <int> > curl;
         set<int> sel ; 
-        for (int j = 0; j < t- 1; j ++) {
+        for (int j = 0; j < T; j ++) {
             while (true) {
             int el = rand() % t; 
             cur.push_back(vector<int>());
@@ -198,40 +206,52 @@ int main(int argc,char *argv[])
                 break;
             }
         }
+
+        for (int j = 0; j < T; j ++) {
+            curl.push_back(cur[j]);
+        }
         // TODO
         int coun = 0;
-        for (int j = 1; j < cur.size(); j ++)
+        set<int> select;
+        list<vector<int>>::iterator it = curl.begin();
+        int j = 0;
+
+        list<vector<int>>::iterator it2 = curl.begin();
+        int j2 = 0;
+        for (; ++it2 != curl.end();)
         {
-           int r = count(cur[j], cur[j-1]);
+           int r = count(*it, *it2);
            // cout << "new "<< endl;
             if (r > 0 ) {
                 coun += r;
+                select.insert(j);
+                select.insert(j2);
+                ++ it;
             } else {
-
                 coun = 0;
-                break;
             }
-        }
-        if (coun != 0 && coun > sum) {
-            sum = coun;
-            sol = cur;
-        }
+            }
+            if (coun != 0 && coun > sum) {
+                sum = coun;
+                sol = cur;
+            }
         
         }
     }
+    fo << sol.size() << endl;
         for (int j = 0; j < sol.size(); j ++)
         {
             cout  <<endl; //<< "output"
-            fo << endl;
             for (int k = 0 ; k < sol[j].size(); k ++)
             {
                 cout << sol[j][k] << " ";
                 fo << sol[j][k] << " ";
                 //cout<<s[j][0];
             }
+            fo << endl;
            // cout << "new "<< endl;
         }
-            fo << endl;
+           // fo << endl;
     fo.close();
     
     return 0;

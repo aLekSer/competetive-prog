@@ -144,7 +144,7 @@ func main() {
 	}
 
 	// preliminary sort array of vertical photos by the number of tags
-	sort.Slice(vPhotos, func(i, j int) bool { return len(vPhotos[i].Tags) > len(vPhotos[j].Tags) })
+	//sort.Slice(vPhotos, func(i, j int) bool { return len(vPhotos[i].Tags) > len(vPhotos[j].Tags) })
 
 	// combine vertical photos and add them to horizontal
 	for i := 0; i < len(vPhotos)/2; i++ {
@@ -153,7 +153,7 @@ func main() {
 
 	// preliminary sort array of photos by the number of tags
 	sort.Slice(photos, func(i, j int) bool { return len(photos[i].Tags) > len(photos[j].Tags) })
-
+	T := 200
 	// sort photos maximizing the metric
 	for i := 0; i < len(photos)-1; i++ {
 		max := 0
@@ -163,7 +163,7 @@ func main() {
 		maxI := i + 1
 
 		// test 100 photos
-		for j := i + 1; j < i+100 && j < len(photos); j++ {
+		for j := i + 1; j < i+T && j < len(photos); j++ {
 			m := compare(photos[i], photos[j])
 			if m > max {
 				maxI = j
@@ -171,6 +171,7 @@ func main() {
 			}
 		}
 
+		photos[i+1], photos[maxI] = photos[maxI], photos[i+1]
 		// test 100 random photom
 		/*
 			if len(photos)-i > 100 {
@@ -187,6 +188,6 @@ func main() {
 		*/
 	}
 
-	fmt.Println(calcMetric(photos))
 	printResult(photos)
+	fmt.Println(calcMetric(photos))
 }

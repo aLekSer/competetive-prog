@@ -1,4 +1,4 @@
-# competetive-programming
+# competitive-programming
 
 A place where all progress on competitions would be collected and pushed after the end of competitions and results would be sounded.
 
